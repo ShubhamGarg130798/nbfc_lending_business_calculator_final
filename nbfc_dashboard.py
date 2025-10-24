@@ -214,14 +214,14 @@ total_capital = sum(capital_values)
 
 # Business Parameters - Expandable Section
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
-    processing_fees = st.number_input("Processing Fees (%)", min_value=5.0, max_value=25.0, value=11.8, step=0.1) / 100
-    monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=15.0, max_value=50.0, value=30.0, step=0.5) / 100
-    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=1.0, max_value=5.0, value=2.0, step=0.1) / 100
-    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.5, max_value=5.0, value=1.5, step=0.1) / 100
+    processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=25.0, value=11.8, step=0.1) / 100
+    monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
+    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=10.0, value=2.0, step=0.1) / 100
+    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates - Expandable Section
 with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
-    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 1000000, 5000000, 1500000, 50000)
+    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
     opex_month1 = opex_month1_value / 1e7  # Convert to crores for consistency
 
     # Create dynamic OPEX inputs based on number of months (starting from month 2)
@@ -263,8 +263,8 @@ with st.sidebar.expander("📊 Collection Parameters", expanded=False):
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
 
     # API costs
-    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 20, 100, 35, 5)
-    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 50, 150, 95, 5)
+    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 100, 35, 5)
+    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
 
 # Fixed costs - Expandable Section
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
@@ -833,4 +833,5 @@ st.write(f"**Total Profit/Loss ({num_months} months):** ₹{net_profit_sum:.2f} 
 st.write(f"**Total Customers:** {total_customers_sum:,}")
 st.write(f"**Total Revenue:** ₹{total_revenue_sum:.2f} Cr")
 st.write(f"**Total Costs:** ₹{total_costs_sum:.2f} Cr")
+
 #st.write(f"**Profit Margin:** {(net_profit_sum/total_revenue_sum*100):.1f}%")
