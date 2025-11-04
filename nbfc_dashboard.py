@@ -201,9 +201,9 @@ st.markdown("""
 
 /* Number inputs - bright and visible */
 [data-testid="stSidebar"] input[type="number"] {
-    background: rgba(255, 255, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
     border: 2px solid rgba(102, 126, 234, 0.5) !important;
-    color: #ffffff !important;
+    color: #1a1f35 !important;
     border-radius: 8px !important;
     padding: 0.7rem !important;
     font-weight: 600 !important;
@@ -213,12 +213,12 @@ st.markdown("""
 [data-testid="stSidebar"] input[type="number"]:focus {
     border-color: #667eea !important;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.4) !important;
-    background: rgba(255, 255, 255, 0.25) !important;
+    background: rgba(255, 255, 255, 1) !important;
     outline: none !important;
 }
 
 [data-testid="stSidebar"] input[type="number"]:hover {
-    background: rgba(255, 255, 255, 0.22) !important;
+    background: rgba(255, 255, 255, 0.97) !important;
     border-color: rgba(102, 126, 234, 0.6) !important;
 }
 
