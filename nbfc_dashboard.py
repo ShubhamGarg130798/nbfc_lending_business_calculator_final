@@ -24,123 +24,337 @@ if not st.session_state.authenticated:
 st.set_page_config(
     page_title="NBFC Lending Business Calculator",
     page_icon="💰",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Enhanced Custom CSS with complete visibility fixes
+# Modern Dashboard CSS
 st.markdown("""
 <style>
-/* Main page background and theme */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Global Styles */
+* {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Main app background */
 .stApp {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    background-attachment: fixed;
+    background: #f7fafc;
 }
 
-/* Main content area styling */
+/* Hide Streamlit elements */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Main content area */
 .main .block-container {
-    padding: 2rem 3rem;
-    max-width: 1400px;
+    padding: 1.5rem 2.5rem;
+    max-width: 1600px;
 }
 
-/* Section headers styling */
-h2 {
-    color: #2d3748 !important;
-    font-weight: 800 !important;
-    font-size: 2rem !important;
-    margin-top: 2.5rem !important;
-    margin-bottom: 1.5rem !important;
-    padding: 1rem 1.5rem !important;
-    padding-bottom: 1rem !important;
-    border-bottom: none !important;
-    background: linear-gradient(135deg, #3d4f6d 0%, #2d3748 100%) !important;
-    color: white !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 15px rgba(45, 55, 72, 0.3) !important;
-    position: relative !important;
-    padding-left: 4rem !important;
+/* Dashboard Header */
+.dashboard-header {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);
+    margin-bottom: 2rem;
 }
 
-h2::before {
-    position: absolute;
-    left: 1.2rem;
-    font-size: 1.8rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+.dashboard-title {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: white;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Specific icons for each section */
-h2:nth-of-type(1)::before {
-    content: '📊';
+.dashboard-subtitle {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.9);
+    margin: 0.5rem 0 0 0;
+    font-weight: 500;
 }
 
-h2:nth-of-type(2)::before {
-    content: '📋';
+/* Section Headers */
+.section-header {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 2.5rem 0 1.25rem 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e2e8f0;
 }
 
-h2:nth-of-type(3)::before {
-    content: '💼';
+/* KPI Card Styles - Modern Dashboard Look */
+.kpi-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    border-left: 4px solid var(--card-color);
+    position: relative;
 }
 
-/* Section dividers */
-hr {
-    margin: 2.5rem 0 !important;
-    border: none !important;
-    height: 2px !important;
-    background: linear-gradient(90deg, transparent, #667eea, transparent) !important;
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Chart titles */
-.js-plotly-plot .plotly .gtitle {
-    fill: #2d3748 !important;
-    font-weight: 600 !important;
+.kpi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-/* Dataframe/Table styling */
-[data-testid="stDataFrame"] {
-    background: white !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
-    padding: 1rem !important;
+.kpi-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: var(--card-bg);
 }
 
-[data-testid="stDataFrame"] table {
-    color: #2d3748 !important;
+.kpi-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
 }
 
-[data-testid="stDataFrame"] thead tr th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: white !important;
+.kpi-value {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--card-color);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.kpi-trend {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #48bb78;
+    margin-top: 0.5rem;
+}
+
+/* Color Variables for KPI Cards */
+.kpi-card.blue {
+    --card-color: #3182ce;
+    --card-bg: rgba(49, 130, 206, 0.1);
+}
+
+.kpi-card.green {
+    --card-color: #38a169;
+    --card-bg: rgba(56, 161, 105, 0.1);
+}
+
+.kpi-card.orange {
+    --card-color: #dd6b20;
+    --card-bg: rgba(221, 107, 32, 0.1);
+}
+
+.kpi-card.purple {
+    --card-color: #805ad5;
+    --card-bg: rgba(128, 90, 213, 0.1);
+}
+
+.kpi-card.teal {
+    --card-color: #319795;
+    --card-bg: rgba(49, 151, 149, 0.1);
+}
+
+/* Chart Container */
+.chart-container {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    margin: 1rem 0;
+}
+
+.chart-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+/* Sidebar Styling */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #2c5282 0%, #2a4365 100%);
+    padding: 0;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding: 1.5rem 1.25rem;
+}
+
+/* Sidebar Title */
+[data-testid="stSidebar"] h1 {
+    color: #ffffff !important;
     font-weight: 700 !important;
+    font-size: 1.125rem !important;
+    margin-bottom: 1.5rem !important;
     padding: 1rem !important;
-    border: none !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    text-align: center !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-[data-testid="stDataFrame"] tbody tr {
+/* Sidebar Text */
+[data-testid="stSidebar"] * {
+    color: #ffffff !important;
+}
+
+/* Sidebar Expanders */
+[data-testid="stSidebar"] details summary {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 10px !important;
+    padding: 0.875rem 1rem !important;
+    margin: 0.5rem 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    font-weight: 600 !important;
+    font-size: 0.9375rem !important;
+    cursor: pointer !important;
     transition: all 0.2s ease !important;
 }
 
+[data-testid="stSidebar"] details summary:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+[data-testid="stSidebar"] details[open] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 10px !important;
+    padding: 0.5rem !important;
+    margin: 0.5rem 0 !important;
+}
+
+/* Sidebar Labels */
+[data-testid="stSidebar"] label {
+    color: #e2e8f0 !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+/* Sidebar Inputs */
+[data-testid="stSidebar"] input[type="number"] {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: #2d3748 !important;
+    border-radius: 8px !important;
+    padding: 0.625rem !important;
+    font-weight: 600 !important;
+    font-size: 0.9375rem !important;
+}
+
+[data-testid="stSidebar"] input[type="number"]:focus {
+    border-color: #4299e1 !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2) !important;
+    background: rgba(255, 255, 255, 1) !important;
+}
+
+/* Sidebar Buttons */
+[data-testid="stSidebar"] button {
+    background: rgba(66, 153, 225, 0.2) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-testid="stSidebar"] button:hover {
+    background: rgba(66, 153, 225, 0.3) !important;
+}
+
+/* Success/Error Messages */
+[data-testid="stSidebar"] .stSuccess {
+    background: rgba(72, 187, 120, 0.15) !important;
+    border-left: 4px solid #48bb78 !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    color: #c6f6d5 !important;
+}
+
+[data-testid="stSidebar"] .stError {
+    background: rgba(245, 101, 101, 0.15) !important;
+    border-left: 4px solid #f56565 !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    color: #fed7d7 !important;
+}
+
+/* Table Styling */
+[data-testid="stDataFrame"] {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stDataFrame"] thead tr th {
+    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    padding: 1rem !important;
+    font-size: 0.875rem !important;
+    border: none !important;
+}
+
 [data-testid="stDataFrame"] tbody tr:hover {
-    background: rgba(102, 126, 234, 0.05) !important;
-    transform: scale(1.01) !important;
+    background: #f7fafc !important;
 }
 
 [data-testid="stDataFrame"] tbody td {
     color: #4a5568 !important;
-    padding: 0.8rem !important;
+    padding: 0.875rem !important;
     border-bottom: 1px solid #e2e8f0 !important;
+    font-size: 0.875rem !important;
 }
 
-/* Financial Summary section */
-.stMarkdown h3 {
-    color: #2d3748 !important;
-    font-weight: 700 !important;
-    font-size: 1.5rem !important;
-    margin-bottom: 1rem !important;
+/* Plotly Charts */
+[data-testid="stPlotlyChart"] {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
 }
 
-.stMarkdown p, .stMarkdown strong {
+/* Summary Section */
+.summary-box {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    margin: 1rem 0;
+}
+
+.summary-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.stMarkdown p {
     color: #4a5568 !important;
-    font-size: 1.05rem !important;
-    line-height: 1.8 !important;
+    font-size: 0.9375rem !important;
+    line-height: 1.75 !important;
 }
 
 .stMarkdown strong {
@@ -148,452 +362,42 @@ hr {
     font-weight: 700 !important;
 }
 
-/* Chart containers */
-[data-testid="stPlotlyChart"] {
-    background: white !important;
-    border-radius: 12px !important;
-    padding: 1rem !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
-    margin: 1rem 0 !important;
-}
-
-/* Column spacing */
-[data-testid="column"] {
-    padding: 0.5rem !important;
-}
-
-.main-header {
-    background: linear-gradient(135deg, #3d4f6d 0%, #2d3748 50%, #1a1f35 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 8s ease infinite;
-    padding: 2rem 2.5rem;
-    border-radius: 20px;
-    color: white;
-    text-align: center;
-    margin-bottom: 2rem;
-    box-shadow: 0 15px 50px rgba(45, 55, 72, 0.4), 0 5px 15px rgba(0,0,0,0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.main-header::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    animation: rotate 20s linear infinite;
-}
-
-.main-header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        rgba(255,255,255,0.3) 25%, 
-        rgba(255,255,255,0.6) 50%, 
-        rgba(255,255,255,0.3) 75%, 
-        transparent 100%);
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-.main-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 800;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.2);
-    letter-spacing: 0.5px;
-    position: relative;
-    z-index: 1;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.8rem;
-}
-
-.main-header h1::before {
-    content: '💰';
-    font-size: 2.8rem;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-/* Responsive design for smaller screens */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .main-header {
-        padding: 1.5rem 1rem;
-        border-radius: 15px;
+    .dashboard-header {
+        padding: 1.5rem 1.25rem;
     }
     
-    .main-header h1 {
-        font-size: 1.8rem;
+    .dashboard-title {
+        font-size: 1.5rem;
     }
     
-    .main-header h1::before {
-        font-size: 2rem;
+    .kpi-card {
+        margin-bottom: 1rem;
     }
-}
-
-.metric-container {
-    background-color: #f0f2f6;
-    padding: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #2E8B57;
-    margin: 5px 0;
-}
-
-.calculation-header {
-    background-color: #e1f5fe;
-    padding: 10px;
-    border-radius: 5px;
-    margin: 10px 0;
-}
-
-/* Custom Metrics Styling */
-.custom-metric {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
-    backdrop-filter: blur(20px);
-    border: 2px solid transparent;
-    padding: 1.8rem 1.5rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    margin: 0.5rem 0;
-    text-align: center;
-    height: 140px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.custom-metric::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(90deg, var(--metric-color-1), var(--metric-color-2));
-    border-radius: 20px 20px 0 0;
-}
-
-.custom-metric:hover {
-    transform: translateY(-8px) scale(1.03);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-    border-color: var(--metric-border-color);
-}
-
-.metric-label {
-    font-size: 0.85rem;
-    font-weight: 800;
-    margin-bottom: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.9;
-}
-
-.metric-value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    margin: 0;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-}
-
-/* Individual metric colors with enhanced gradients */
-.metric-capital {
-    background: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%);
-    --metric-color-1: #E74C3C;
-    --metric-color-2: #C0392B;
-    --metric-border-color: rgba(231, 76, 60, 0.4);
-}
-.metric-capital .metric-label { 
-    color: #E74C3C; 
-    background: linear-gradient(135deg, #E74C3C, #C0392B);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.metric-capital .metric-value { 
-    color: #C0392B; 
-}
-
-.metric-roi {
-    background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
-    --metric-color-1: #3498DB;
-    --metric-color-2: #2980B9;
-    --metric-border-color: rgba(52, 152, 219, 0.4);
-}
-.metric-roi .metric-label { 
-    color: #3498DB;
-    background: linear-gradient(135deg, #3498DB, #2980B9);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.metric-roi .metric-value { 
-    color: #2980B9; 
-}
-
-.metric-disbursed {
-    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-    --metric-color-1: #9B59B6;
-    --metric-color-2: #8E44AD;
-    --metric-border-color: rgba(155, 89, 182, 0.4);
-}
-.metric-disbursed .metric-label { 
-    color: #9B59B6;
-    background: linear-gradient(135deg, #9B59B6, #8E44AD);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.metric-disbursed .metric-value { 
-    color: #8E44AD; 
-}
-
-.metric-profit {
-    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-    --metric-color-1: #E67E22;
-    --metric-color-2: #D35400;
-    --metric-border-color: rgba(230, 126, 34, 0.4);
-}
-.metric-profit .metric-label { 
-    color: #E67E22;
-    background: linear-gradient(135deg, #E67E22, #D35400);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.metric-profit .metric-value { 
-    color: #D35400; 
-}
-
-.metric-aum {
-    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    --metric-color-1: #27AE60;
-    --metric-color-2: #229954;
-    --metric-border-color: rgba(39, 174, 96, 0.4);
-}
-.metric-aum .metric-label { 
-    color: #27AE60;
-    background: linear-gradient(135deg, #27AE60, #229954);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-.metric-aum .metric-value { 
-    color: #229954; 
-}
-
-/* Modern Sidebar Styling */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #1a1f35 0%, #2d3748 50%, #1a1f35 100%);
-}
-
-[data-testid="stSidebar"] > div:first-child {
-    padding: 1.5rem 1rem;
-}
-
-/* Sidebar main title */
-[data-testid="stSidebar"] h1 {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    font-size: 1.3rem !important;
-    margin-bottom: 1.5rem !important;
-    padding: 1rem !important;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%) !important;
-    border-radius: 12px !important;
-    border-left: 4px solid #667eea !important;
-    text-align: center !important;
-}
-
-/* Force all sidebar text to be white */
-[data-testid="stSidebar"] * {
-    color: #ffffff !important;
-}
-
-/* Expander header - make it bright and visible */
-[data-testid="stSidebar"] details summary {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%) !important;
-    border-radius: 12px !important;
-    padding: 1rem !important;
-    margin: 0.7rem 0 !important;
-    border: 2px solid rgba(102, 126, 234, 0.5) !important;
-    font-weight: 600 !important;
-    font-size: 1.05rem !important;
-    transition: all 0.3s ease !important;
-    cursor: pointer !important;
-}
-
-[data-testid="stSidebar"] details summary:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%) !important;
-    border-color: rgba(102, 126, 234, 0.7) !important;
-    transform: translateX(5px) !important;
-}
-
-/* Expander content styling */
-[data-testid="stSidebar"] details[open] {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border-radius: 12px !important;
-    padding: 0.5rem !important;
-    margin: 0.5rem 0 !important;
-}
-
-/* Input labels - make them bright white */
-[data-testid="stSidebar"] label {
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
-    margin-bottom: 0.5rem !important;
-    display: block !important;
-}
-
-/* Number inputs - bright and visible */
-[data-testid="stSidebar"] input[type="number"] {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 2px solid rgba(102, 126, 234, 0.5) !important;
-    color: #1a1f35 !important;
-    border-radius: 8px !important;
-    padding: 0.7rem !important;
-    font-weight: 600 !important;
-    font-size: 1.05rem !important;
-}
-
-[data-testid="stSidebar"] input[type="number"]:focus {
-    border-color: #667eea !important;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.4) !important;
-    background: rgba(255, 255, 255, 1) !important;
-    outline: none !important;
-}
-
-[data-testid="stSidebar"] input[type="number"]:hover {
-    background: rgba(255, 255, 255, 0.97) !important;
-    border-color: rgba(102, 126, 234, 0.6) !important;
-}
-
-/* Number input buttons (increment/decrement) */
-[data-testid="stSidebar"] button {
-    background: rgba(102, 126, 234, 0.3) !important;
-    color: #ffffff !important;
-    border-radius: 6px !important;
-    font-weight: 700 !important;
-}
-
-[data-testid="stSidebar"] button:hover {
-    background: rgba(102, 126, 234, 0.5) !important;
-}
-
-/* Headers inside sidebar */
-[data-testid="stSidebar"] h2, 
-[data-testid="stSidebar"] h3 {
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    margin-bottom: 1rem !important;
-    padding-bottom: 0.5rem !important;
-    border-bottom: 2px solid rgba(102, 126, 234, 0.4) !important;
-}
-
-/* Success/Error messages */
-[data-testid="stSidebar"] .stSuccess {
-    background: linear-gradient(135deg, rgba(39, 174, 96, 0.25) 0%, rgba(46, 213, 115, 0.25) 100%) !important;
-    border-left: 4px solid #27ae60 !important;
-    border-radius: 8px !important;
-    padding: 0.8rem !important;
-}
-
-[data-testid="stSidebar"] .stError {
-    background: linear-gradient(135deg, rgba(231, 76, 60, 0.25) 0%, rgba(192, 57, 43, 0.25) 100%) !important;
-    border-left: 4px solid #e74c3c !important;
-    border-radius: 8px !important;
-    padding: 0.8rem !important;
-}
-
-/* Column dividers */
-[data-testid="stSidebar"] [data-testid="column"] {
-    padding: 0.3rem !important;
-}
-
-/* Scrollbar */
-[data-testid="stSidebar"]::-webkit-scrollbar {
-    width: 10px;
-}
-
-[data-testid="stSidebar"]::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-}
-
-[data-testid="stSidebar"]::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    border-radius: 10px;
-}
-
-[data-testid="stSidebar"]::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, #7c8ff0 0%, #8a5fb8 100%);
-}
-
-/* Ensure the number input widget container is visible */
-[data-testid="stSidebar"] [data-testid="stNumberInput"] {
-    margin: 0.5rem 0 !important;
-}
-
-/* Make the number input widget inner elements visible */
-[data-testid="stSidebar"] [data-testid="stNumberInput"] > div {
-    background: transparent !important;
-}
-
-/* Style the steppers/buttons more clearly */
-[data-testid="stSidebar"] [data-testid="stNumberInput"] button {
-    border: 1px solid rgba(102, 126, 234, 0.4) !important;
-    min-width: 40px !important;
-    height: 40px !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Title
+# Dashboard Header
 st.markdown("""
-<div class="main-header">
-    <h1>NBFC Lending Business Calculator</h1>
+<div class="dashboard-header">
+    <div class="dashboard-title">💰 NBFC Lending Business Calculator</div>
+    <div class="dashboard-subtitle">Real-time financial projections and business insights</div>
 </div>
 """, unsafe_allow_html=True)
 
 # Sidebar for all inputs with collapsible sections
-st.sidebar.markdown("# 🎛️ Input Business Parameters")
+st.sidebar.markdown("# 🎛️ Input Parameters")
 
-# Projection Period - Expandable Section
+# Projection Period
 with st.sidebar.expander("📅 Projection Period", expanded=True):
     num_months = st.number_input("Number of Months", min_value=1, max_value=48, value=12, step=1)
 
-# Capital Deployment Parameters - Expandable Section
+# Capital Deployment Parameters
 with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
-    # Create dynamic capital inputs based on number of months
     capital_values = []
     if num_months <= 12:
-        # Two columns for 12 or fewer months
         cap_col1, cap_col2 = st.columns(2)
         for i in range(num_months):
             month_num = i + 1
@@ -610,7 +414,6 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                     val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
     else:
-        # Single column for more than 12 months
         for i in range(num_months):
             month_num = i + 1
             if month_num <= 5:
@@ -620,8 +423,7 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
             val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
 
-# Create individual variables for backward compatibility
-for i in range(48):  # Create all possible month variables
+for i in range(48):
     if i < len(capital_values):
         globals()[f"month{i+1}_capital"] = capital_values[i]
     else:
@@ -629,21 +431,20 @@ for i in range(48):  # Create all possible month variables
 
 total_capital = sum(capital_values)
 
-# Business Parameters - Expandable Section
+# Business Parameters
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
     processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=25.0, value=11.8, step=0.1) / 100
     monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
     marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=10.0, value=2.0, step=0.1) / 100
     cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
-# Operational expense rates - Expandable Section
+# Operational expense rates
 with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
     opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
-    opex_month1 = opex_month1_value / 1e7  # Convert to crores for consistency
+    opex_month1 = opex_month1_value / 1e7
 
-    # Create dynamic OPEX inputs based on number of months (starting from month 2)
-    opex_values = [opex_month1]  # Month 1 is already handled above
-    for i in range(1, num_months):  # Start from month 2
+    opex_values = [opex_month1]
+    for i in range(1, num_months):
         month_num = i + 1
         if month_num <= 3:
             default_val = 10.0
@@ -654,41 +455,36 @@ with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
         val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=30.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
         opex_values.append(val)
 
-# Create individual variables for backward compatibility
-for i in range(48):  # Create all possible month variables
+for i in range(48):
     if i < len(opex_values):
         globals()[f"opex_month{i+1}"] = opex_values[i]
     else:
-        globals()[f"opex_month{i+1}"] = 0.04  # Default 4%
+        globals()[f"opex_month{i+1}"] = 0.04
 
-# Loan parameters - Expandable Section
+# Loan parameters
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
     avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 22000, 1000)
 
-# Collection parameters - Expandable Section
+# Collection parameters
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     t0_collection = st.number_input("T+0 Collection Rate (%)", min_value=0, max_value=100, value=80, step=1) / 100
     t30_collection = st.number_input("T+30 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
     t60_collection = st.number_input("T+60 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
     t90_collection = st.number_input("T+90 Collection Rate (%)", min_value=0, max_value=100, value=3, step=1) / 100
 
-    # Validation for collection rates
     total_collection_rate_percent = (t0_collection + t30_collection + t60_collection + t90_collection) * 100
     if total_collection_rate_percent > 100:
         st.error(f"⚠️ Total collection rate is {total_collection_rate_percent:.1f}% - should not exceed 100%")
     else:
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
 
-    # API costs
     api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 100, 35, 5)
     api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
 
-# Fixed costs - Expandable Section
+# Principal Return
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
-    # Create dynamic principal return inputs based on number of months
     principal_values = []
     if num_months <= 12:
-        # Two columns for 12 or fewer months
         prin_col1, prin_col2 = st.columns(2)
         for i in range(num_months):
             month_num = i + 1
@@ -700,33 +496,24 @@ with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=
                     val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
             principal_values.append(val)
     else:
-        # Single column for more than 12 months
         for i in range(num_months):
             month_num = i + 1
             val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
             principal_values.append(val)
 
-# Create individual variables for backward compatibility
-for i in range(48):  # Create all possible month variables
+for i in range(48):
     if i < len(principal_values):
         globals()[f"month{i+1}_principal"] = principal_values[i]
     else:
         globals()[f"month{i+1}_principal"] = 0.0
 
-# EXACT calculation function using your formulas
+# Calculation function
 def calculate_with_exact_formulas():
-    months = num_months  # Use dynamic number of months
-    
-    # Capital deployment schedule - use actual number of months
+    months = num_months
     capital_invested = [capital_values[i] * 1e7 if i < len(capital_values) else 0 for i in range(months)]
-    
-    # OPEX rates array - use actual number of months
     opex_rates = [opex_values[i] if i < len(opex_values) else 0.04 for i in range(months)]
-    
-    # Principal return array - use actual number of months (convert from crores to rupees)
     principal_returns = [principal_values[i] * 1e7 if i < len(principal_values) else 0 for i in range(months)]
     
-    # Initialize arrays to store all calculations
     amount_invested = []
     amount_available = []
     amount_disbursed = []
@@ -746,10 +533,8 @@ def calculate_with_exact_formulas():
     aum = []
     
     for month in range(months):
-        # Amount Invested
         amount_invested.append(capital_invested[month])
         
-        # Amount Available for Disbursal
         if month == 0:
             available = capital_invested[month]
         else:
@@ -757,68 +542,48 @@ def calculate_with_exact_formulas():
             available = amount_available[month-1] + prev_profit + capital_invested[month]
         
         amount_available.append(available)
-        
-        # Amount Actually Disbursed = Amount Available / (1 - Processing Fees)
         disbursed = available / (1 - processing_fees)
         amount_disbursed.append(disbursed)
         
-        # Number of Customers
         num_customers = int(disbursed / avg_ticket_size)
         customers.append(num_customers)
         
-        # Operational Expenses
         if month == 0:
-            op_expense = opex_month1_value  # Use editable value for month 1
+            op_expense = opex_month1_value
         else:
             prev_aum = aum[month-1]
             op_expense = prev_aum * opex_rates[month]
         
         opex.append(op_expense)
         
-        # API Cost
         api_cost = (num_customers * 2 * api_cost_20_percent) + (num_customers * 8 * api_cost_80_percent)
         api_expense.append(api_cost)
         
-        # Marketing Expense
         marketing_exp = disbursed * marketing_rate
         marketing_expense.append(marketing_exp)
         
-        # Cost of Funds (quarterly calculation - adapted for variable months)
         cost_of_funds_expense = 0
-        # Calculate cost of funds for quarters that are complete within the selected months
-        if month == 2 and months >= 3:  # Month 3 (Q1) - if we have at least 3 months
+        if month == 2 and months >= 3:
             cost_q1_m1 = capital_invested[0] * cost_of_funds_rate
             cost_q1_m2 = sum(capital_invested[:2]) * cost_of_funds_rate  
             cost_q1_m3 = sum(capital_invested[:3]) * cost_of_funds_rate
             cost_of_funds_expense = cost_q1_m1 + cost_q1_m2 + cost_q1_m3
-        elif month == 5 and months >= 6:  # Month 6 (Q2) - if we have at least 6 months
+        elif month == 5 and months >= 6:
             cost_q2_m4 = sum(capital_invested[:4]) * cost_of_funds_rate
             cost_q2_m5 = sum(capital_invested[:5]) * cost_of_funds_rate
             cost_q2_m6 = sum(capital_invested[:6]) * cost_of_funds_rate
             cost_of_funds_expense = cost_q2_m4 + cost_q2_m5 + cost_q2_m6
-        elif month == 8 and months >= 9:  # Month 9 (Q3) - if we have at least 9 months
+        elif month == 8 and months >= 9:
             cost_q3_m7 = sum(capital_invested[:7]) * cost_of_funds_rate
             cost_q3_m8 = sum(capital_invested[:8]) * cost_of_funds_rate
             cost_q3_m9 = sum(capital_invested[:9]) * cost_of_funds_rate
             cost_of_funds_expense = cost_q3_m7 + cost_q3_m8 + cost_q3_m9
-        elif month == 11 and months >= 12:  # Month 12 (Q4) - if we have at least 12 months
+        elif month == 11 and months >= 12:
             cost_q4_m10 = sum(capital_invested[:10]) * cost_of_funds_rate
             cost_q4_m11 = sum(capital_invested[:11]) * cost_of_funds_rate
             cost_q4_m12 = sum(capital_invested[:12]) * cost_of_funds_rate
             cost_of_funds_expense = cost_q4_m10 + cost_q4_m11 + cost_q4_m12
-        # Add additional quarters for periods longer than 12 months
-        elif month == 14 and months >= 15:  # Month 15 (Q5)
-            cost_q5_m13 = sum(capital_invested[:13]) * cost_of_funds_rate
-            cost_q5_m14 = sum(capital_invested[:14]) * cost_of_funds_rate
-            cost_q5_m15 = sum(capital_invested[:15]) * cost_of_funds_rate
-            cost_of_funds_expense = cost_q5_m13 + cost_q5_m14 + cost_q5_m15
-        elif month == 17 and months >= 18:  # Month 18 (Q6)
-            cost_q6_m16 = sum(capital_invested[:16]) * cost_of_funds_rate
-            cost_q6_m17 = sum(capital_invested[:17]) * cost_of_funds_rate
-            cost_q6_m18 = sum(capital_invested[:18]) * cost_of_funds_rate
-            cost_of_funds_expense = cost_q6_m16 + cost_q6_m17 + cost_q6_m18
-        # Continue pattern for longer periods - every 3rd month starting from month 3
-        elif (month + 1) % 3 == 0 and month >= 2 and months > month:  # General quarterly calculation
+        elif (month + 1) % 3 == 0 and month >= 2 and months > month:
             quarter_start = month - 2
             cost_q_m1 = sum(capital_invested[:quarter_start+1]) * cost_of_funds_rate
             cost_q_m2 = sum(capital_invested[:quarter_start+2]) * cost_of_funds_rate
@@ -827,7 +592,6 @@ def calculate_with_exact_formulas():
         
         cost_of_funds.append(cost_of_funds_expense)
         
-        # Interest calculation (split across two months)
         if month == 0:
             interest = (disbursed * monthly_interest_rate) / 2
         else:
@@ -837,11 +601,9 @@ def calculate_with_exact_formulas():
         
         interest_revenue.append(interest)
         
-        # Bad Debt Default = (Amount Disbursed + Interest) × (1 - T+0 Collection Rate)
         bad_debt = (disbursed + interest) * (1 - t0_collection)
         bad_debt_default.append(bad_debt)
         
-        # Recovery of Bad Debt
         recovery = 0
         if month >= 1:
             prev_disbursed_plus_interest = amount_disbursed[month-1] + interest_revenue[month-1]
@@ -855,53 +617,42 @@ def calculate_with_exact_formulas():
         
         bad_debt_recovery.append(recovery)
         
-        # Processing Fees
         pf = disbursed * processing_fees
         processing_fees_revenue.append(pf)
         
-        # GST
         gst_amount = pf * (18/118)
         gst.append(gst_amount)
         
-        # Fixed costs
-        monthly_salary = 0  # Fixed at 0 since removed from inputs
+        monthly_salary = 0
         salary.append(monthly_salary)
         principal_return.append(principal_returns[month])
         
-        # Profit/Loss
         profit = (interest + recovery + pf) - (op_expense + api_cost + marketing_exp + cost_of_funds_expense + bad_debt + gst_amount + monthly_salary + principal_returns[month])
         profit_loss.append(profit)
         
-        # AUM = Current month + Previous months with weightings
-        # Handle edge cases for months that don't exist (use 0 values)
         current_disbursed_interest = disbursed + interest
         
-        # Previous month (i-1) with 15% weighting
         if month >= 1:
             prev_disbursed_interest = amount_disbursed[month-1] + interest_revenue[month-1]
         else:
             prev_disbursed_interest = 0
             
-        # Two months ago (i-2) with 10% weighting  
         if month >= 2:
             prev2_disbursed_interest = amount_disbursed[month-2] + interest_revenue[month-2]
         else:
             prev2_disbursed_interest = 0
             
-        # Three months ago (i-3) with 3% weighting
         if month >= 3:
             prev3_disbursed_interest = amount_disbursed[month-3] + interest_revenue[month-3]
         else:
             prev3_disbursed_interest = 0
             
-        # Calculate AUM with new formula
         aum_value = (current_disbursed_interest + 
                     prev_disbursed_interest * 0.15 + 
                     prev2_disbursed_interest * 0.10 + 
                     prev3_disbursed_interest * 0.03)
         aum.append(aum_value)
     
-    # Create DataFrame with dynamic number of months
     df = pd.DataFrame({
         'month': range(1, months + 1),
         'amount_invested': [x/1e7 for x in amount_invested],
@@ -925,286 +676,249 @@ def calculate_with_exact_formulas():
     
     return df
 
-# Calculate derived metrics
-# Time-weighted investment calculation for variable months
+# Calculate metrics
 sum_annual_investment = 0
 for i, capital in enumerate(capital_values):
     months_remaining = num_months - i
     weight = months_remaining / num_months
     sum_annual_investment += capital * weight
 
-# Calculate projections first to get final month values
 df = calculate_with_exact_formulas()
 
-# Calculate Actual Period ROI (not annualized)
 final_month_aum = df['aum'].iloc[-1]
 if sum_annual_investment > 0:
     period_roi = ((final_month_aum - sum_annual_investment) / sum_annual_investment) * 100
 else:
     period_roi = 0
 
-# Custom styled metrics instead of st.metric()
+# Key Performance Indicators
+st.markdown('<div class="section-header">Key Performance Indicators</div>', unsafe_allow_html=True)
+
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.markdown(f"""
-    <div class="custom-metric metric-capital">
-        <div class="metric-label">💰 Capital Invested</div>
-        <div class="metric-value">₹{total_capital:.1f} Cr</div>
+    <div class="kpi-card blue">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Capital Invested</div>
+            </div>
+            <div class="kpi-icon">💰</div>
+        </div>
+        <div class="kpi-value">₹{total_capital:.1f} Cr</div>
+        <div class="kpi-trend">Total deployment</div>
     </div>
     """, unsafe_allow_html=True)
     
 with col2:
     st.markdown(f"""
-    <div class="custom-metric metric-roi">
-        <div class="metric-label">📈 Period ROI</div>
-        <div class="metric-value">{period_roi:.1f}%</div>
+    <div class="kpi-card green">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Period ROI</div>
+            </div>
+            <div class="kpi-icon">📈</div>
+        </div>
+        <div class="kpi-value">{period_roi:.1f}%</div>
+        <div class="kpi-trend">{num_months} months</div>
     </div>
     """, unsafe_allow_html=True)
     
 with col3:
     final_month_disbursed = df['amount_disbursed'].iloc[-1]
     st.markdown(f"""
-    <div class="custom-metric metric-disbursed">
-        <div class="metric-label">📊 Month {num_months} Disbursed</div>
-        <div class="metric-value">₹{final_month_disbursed:.2f} Cr</div>
+    <div class="kpi-card purple">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Month {num_months} Disbursed</div>
+            </div>
+            <div class="kpi-icon">📊</div>
+        </div>
+        <div class="kpi-value">₹{final_month_disbursed:.2f} Cr</div>
+        <div class="kpi-trend">Latest month</div>
     </div>
     """, unsafe_allow_html=True)
     
 with col4:
     total_profit_loss = df['profit_loss'].sum()
     st.markdown(f"""
-    <div class="custom-metric metric-profit">
-        <div class="metric-label">🎯 Total Profit/Loss ({num_months} months)</div>
-        <div class="metric-value">₹{total_profit_loss:.2f} Cr</div>
+    <div class="kpi-card orange">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Total Profit/Loss</div>
+            </div>
+            <div class="kpi-icon">🎯</div>
+        </div>
+        <div class="kpi-value">₹{total_profit_loss:.2f} Cr</div>
+        <div class="kpi-trend">{num_months} months cumulative</div>
     </div>
     """, unsafe_allow_html=True)
     
 with col5:
     final_month_aum = df['aum'].iloc[-1]
     st.markdown(f"""
-    <div class="custom-metric metric-aum">
-        <div class="metric-label">🏆 Month {num_months} AUM</div>
-        <div class="metric-value">₹{final_month_aum:.2f} Cr</div>
+    <div class="kpi-card teal">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Month {num_months} AUM</div>
+            </div>
+            <div class="kpi-icon">🏆</div>
+        </div>
+        <div class="kpi-value">₹{final_month_aum:.2f} Cr</div>
+        <div class="kpi-trend">Assets under management</div>
     </div>
     """, unsafe_allow_html=True)
 
-# Charts
-st.markdown("---")
-st.markdown("## Business Analysis Charts")
+# Charts Section
+st.markdown('<div class="section-header">Business Analysis Charts</div>', unsafe_allow_html=True)
 
-# Row 1: AUM Chart and Monthly Revenue vs Cost Analysis (side by side)
 col1, col2 = st.columns(2)
 
 with col1:
-    # 1. AUM Growth Analysis
     fig_aum_growth = px.area(
-        df,
-        x='month',
-        y='aum',
+        df, x='month', y='aum',
         title="Assets Under Management (AUM) Growth",
-        color_discrete_sequence=['#4169E1']
+        color_discrete_sequence=['#4299e1']
     )
     fig_aum_growth.update_layout(
-        xaxis_title="Month",
-        yaxis_title="AUM (₹ Crores)",
-        height=400
+        xaxis_title="Month", yaxis_title="AUM (₹ Crores)",
+        height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_aum_growth.update_xaxes(dtick=1)  # Show every month
-    fig_aum_growth.update_traces(hovertemplate='Month %{x}<br>AUM: ₹%{y:.2f} Cr<extra></extra>')
+    fig_aum_growth.update_xaxes(dtick=1)
     st.plotly_chart(fig_aum_growth, use_container_width=True)
 
 with col2:
-    # 2. Revenue vs Costs
     fig_revenue_costs = go.Figure()
-
-    # Calculate revenue and costs
     total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
     total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
                    df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
                    df['salary'] + df['principal_return'])
 
     fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'],
-        y=total_revenue,
-        name='Total Revenue',
-        marker_color='#2E8B57',
-        hovertemplate='Month %{x}<br>Revenue: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=total_revenue, name='Total Revenue',
+        marker_color='#38a169'
     ))
-
     fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'],
-        y=total_costs,
-        name='Total Costs',
-        marker_color='#FF6B6B',
-        hovertemplate='Month %{x}<br>Costs: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=total_costs, name='Total Costs',
+        marker_color='#f56565'
     ))
-
     fig_revenue_costs.add_trace(go.Scatter(
-        x=df['month'],
-        y=df['profit_loss'],
-        mode='lines+markers',
-        name='Net Profit',
-        line=dict(color='#FFD700', width=4),
-        marker=dict(size=10),
-        hovertemplate='Month %{x}<br>Profit: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=df['profit_loss'], mode='lines+markers',
+        name='Net Profit', line=dict(color='#dd6b20', width=3),
+        marker=dict(size=8)
     ))
 
     fig_revenue_costs.update_layout(
         title="Monthly Revenue vs Costs Analysis",
-        xaxis_title="Month",
-        yaxis_title="Amount (₹ Crores)",
-        hovermode='x unified',
-        height=400
+        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
+        height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_revenue_costs.update_xaxes(dtick=1)  # Show every month
-
+    fig_revenue_costs.update_xaxes(dtick=1)
     st.plotly_chart(fig_revenue_costs, use_container_width=True)
 
-# Row 2: Monthly Profit/Loss Analysis (full width)
-# 3. Profit/Loss Analysis
+# Profit/Loss Analysis
 fig_profit = px.bar(
-    df,
-    x='month',
-    y='profit_loss',
+    df, x='month', y='profit_loss',
     title="Monthly Profit/Loss Analysis",
     color='profit_loss',
-    color_continuous_scale=['red', 'yellow', 'green']
+    color_continuous_scale=['#f56565', '#fbd38d', '#38a169']
 )
 fig_profit.update_layout(
-    xaxis_title="Month",
-    yaxis_title="Profit/Loss (₹ Crores)",
-    height=400,
-    showlegend=False
+    xaxis_title="Month", yaxis_title="Profit/Loss (₹ Crores)",
+    height=400, showlegend=False, template="plotly_white",
+    title_font=dict(size=16, color='#2d3748', family='Inter'),
+    font=dict(family='Inter', size=12)
 )
-fig_profit.update_xaxes(dtick=1)  # Show every month
-fig_profit.update_traces(hovertemplate='Month %{x}<br>Profit/Loss: ₹%{y:.2f} Cr<extra></extra>')
+fig_profit.update_xaxes(dtick=1)
 st.plotly_chart(fig_profit, use_container_width=True)
 
-# Row 3: Amount Invested vs Available and Amount Disbursed (side by side)
+# More Charts
 col1, col2 = st.columns(2)
 
 with col1:
-    # 4. Amount Invested vs Available for Disbursal - Both as bars
     fig_invested_vs_available = go.Figure()
-
     fig_invested_vs_available.add_trace(go.Bar(
-        x=df['month'],
-        y=df['amount_invested'],
-        name='Amount Invested',
-        marker_color='#4169E1',
-        hovertemplate='Month %{x}<br>Invested: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=df['amount_invested'],
+        name='Amount Invested', marker_color='#4299e1'
     ))
-
     fig_invested_vs_available.add_trace(go.Bar(
-        x=df['month'],
-        y=df['amount_available'],
-        name='Available for Disbursal',
-        marker_color='#2E8B57',
-        hovertemplate='Month %{x}<br>Available: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=df['amount_available'],
+        name='Available for Disbursal', marker_color='#38a169'
     ))
-
     fig_invested_vs_available.update_layout(
         title="Amount Invested vs Available for Disbursal",
-        xaxis_title="Month",
-        yaxis_title="Amount (₹ Crores)",
-        hovermode='x unified',
-        height=400,
-        barmode='group'
+        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
+        height=400, barmode='group', template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_invested_vs_available.update_xaxes(dtick=1)  # Show every month
-
+    fig_invested_vs_available.update_xaxes(dtick=1)
     st.plotly_chart(fig_invested_vs_available, use_container_width=True)
 
 with col2:
-    # 5. Amount Actually Disbursed vs Month
     fig_disbursed = px.line(
-        df,
-        x='month',
-        y='amount_disbursed',
+        df, x='month', y='amount_disbursed',
         title="Amount Actually Disbursed",
-        markers=True,
-        color_discrete_sequence=['#2E8B57']
+        markers=True, color_discrete_sequence=['#38a169']
     )
     fig_disbursed.update_layout(
-        xaxis_title="Month",
-        yaxis_title="Amount Disbursed (₹ Crores)",
-        height=400
+        xaxis_title="Month", yaxis_title="Amount Disbursed (₹ Crores)",
+        height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_disbursed.update_xaxes(dtick=1)  # Show every month
-    fig_disbursed.update_traces(hovertemplate='Month %{x}<br>Disbursed: ₹%{y:.2f} Cr<extra></extra>')
+    fig_disbursed.update_xaxes(dtick=1)
     st.plotly_chart(fig_disbursed, use_container_width=True)
 
-# Row 4: Revenue Breakdown and Customer Acquisition (side by side)
 col1, col2 = st.columns(2)
 
 with col1:
-    # 6. Revenue Breakdown
     fig_revenue_breakdown = go.Figure()
-
     fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'],
-        y=df['interest_revenue'],
-        name='Interest Revenue',
-        marker_color='#2E8B57',
-        hovertemplate='Month %{x}<br>Interest: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=df['interest_revenue'],
+        name='Interest Revenue', marker_color='#38a169'
     ))
-
     fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'],
-        y=df['processing_fees_revenue'],
-        name='Processing Fees',
-        marker_color='#4169E1',
-        hovertemplate='Month %{x}<br>Processing Fees: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=df['processing_fees_revenue'],
+        name='Processing Fees', marker_color='#4299e1'
     ))
-
     fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'],
-        y=df['bad_debt_recovery'],
-        name='Bad Debt Recovery',
-        marker_color='#FF8C00',
-        hovertemplate='Month %{x}<br>Recovery: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=df['bad_debt_recovery'],
+        name='Bad Debt Recovery', marker_color='#dd6b20'
     ))
-
     fig_revenue_breakdown.update_layout(
         title="Monthly Revenue Breakdown",
-        xaxis_title="Month",
-        yaxis_title="Amount (₹ Crores)",
-        barmode='stack',
-        height=400
+        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
+        barmode='stack', height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_revenue_breakdown.update_xaxes(dtick=1)  # Show every month
-
+    fig_revenue_breakdown.update_xaxes(dtick=1)
     st.plotly_chart(fig_revenue_breakdown, use_container_width=True)
 
 with col2:
-    # 7. Customer Acquisition
     fig_customers = px.bar(
-        df,
-        x='month',
-        y='customers',
+        df, x='month', y='customers',
         title="Monthly Customer Acquisition",
-        color='customers',
-        color_continuous_scale='viridis'
+        color='customers', color_continuous_scale='Blues'
     )
     fig_customers.update_layout(
-        xaxis_title="Month",
-        yaxis_title="Number of Customers",
-        height=400,
-        showlegend=False
+        xaxis_title="Month", yaxis_title="Number of Customers",
+        height=400, showlegend=False, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_customers.update_xaxes(dtick=1)  # Show every month
-    fig_customers.update_traces(hovertemplate='Month %{x}<br>Customers: %{y:,.0f}<extra></extra>')
+    fig_customers.update_xaxes(dtick=1)
     st.plotly_chart(fig_customers, use_container_width=True)
 
 # Complete calculations table
-st.markdown("---")
-st.markdown("## Complete Monthly Calculations")
+st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
 
-# Round for display
 display_df = df.round(3)
-
-# Rename columns for better readability and remove salary
 column_names = {
     'month': 'Month',
     'amount_invested': 'Invested (₹Cr)',
@@ -1225,30 +939,46 @@ column_names = {
     'aum': 'AUM (₹Cr)'
 }
 
-# Remove salary column and rename
 display_df = display_df.drop('salary', axis=1)
 display_df = display_df.rename(columns=column_names)
 st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
 
-# Summary and export
-st.markdown("---")
-st.markdown("## Financial Summary")
+# Financial Summary
+st.markdown('<div class="section-header">Financial Summary</div>', unsafe_allow_html=True)
 
-st.markdown(f"### 💰 {num_months}-Month Summary")
+st.markdown(f"""
+<div class="summary-box">
+    <div class="summary-title">💰 {num_months}-Month Financial Overview</div>
+""", unsafe_allow_html=True)
+
 total_revenue_sum = total_revenue.sum()
 total_costs_sum = total_costs.sum()
 net_profit_sum = df['profit_loss'].sum()
-final_aum = df['aum'].iloc[-1]
 final_month_available = df['amount_available'].iloc[-1]
 total_customers_sum = df['customers'].sum()
 final_month_aum_summary = df['aum'].iloc[-1]
 
-st.write(f"**Capital Invested:** ₹{total_capital:.2f} Cr")
-st.write(f"**Month {num_months} Available for Disbursal:** ₹{final_month_available:.2f} Cr")
-st.write(f"**Month {num_months} AUM:** ₹{final_month_aum_summary:.2f} Cr")
-st.write(f"**Total Profit/Loss ({num_months} months):** ₹{net_profit_sum:.2f} Cr")
-st.write(f"**Total Customers:** {total_customers_sum:,}")
-st.write(f"**Total Revenue:** ₹{total_revenue_sum:.2f} Cr")
-st.write(f"**Total Costs:** ₹{total_costs_sum:.2f} Cr")
+col1, col2, col3 = st.columns(3)
 
-#st.write(f"**Profit Margin:** {(net_profit_sum/total_revenue_sum*100):.1f}%")
+with col1:
+    st.markdown(f"""
+    **Capital Invested:** ₹{total_capital:.2f} Cr  
+    **Month {num_months} Available:** ₹{final_month_available:.2f} Cr  
+    **Total Revenue:** ₹{total_revenue_sum:.2f} Cr
+    """)
+
+with col2:
+    st.markdown(f"""
+    **Total Costs:** ₹{total_costs_sum:.2f} Cr  
+    **Net Profit/Loss:** ₹{net_profit_sum:.2f} Cr  
+    **Total Customers:** {total_customers_sum:,}
+    """)
+
+with col3:
+    st.markdown(f"""
+    **Month {num_months} AUM:** ₹{final_month_aum_summary:.2f} Cr  
+    **Period ROI:** {period_roi:.1f}%  
+    **Projection Period:** {num_months} months
+    """)
+
+st.markdown('</div>', unsafe_allow_html=True)
