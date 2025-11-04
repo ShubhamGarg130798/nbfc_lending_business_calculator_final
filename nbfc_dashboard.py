@@ -30,6 +30,115 @@ st.set_page_config(
 # Enhanced Custom CSS with complete visibility fixes
 st.markdown("""
 <style>
+/* Main page background and theme */
+.stApp {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-attachment: fixed;
+}
+
+/* Main content area styling */
+.main .block-container {
+    padding: 2rem 3rem;
+    max-width: 1400px;
+}
+
+/* Section headers styling */
+h2 {
+    color: #2d3748 !important;
+    font-weight: 700 !important;
+    font-size: 1.8rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1.5rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 3px solid #667eea !important;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+/* Section dividers */
+hr {
+    margin: 2.5rem 0 !important;
+    border: none !important;
+    height: 2px !important;
+    background: linear-gradient(90deg, transparent, #667eea, transparent) !important;
+}
+
+/* Chart titles */
+.js-plotly-plot .plotly .gtitle {
+    fill: #2d3748 !important;
+    font-weight: 600 !important;
+}
+
+/* Dataframe/Table styling */
+[data-testid="stDataFrame"] {
+    background: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+    padding: 1rem !important;
+}
+
+[data-testid="stDataFrame"] table {
+    color: #2d3748 !important;
+}
+
+[data-testid="stDataFrame"] thead tr th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    padding: 1rem !important;
+    border: none !important;
+}
+
+[data-testid="stDataFrame"] tbody tr {
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:hover {
+    background: rgba(102, 126, 234, 0.05) !important;
+    transform: scale(1.01) !important;
+}
+
+[data-testid="stDataFrame"] tbody td {
+    color: #4a5568 !important;
+    padding: 0.8rem !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Financial Summary section */
+.stMarkdown h3 {
+    color: #2d3748 !important;
+    font-weight: 700 !important;
+    font-size: 1.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+.stMarkdown p, .stMarkdown strong {
+    color: #4a5568 !important;
+    font-size: 1.05rem !important;
+    line-height: 1.8 !important;
+}
+
+.stMarkdown strong {
+    color: #2d3748 !important;
+    font-weight: 700 !important;
+}
+
+/* Chart containers */
+[data-testid="stPlotlyChart"] {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+    margin: 1rem 0 !important;
+}
+
+/* Column spacing */
+[data-testid="column"] {
+    padding: 0.5rem !important;
+}
+
 .main-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
     background-size: 200% 200%;
