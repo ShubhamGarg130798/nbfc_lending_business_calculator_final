@@ -31,20 +31,95 @@ st.set_page_config(
 st.markdown("""
 <style>
 .main-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 25px;
-    border-radius: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+    padding: 2rem 2.5rem;
+    border-radius: 20px;
     color: white;
     text-align: center;
-    margin-bottom: 25px;
-    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
+    margin-bottom: 2rem;
+    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.35), 0 5px 15px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+.main-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.3) 25%, 
+        rgba(255,255,255,0.6) 50%, 
+        rgba(255,255,255,0.3) 75%, 
+        transparent 100%);
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .main-header h1 {
     margin: 0;
-    font-size: 2.2rem;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.2);
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.main-header h1::before {
+    content: '💰';
+    font-size: 2.8rem;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 1.5rem 1rem;
+        border-radius: 15px;
+    }
+    
+    .main-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .main-header h1::before {
+        font-size: 2rem;
+    }
 }
 
 .metric-container {
@@ -370,7 +445,7 @@ st.markdown("""
 # Title
 st.markdown("""
 <div class="main-header">
-    <h1>💰 NBFC Lending Business Calculator</h1>
+    <h1>NBFC Lending Business Calculator</h1>
 </div>
 """, unsafe_allow_html=True)
 
