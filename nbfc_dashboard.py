@@ -1065,72 +1065,296 @@ with col5:
     </div>
     """, unsafe_allow_html=True)
 
-# Charts Section
+# Charts Section - ENHANCED VERSION
 st.markdown('<div class="section-header">Business Analysis Charts</div>', unsafe_allow_html=True)
 
+# Calculate total revenue and costs for use in charts
+total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
+total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
+               df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
+               df['salary'] + df['principal_return'])
+
+# Row 1: Investment vs AUM Comparison and AUM Growth
 col1, col2 = st.columns(2)
 
 with col1:
-    fig_aum_growth = px.area(
-        df, x='month', y='aum',
-        title="Assets Under Management (AUM) Growth",
-        color_discrete_sequence=['#4299e1']
+    # Investment vs Final AUM - Waterfall style bar chart
+    fig_investment_aum = go.Figure()
+    
+    # Create comparison data
+    comparison_data = pd.DataFrame({
+        'Category': ['Capital Invested', 'Final AUM', 'Growth'],
+        'Value': [total_capital, final_month_aum, final_month_aum - total_capital],
+        'Color': ['#3182ce', '#38a169', '#dd6b20']
+    })
+    
+    fig_investment_aum.add_trace(go.Bar(
+        x=['Capital Invested'],
+        y=[total_capital],
+        name='Invested',
+        marker_color='#3182ce',
+        text=[f'₹{total_capital:.2f} Cr'],
+        textposition='outside',
+        width=0.4
+    ))
+    
+    fig_investment_aum.add_trace(go.Bar(
+        x=['Final AUM'],
+        y=[final_month_aum],
+        name='Final AUM',
+        marker_color='#38a169',
+        text=[f'₹{final_month_aum:.2f} Cr'],
+        textposition='outside',
+        width=0.4
+    ))
+    
+    fig_investment_aum.add_trace(go.Bar(
+        x=['Net Growth'],
+        y=[final_month_aum - total_capital],
+        name='Growth',
+        marker_color='#dd6b20',
+        text=[f'₹{(final_month_aum - total_capital):.2f} Cr'],
+        textposition='outside',
+        width=0.4
+    ))
+    
+    fig_investment_aum.update_layout(
+        title=f"Investment vs Final AUM (ROI: {period_roi:.1f}%)",
+        yaxis_title="Amount (₹ Crores)",
+        height=400,
+        template="plotly_white",
+        showlegend=True,
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12),
+        barmode='group'
     )
+    
+    st.plotly_chart(fig_investment_aum, use_container_width=True)
+
+with col2:
+    # AUM Growth Trend with area fill
+    fig_aum_growth = go.Figure()
+    
+    fig_aum_growth.add_trace(go.Scatter(
+        x=df['month'], 
+        y=df['aum'],
+        mode='lines+markers',
+        name='AUM',
+        line=dict(color='#4299e1', width=3),
+        marker=dict(size=8, color='#3182ce'),
+        fill='tozeroy',
+        fillcolor='rgba(66, 153, 225, 0.2)'
+    ))
+    
+    # Add a trend line
+    z = np.polyfit(df['month'], df['aum'], 2)
+    p = np.poly1d(z)
+    fig_aum_growth.add_trace(go.Scatter(
+        x=df['month'],
+        y=p(df['month']),
+        mode='lines',
+        name='Trend',
+        line=dict(color='#dd6b20', width=2, dash='dash')
+    ))
+    
     fig_aum_growth.update_layout(
-        xaxis_title="Month", yaxis_title="AUM (₹ Crores)",
-        height=400, template="plotly_white",
+        title="Assets Under Management (AUM) Growth Trajectory",
+        xaxis_title="Month", 
+        yaxis_title="AUM (₹ Crores)",
+        height=400, 
+        template="plotly_white",
         title_font=dict(size=16, color='#2d3748', family='Inter'),
         font=dict(family='Inter', size=12)
     )
     fig_aum_growth.update_xaxes(dtick=1)
     st.plotly_chart(fig_aum_growth, use_container_width=True)
 
-with col2:
+# Row 2: Revenue/Cost Bar Chart and Profit/Loss Waterfall
+col1, col2 = st.columns(2)
+
+with col1:
+    # Stacked Revenue vs Costs Bar Chart
     fig_revenue_costs = go.Figure()
-    total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
-    total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
-                   df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
-                   df['salary'] + df['principal_return'])
-
+    
     fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'], y=total_revenue, name='Total Revenue',
-        marker_color='#38a169'
+        x=df['month'], 
+        y=total_revenue, 
+        name='Total Revenue',
+        marker_color='#38a169',
+        text=[f'₹{v:.2f}' for v in total_revenue],
+        textposition='inside',
+        textfont=dict(color='white', size=10)
     ))
+    
     fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'], y=total_costs, name='Total Costs',
-        marker_color='#f56565'
+        x=df['month'], 
+        y=total_costs, 
+        name='Total Costs',
+        marker_color='#f56565',
+        text=[f'₹{v:.2f}' for v in total_costs],
+        textposition='inside',
+        textfont=dict(color='white', size=10)
     ))
+    
+    # Add profit line
     fig_revenue_costs.add_trace(go.Scatter(
-        x=df['month'], y=df['profit_loss'], mode='lines+markers',
-        name='Net Profit', line=dict(color='#dd6b20', width=3),
-        marker=dict(size=8)
+        x=df['month'], 
+        y=df['profit_loss'], 
+        mode='lines+markers',
+        name='Net Profit',
+        line=dict(color='#805ad5', width=3),
+        marker=dict(size=10, symbol='diamond'),
+        yaxis='y2'
     ))
-
+    
     fig_revenue_costs.update_layout(
-        title="Monthly Revenue vs Costs Analysis",
-        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
-        height=400, template="plotly_white",
+        title="Monthly Revenue vs Costs with Profit Trend",
+        xaxis_title="Month",
+        yaxis_title="Revenue & Costs (₹ Crores)",
+        yaxis2=dict(
+            title="Profit (₹ Crores)",
+            overlaying='y',
+            side='right'
+        ),
+        height=400,
+        template="plotly_white",
+        barmode='group',
         title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
+        font=dict(family='Inter', size=12),
+        legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1)
     )
     fig_revenue_costs.update_xaxes(dtick=1)
     st.plotly_chart(fig_revenue_costs, use_container_width=True)
 
-# Profit/Loss Analysis
-fig_profit = px.bar(
-    df, x='month', y='profit_loss',
-    title="Monthly Profit/Loss Analysis",
-    color='profit_loss',
-    color_continuous_scale=['#f56565', '#fbd38d', '#38a169']
-)
-fig_profit.update_layout(
-    xaxis_title="Month", yaxis_title="Profit/Loss (₹ Crores)",
-    height=400, showlegend=False, template="plotly_white",
-    title_font=dict(size=16, color='#2d3748', family='Inter'),
-    font=dict(family='Inter', size=12)
-)
-fig_profit.update_xaxes(dtick=1)
-st.plotly_chart(fig_profit, use_container_width=True)
+with col2:
+    # Monthly Profit/Loss with gradient colors
+    colors = ['#38a169' if x >= 0 else '#f56565' for x in df['profit_loss']]
+    
+    fig_profit = go.Figure()
+    
+    fig_profit.add_trace(go.Bar(
+        x=df['month'],
+        y=df['profit_loss'],
+        marker_color=colors,
+        text=[f'₹{v:.2f}' for v in df['profit_loss']],
+        textposition='outside',
+        name='Profit/Loss'
+    ))
+    
+    # Add zero line
+    fig_profit.add_hline(y=0, line_dash="dash", line_color="gray", opacity=0.5)
+    
+    fig_profit.update_layout(
+        title="Monthly Profit/Loss Analysis",
+        xaxis_title="Month",
+        yaxis_title="Profit/Loss (₹ Crores)",
+        height=400,
+        showlegend=False,
+        template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
+    )
+    fig_profit.update_xaxes(dtick=1)
+    st.plotly_chart(fig_profit, use_container_width=True)
+
+# Row 3: Financial Heatmap and Cumulative Metrics
+col1, col2 = st.columns([1.5, 1])
+
+with col1:
+    # Create heatmap for key metrics
+    heatmap_data = pd.DataFrame({
+        'Month': df['month'],
+        'Disbursed': df['amount_disbursed'],
+        'Revenue': total_revenue,
+        'Costs': total_costs,
+        'Profit': df['profit_loss'],
+        'AUM': df['aum']
+    })
+    
+    # Normalize data for better visualization
+    heatmap_normalized = heatmap_data.set_index('Month')
+    for col in heatmap_normalized.columns:
+        max_val = heatmap_normalized[col].max()
+        if max_val != 0:
+            heatmap_normalized[col] = (heatmap_normalized[col] / max_val) * 100
+    
+    fig_heatmap = go.Figure(data=go.Heatmap(
+        z=heatmap_normalized.T.values,
+        x=heatmap_normalized.index,
+        y=heatmap_normalized.columns,
+        colorscale=[
+            [0, '#f56565'],
+            [0.5, '#fbd38d'],
+            [1, '#38a169']
+        ],
+        text=heatmap_data.set_index('Month').T.values.round(2),
+        texttemplate='₹%{text:.2f}',
+        textfont={"size": 10},
+        colorbar=dict(title="Intensity %")
+    ))
+    
+    fig_heatmap.update_layout(
+        title="Financial Metrics Heatmap (Month-wise Performance)",
+        xaxis_title="Month",
+        yaxis_title="Metric",
+        height=400,
+        template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
+    )
+    
+    st.plotly_chart(fig_heatmap, use_container_width=True)
+
+with col2:
+    # Cumulative metrics over time
+    fig_cumulative = go.Figure()
+    
+    cumulative_invested = df['amount_invested'].cumsum()
+    cumulative_profit = df['profit_loss'].cumsum()
+    
+    fig_cumulative.add_trace(go.Scatter(
+        x=df['month'],
+        y=cumulative_invested,
+        mode='lines+markers',
+        name='Cumulative Invested',
+        line=dict(color='#3182ce', width=3),
+        marker=dict(size=8),
+        fill='tozeroy',
+        fillcolor='rgba(49, 130, 206, 0.1)'
+    ))
+    
+    fig_cumulative.add_trace(go.Scatter(
+        x=df['month'],
+        y=cumulative_profit,
+        mode='lines+markers',
+        name='Cumulative Profit',
+        line=dict(color='#38a169', width=3),
+        marker=dict(size=8),
+        fill='tozeroy',
+        fillcolor='rgba(56, 161, 105, 0.1)'
+    ))
+    
+    fig_cumulative.add_trace(go.Scatter(
+        x=df['month'],
+        y=df['aum'],
+        mode='lines+markers',
+        name='AUM',
+        line=dict(color='#805ad5', width=3, dash='dash'),
+        marker=dict(size=8, symbol='diamond')
+    ))
+    
+    fig_cumulative.update_layout(
+        title="Cumulative Financial Metrics",
+        xaxis_title="Month",
+        yaxis_title="Amount (₹ Crores)",
+        height=400,
+        template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12),
+        legend=dict(orientation='h', yanchor='bottom', y=-0.3, xanchor='center', x=0.5)
+    )
+    fig_cumulative.update_xaxes(dtick=1)
+    st.plotly_chart(fig_cumulative, use_container_width=True)
 
 # More Charts
 col1, col2 = st.columns(2)
