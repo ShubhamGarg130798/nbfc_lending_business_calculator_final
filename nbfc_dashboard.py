@@ -135,18 +135,17 @@ header {visibility: hidden;}
     background: white;
     border-radius: 14px;
     padding: 1.125rem 1.5rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
-    border-left: 5px solid var(--card-color);
+    border-left: none;
     position: relative;
-    border: 1px solid #f7fafc;
+    border: none;
 }
 
 .kpi-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08);
-    border-color: var(--card-color);
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.15);
 }
 
 .kpi-header {
@@ -164,7 +163,8 @@ header {visibility: hidden;}
     align-items: center;
     justify-content: center;
     font-size: 1.125rem;
-    background: var(--card-bg);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
 }
 
 .kpi-label {
@@ -193,28 +193,98 @@ header {visibility: hidden;}
 
 /* Color Variables for KPI Cards */
 .kpi-card.blue {
-    --card-color: #3182ce;
-    --card-bg: rgba(49, 130, 206, 0.1);
+    --card-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%) !important;
+    color: white !important;
+}
+
+.kpi-card.blue .kpi-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.kpi-card.blue .kpi-value {
+    color: #ffffff !important;
+}
+
+.kpi-card.blue .kpi-trend {
+    color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .kpi-card.green {
-    --card-color: #38a169;
-    --card-bg: rgba(56, 161, 105, 0.1);
+    --card-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%) !important;
+    color: white !important;
+}
+
+.kpi-card.green .kpi-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.kpi-card.green .kpi-value {
+    color: #ffffff !important;
+}
+
+.kpi-card.green .kpi-trend {
+    color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .kpi-card.orange {
-    --card-color: #dd6b20;
-    --card-bg: rgba(221, 107, 32, 0.1);
+    --card-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #dd6b20 0%, #c05621 100%) !important;
+    color: white !important;
+}
+
+.kpi-card.orange .kpi-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.kpi-card.orange .kpi-value {
+    color: #ffffff !important;
+}
+
+.kpi-card.orange .kpi-trend {
+    color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .kpi-card.purple {
-    --card-color: #805ad5;
-    --card-bg: rgba(128, 90, 213, 0.1);
+    --card-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%) !important;
+    color: white !important;
+}
+
+.kpi-card.purple .kpi-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.kpi-card.purple .kpi-value {
+    color: #ffffff !important;
+}
+
+.kpi-card.purple .kpi-trend {
+    color: rgba(255, 255, 255, 0.95) !important;
 }
 
 .kpi-card.teal {
-    --card-color: #319795;
-    --card-bg: rgba(49, 151, 149, 0.1);
+    --card-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #319795 0%, #2c7a7b 100%) !important;
+    color: white !important;
+}
+
+.kpi-card.teal .kpi-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.kpi-card.teal .kpi-value {
+    color: #ffffff !important;
+}
+
+.kpi-card.teal .kpi-trend {
+    color: rgba(255, 255, 255, 0.95) !important;
 }
 
 /* Chart Container */
@@ -517,17 +587,17 @@ header {visibility: hidden;}
     border-radius: 12px;
     padding: 1rem 1.25rem;
     margin-bottom: 1rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
-    border: 1px solid #f7fafc;
+    border: none;
     display: flex;
     align-items: center;
     gap: 0.875rem;
 }
 
 .summary-metric-card:hover {
-    transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateX(4px) translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
 .summary-metric-icon {
@@ -539,12 +609,14 @@ header {visibility: hidden;}
     justify-content: center;
     font-size: 1.25rem;
     flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 .summary-metric-label {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #718096;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 0.125rem;
     text-transform: uppercase;
     letter-spacing: 0.3px;
@@ -554,6 +626,32 @@ header {visibility: hidden;}
     font-size: 1.25rem;
     font-weight: 800;
     line-height: 1.2;
+    color: white;
+}
+
+/* Color variations for summary cards */
+.summary-card-blue {
+    background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%) !important;
+}
+
+.summary-card-green {
+    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%) !important;
+}
+
+.summary-card-teal {
+    background: linear-gradient(135deg, #319795 0%, #2c7a7b 100%) !important;
+}
+
+.summary-card-red {
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+}
+
+.summary-card-orange {
+    background: linear-gradient(135deg, #dd6b20 0%, #c05621 100%) !important;
+}
+
+.summary-card-purple {
+    background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%) !important;
 }
 
 .stMarkdown p {
@@ -1163,75 +1261,93 @@ summary_col1, summary_col2, summary_col3 = st.columns(3)
 
 with summary_col1:
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(49, 130, 206, 0.1); color: #3182ce;">💰</div>
-        <div class="summary-metric-label">Capital Invested</div>
-        <div class="summary-metric-value" style="color: #3182ce;">₹{total_capital:.2f} Cr</div>
+    <div class="summary-metric-card summary-card-blue">
+        <div class="summary-metric-icon">💰</div>
+        <div>
+            <div class="summary-metric-label">Capital Invested</div>
+            <div class="summary-metric-value">₹{total_capital:.2f} Cr</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(56, 161, 105, 0.1); color: #38a169;">📊</div>
-        <div class="summary-metric-label">Month {num_months} Available</div>
-        <div class="summary-metric-value" style="color: #38a169;">₹{final_month_available:.2f} Cr</div>
+    <div class="summary-metric-card summary-card-green">
+        <div class="summary-metric-icon">📊</div>
+        <div>
+            <div class="summary-metric-label">Month {num_months} Available</div>
+            <div class="summary-metric-value">₹{final_month_available:.2f} Cr</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(49, 151, 149, 0.1); color: #319795;">📈</div>
-        <div class="summary-metric-label">Total Revenue</div>
-        <div class="summary-metric-value" style="color: #319795;">₹{total_revenue_sum:.2f} Cr</div>
+    <div class="summary-metric-card summary-card-teal">
+        <div class="summary-metric-icon">📈</div>
+        <div>
+            <div class="summary-metric-label">Total Revenue</div>
+            <div class="summary-metric-value">₹{total_revenue_sum:.2f} Cr</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
 with summary_col2:
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(245, 101, 101, 0.1); color: #e53e3e;">💳</div>
-        <div class="summary-metric-label">Total Costs</div>
-        <div class="summary-metric-value" style="color: #e53e3e;">₹{total_costs_sum:.2f} Cr</div>
+    <div class="summary-metric-card summary-card-red">
+        <div class="summary-metric-icon">💳</div>
+        <div>
+            <div class="summary-metric-label">Total Costs</div>
+            <div class="summary-metric-value">₹{total_costs_sum:.2f} Cr</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(221, 107, 32, 0.1); color: #dd6b20;">🎯</div>
-        <div class="summary-metric-label">Net Profit/Loss</div>
-        <div class="summary-metric-value" style="color: #dd6b20;">₹{net_profit_sum:.2f} Cr</div>
+    <div class="summary-metric-card summary-card-orange">
+        <div class="summary-metric-icon">🎯</div>
+        <div>
+            <div class="summary-metric-label">Net Profit/Loss</div>
+            <div class="summary-metric-value">₹{net_profit_sum:.2f} Cr</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(128, 90, 213, 0.1); color: #805ad5;">👥</div>
-        <div class="summary-metric-label">Total Customers</div>
-        <div class="summary-metric-value" style="color: #805ad5;">{total_customers_sum:,}</div>
+    <div class="summary-metric-card summary-card-purple">
+        <div class="summary-metric-icon">👥</div>
+        <div>
+            <div class="summary-metric-label">Total Customers</div>
+            <div class="summary-metric-value">{total_customers_sum:,}</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
 with summary_col3:
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(49, 151, 149, 0.1); color: #319795;">🏆</div>
-        <div class="summary-metric-label">Month {num_months} AUM</div>
-        <div class="summary-metric-value" style="color: #319795;">₹{final_month_aum_summary:.2f} Cr</div>
+    <div class="summary-metric-card summary-card-teal">
+        <div class="summary-metric-icon">🏆</div>
+        <div>
+            <div class="summary-metric-label">Month {num_months} AUM</div>
+            <div class="summary-metric-value">₹{final_month_aum_summary:.2f} Cr</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(56, 161, 105, 0.1); color: #38a169;">📊</div>
-        <div class="summary-metric-label">Period ROI</div>
-        <div class="summary-metric-value" style="color: #38a169;">{period_roi:.1f}%</div>
+    <div class="summary-metric-card summary-card-green">
+        <div class="summary-metric-icon">📊</div>
+        <div>
+            <div class="summary-metric-label">Period ROI</div>
+            <div class="summary-metric-value">{period_roi:.1f}%</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card">
-        <div class="summary-metric-icon" style="background: rgba(49, 130, 206, 0.1); color: #3182ce;">📅</div>
-        <div class="summary-metric-label">Projection Period</div>
-        <div class="summary-metric-value" style="color: #3182ce;">{num_months} months</div>
+    <div class="summary-metric-card summary-card-blue">
+        <div class="summary-metric-icon">📅</div>
+        <div>
+            <div class="summary-metric-label">Projection Period</div>
+            <div class="summary-metric-value">{num_months} months</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
