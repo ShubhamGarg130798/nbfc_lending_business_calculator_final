@@ -663,11 +663,11 @@ header {visibility: hidden;}
     .dashboard-header {
         padding: 1.5rem 1.25rem;
     }
-   
+    
     .dashboard-title {
         font-size: 1.5rem;
     }
-   
+    
     .kpi-card {
         margin-bottom: 1rem;
     }
@@ -701,7 +701,7 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 default_val = [5.0, 4.0, 4.0, 4.0, 3.0][i] if month_num <= 5 else 0.0
             else:
                 default_val = 0.0
-               
+                
             if i % 2 == 0:
                 with cap_col1:
                     val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
@@ -809,7 +809,7 @@ def calculate_with_exact_formulas():
     capital_invested = [capital_values[i] * 1e7 if i < len(capital_values) else 0 for i in range(months)]
     opex_rates = [opex_values[i] if i < len(opex_values) else 0.04 for i in range(months)]
     principal_returns = [principal_values[i] * 1e7 if i < len(principal_values) else 0 for i in range(months)]
-   
+    
     amount_invested = []
     amount_available = []
     amount_disbursed = []
@@ -827,37 +827,37 @@ def calculate_with_exact_formulas():
     processing_fees_revenue = []
     profit_loss = []
     aum = []
-   
+    
     for month in range(months):
         amount_invested.append(capital_invested[month])
-       
+        
         if month == 0:
             available = capital_invested[month]
         else:
             prev_profit = profit_loss[month-1]
             available = amount_available[month-1] + prev_profit + capital_invested[month]
-       
+        
         amount_available.append(available)
         disbursed = available / (1 - processing_fees)
         amount_disbursed.append(disbursed)
-       
+        
         num_customers = int(disbursed / avg_ticket_size)
         customers.append(num_customers)
-       
+        
         if month == 0:
             op_expense = opex_month1_value
         else:
             prev_aum = aum[month-1]
             op_expense = prev_aum * opex_rates[month]
-       
+        
         opex.append(op_expense)
-       
+        
         api_cost = (num_customers * 2 * api_cost_20_percent) + (num_customers * 8 * api_cost_80_percent)
         api_expense.append(api_cost)
-       
+        
         marketing_exp = disbursed * marketing_rate
         marketing_expense.append(marketing_exp)
-       
+        
         cost_of_funds_expense = 0
         if month == 2 and months >= 3:
             cost_q1_m1 = capital_invested[0] * cost_of_funds_rate
@@ -885,21 +885,21 @@ def calculate_with_exact_formulas():
             cost_q_m2 = sum(capital_invested[:quarter_start+2]) * cost_of_funds_rate
             cost_q_m3 = sum(capital_invested[:quarter_start+3]) * cost_of_funds_rate
             cost_of_funds_expense = cost_q_m1 + cost_q_m2 + cost_q_m3
-       
+        
         cost_of_funds.append(cost_of_funds_expense)
-       
+        
         if month == 0:
             interest = (disbursed * monthly_interest_rate) / 2
         else:
             current_month_interest = (disbursed * monthly_interest_rate) / 2
             prev_month_interest = (amount_disbursed[month-1] * monthly_interest_rate) / 2
             interest = current_month_interest + prev_month_interest
-       
+        
         interest_revenue.append(interest)
-       
+        
         bad_debt = (disbursed + interest) * (1 - t0_collection)
         bad_debt_default.append(bad_debt)
-       
+        
         recovery = 0
         if month >= 1:
             prev_disbursed_plus_interest = amount_disbursed[month-1] + interest_revenue[month-1]
@@ -910,45 +910,45 @@ def calculate_with_exact_formulas():
         if month >= 3:
             prev3_disbursed_plus_interest = amount_disbursed[month-3] + interest_revenue[month-3]
             recovery += prev3_disbursed_plus_interest * t90_collection
-       
+        
         bad_debt_recovery.append(recovery)
-       
+        
         pf = disbursed * processing_fees
         processing_fees_revenue.append(pf)
-       
+        
         gst_amount = pf * (18/118)
         gst.append(gst_amount)
-       
+        
         monthly_salary = 0
         salary.append(monthly_salary)
         principal_return.append(principal_returns[month])
-       
+        
         profit = (interest + recovery + pf) - (op_expense + api_cost + marketing_exp + cost_of_funds_expense + bad_debt + gst_amount + monthly_salary + principal_returns[month])
         profit_loss.append(profit)
-       
+        
         current_disbursed_interest = disbursed + interest
-       
+        
         if month >= 1:
             prev_disbursed_interest = amount_disbursed[month-1] + interest_revenue[month-1]
         else:
             prev_disbursed_interest = 0
-           
+            
         if month >= 2:
             prev2_disbursed_interest = amount_disbursed[month-2] + interest_revenue[month-2]
         else:
             prev2_disbursed_interest = 0
-           
+            
         if month >= 3:
             prev3_disbursed_interest = amount_disbursed[month-3] + interest_revenue[month-3]
         else:
             prev3_disbursed_interest = 0
-           
-        aum_value = (current_disbursed_interest +
-                    prev_disbursed_interest * 0.15 +
-                    prev2_disbursed_interest * 0.10 +
+            
+        aum_value = (current_disbursed_interest + 
+                    prev_disbursed_interest * 0.15 + 
+                    prev2_disbursed_interest * 0.10 + 
                     prev3_disbursed_interest * 0.03)
         aum.append(aum_value)
-   
+    
     df = pd.DataFrame({
         'month': range(1, months + 1),
         'amount_invested': [x/1e7 for x in amount_invested],
@@ -969,7 +969,7 @@ def calculate_with_exact_formulas():
         'profit_loss': [x/1e7 for x in profit_loss],
         'aum': [x/1e7 for x in aum]
     })
-   
+    
     return df
 
 # Calculate metrics
@@ -1005,7 +1005,7 @@ with col1:
         <div class="kpi-trend">Total deployment</div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
 with col2:
     st.markdown(f"""
     <div class="kpi-card green">
@@ -1019,7 +1019,7 @@ with col2:
         <div class="kpi-trend">{num_months} months</div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
 with col3:
     final_month_disbursed = df['amount_disbursed'].iloc[-1]
     st.markdown(f"""
@@ -1034,7 +1034,7 @@ with col3:
         <div class="kpi-trend">Latest month</div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
 with col4:
     total_profit_loss = df['profit_loss'].sum()
     st.markdown(f"""
@@ -1049,7 +1049,7 @@ with col4:
         <div class="kpi-trend">{num_months} months cumulative</div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
 with col5:
     final_month_aum = df['aum'].iloc[-1]
     st.markdown(f"""
@@ -1088,8 +1088,8 @@ with col1:
 with col2:
     fig_revenue_costs = go.Figure()
     total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
-    total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] +
-                   df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] +
+    total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
+                   df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
                    df['salary'] + df['principal_return'])
 
     fig_revenue_costs.add_trace(go.Bar(
@@ -1262,7 +1262,7 @@ with summary_col1:
         </div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
     st.markdown(f"""
     <div class="summary-metric-card summary-card-green">
         <div class="summary-metric-icon">📊</div>
@@ -1272,7 +1272,7 @@ with summary_col1:
         </div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
     st.markdown(f"""
     <div class="summary-metric-card summary-card-teal">
         <div class="summary-metric-icon">📈</div>
@@ -1293,7 +1293,7 @@ with summary_col2:
         </div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
     st.markdown(f"""
     <div class="summary-metric-card summary-card-orange">
         <div class="summary-metric-icon">🎯</div>
@@ -1303,7 +1303,7 @@ with summary_col2:
         </div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
     st.markdown(f"""
     <div class="summary-metric-card summary-card-purple">
         <div class="summary-metric-icon">👥</div>
@@ -1324,7 +1324,7 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
     st.markdown(f"""
     <div class="summary-metric-card summary-card-green">
         <div class="summary-metric-icon">📊</div>
@@ -1334,7 +1334,7 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-   
+    
     st.markdown(f"""
     <div class="summary-metric-card summary-card-blue">
         <div class="summary-metric-icon">📅</div>
