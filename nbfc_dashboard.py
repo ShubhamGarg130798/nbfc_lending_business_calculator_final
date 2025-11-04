@@ -28,21 +28,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Clear old cached values on version change
-if 'version' not in st.session_state:
-    st.session_state.version = '3.0'
-    st.cache_data.clear()
-    st.cache_resource.clear()
-elif st.session_state.version != '3.0':
-    st.session_state.version = '3.0'
-    # Clear all widget states except authentication
-    for key in list(st.session_state.keys()):
-        if key != 'authenticated' and key != 'version':
-            del st.session_state[key]
-    st.cache_data.clear()
-    st.cache_resource.clear()
-    st.rerun()
-
 # Modern Dashboard CSS
 st.markdown("""
 <style>
@@ -701,20 +686,9 @@ st.markdown("""
 # Sidebar for all inputs with collapsible sections
 st.sidebar.markdown("# 🎛️ Input Parameters")
 
-# Add reset button
-if st.sidebar.button("🔄 Reset to Default Values", use_container_width=True):
-    # Clear all session state
-    for key in list(st.session_state.keys()):
-        if key != 'authenticated' and key != 'version':
-            del st.session_state[key]
-    st.cache_data.clear()
-    st.rerun()
-
-st.sidebar.markdown("---")
-
 # Projection Period
 with st.sidebar.expander("📅 Projection Period", expanded=True):
-    num_months = st.number_input("Number of Months", min_value=1, max_value=120, value=12, step=1)
+    num_months = st.number_input("Number of Months", min_value=1, max_value=48, value=12, step=1)
 
 # Capital Deployment Parameters
 with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
@@ -755,25 +729,25 @@ total_capital = sum(capital_values)
 
 # Business Parameters
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
-    processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=100.0, value=11.8, step=0.1, key="pf_v2") / 100
-    monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5, key="mir_v2") / 100
-    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=100.0, value=2.0, step=0.1, key="mr_v2") / 100
-    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=100.0, value=1.5, step=0.1, key="cof_v2") / 100
+    processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=25.0, value=11.8, step=0.1) / 100
+    monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
+    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=10.0, value=2.0, step=0.1) / 100
+    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates
 with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
-    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 50000000, 1500000, 50000, key="opex_m1_v2")
+    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
     opex_month1 = opex_month1_value / 1e7
 
     opex_values = [opex_month1]
     for i in range(1, num_months):
         month_num = i + 1
         if month_num <= 3:
-            default_val = 6.0
+            default_val = 10.0
         elif month_num <= 6:
-            default_val = 6.0
+            default_val = 5.0
         else:
-            default_val = 6.0
+            default_val = 4.0
         val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=30.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
         opex_values.append(val)
 
@@ -785,7 +759,7 @@ for i in range(48):
 
 # Loan parameters
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 30000, 1000, key="avg_ticket_v2")
+    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 22000, 1000)
 
 # Collection parameters
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
@@ -800,8 +774,8 @@ with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     else:
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
 
-    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 1000, 35, 5, key="api_80_v2")
-    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 15000, 80, 5, key="api_20_v2")
+    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 100, 35, 5)
+    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
 
 # Principal Return
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
@@ -1091,422 +1065,72 @@ with col5:
     </div>
     """, unsafe_allow_html=True)
 
-# Charts Section - ENHANCED VERSION
+# Charts Section
 st.markdown('<div class="section-header">Business Analysis Charts</div>', unsafe_allow_html=True)
 
-# Calculate total revenue and costs for use in charts
-total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
-total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
-               df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
-               df['salary'] + df['principal_return'])
-
-# Row 1: AUM Growth and Revenue/Cost Analysis
 col1, col2 = st.columns(2)
 
 with col1:
-    # AUM Growth with gradient area fill - More appealing
-    fig_aum_growth = go.Figure()
-    
-    # Create gradient colors for the line
-    fig_aum_growth.add_trace(go.Scatter(
-        x=df['month'], 
-        y=df['aum'],
-        mode='lines+markers',
-        name='AUM Growth',
-        line=dict(color='#2563eb', width=4),
-        marker=dict(
-            size=10, 
-            color=df['aum'],
-            colorscale='Blues',
-            showscale=False,
-            line=dict(color='white', width=2)
-        ),
-        fill='tozeroy',
-        fillcolor='rgba(37, 99, 235, 0.15)',
-        hovertemplate='<b>Month %{x}</b><br>AUM: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    # Add annotations for first and last month
-    fig_aum_growth.add_annotation(
-        x=df['month'].iloc[0], y=df['aum'].iloc[0],
-        text=f"₹{df['aum'].iloc[0]:.2f} Cr",
-        showarrow=True, arrowhead=2, arrowcolor='#2563eb',
-        bgcolor='#2563eb', font=dict(color='white', size=11),
-        borderpad=4, borderwidth=0, arrowsize=1, ax=30, ay=-40
+    fig_aum_growth = px.area(
+        df, x='month', y='aum',
+        title="Assets Under Management (AUM) Growth",
+        color_discrete_sequence=['#4299e1']
     )
-    
-    fig_aum_growth.add_annotation(
-        x=df['month'].iloc[-1], y=df['aum'].iloc[-1],
-        text=f"₹{df['aum'].iloc[-1]:.2f} Cr",
-        showarrow=True, arrowhead=2, arrowcolor='#16a34a',
-        bgcolor='#16a34a', font=dict(color='white', size=11),
-        borderpad=4, borderwidth=0, arrowsize=1, ax=-30, ay=-40
-    )
-    
     fig_aum_growth.update_layout(
-        title=dict(
-            text="<b>Assets Under Management (AUM) Growth</b>",
-            font=dict(size=18, color='#1e293b')
-        ),
-        xaxis_title="Month", 
-        yaxis_title="AUM (₹ Crores)",
-        height=420,
-        template="plotly_white",
-        font=dict(family='Inter', size=12),
-        plot_bgcolor='rgba(248, 250, 252, 0.5)',
-        hovermode='x unified'
+        xaxis_title="Month", yaxis_title="AUM (₹ Crores)",
+        height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_aum_growth.update_xaxes(dtick=1, gridcolor='#e2e8f0')
-    fig_aum_growth.update_yaxes(gridcolor='#e2e8f0')
+    fig_aum_growth.update_xaxes(dtick=1)
     st.plotly_chart(fig_aum_growth, use_container_width=True)
 
 with col2:
-    # Revenue vs Costs - Grouped Bar Chart with better styling
     fig_revenue_costs = go.Figure()
-    
+    total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
+    total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
+                   df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
+                   df['salary'] + df['principal_return'])
+
     fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'], 
-        y=total_revenue, 
-        name='Revenue',
-        marker=dict(
-            color='#16a34a',
-            line=dict(color='#15803d', width=1.5)
-        ),
-        text=[f'₹{v:.1f}' for v in total_revenue],
-        textposition='outside',
-        textfont=dict(size=10, color='#15803d'),
-        hovertemplate='<b>Month %{x}</b><br>Revenue: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=total_revenue, name='Total Revenue',
+        marker_color='#38a169'
     ))
-    
     fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'], 
-        y=total_costs, 
-        name='Costs',
-        marker=dict(
-            color='#dc2626',
-            line=dict(color='#b91c1c', width=1.5)
-        ),
-        text=[f'₹{v:.1f}' for v in total_costs],
-        textposition='outside',
-        textfont=dict(size=10, color='#b91c1c'),
-        hovertemplate='<b>Month %{x}</b><br>Costs: ₹%{y:.2f} Cr<extra></extra>'
+        x=df['month'], y=total_costs, name='Total Costs',
+        marker_color='#f56565'
     ))
-    
+    fig_revenue_costs.add_trace(go.Scatter(
+        x=df['month'], y=df['profit_loss'], mode='lines+markers',
+        name='Net Profit', line=dict(color='#dd6b20', width=3),
+        marker=dict(size=8)
+    ))
+
     fig_revenue_costs.update_layout(
-        title=dict(
-            text="<b>Monthly Revenue vs Costs Analysis</b>",
-            font=dict(size=18, color='#1e293b')
-        ),
-        xaxis_title="Month",
-        yaxis_title="Amount (₹ Crores)",
-        height=420,
-        template="plotly_white",
-        barmode='group',
-        bargap=0.15,
-        bargroupgap=0.1,
-        font=dict(family='Inter', size=12),
-        plot_bgcolor='rgba(248, 250, 252, 0.5)',
-        legend=dict(
-            orientation='h',
-            yanchor='bottom',
-            y=1.02,
-            xanchor='right',
-            x=1,
-            bgcolor='rgba(255,255,255,0.8)',
-            bordercolor='#e2e8f0',
-            borderwidth=1
-        ),
-        hovermode='x unified'
+        title="Monthly Revenue vs Costs Analysis",
+        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
+        height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
     )
-    fig_revenue_costs.update_xaxes(dtick=1, gridcolor='#e2e8f0')
-    fig_revenue_costs.update_yaxes(gridcolor='#e2e8f0')
+    fig_revenue_costs.update_xaxes(dtick=1)
     st.plotly_chart(fig_revenue_costs, use_container_width=True)
 
-# Row 2: Profit Analysis and Investment Comparison
-col1, col2 = st.columns(2)
-
-with col1:
-    # Monthly Profit/Loss - Enhanced gradient bars
-    colors_profit = []
-    for val in df['profit_loss']:
-        if val >= 0:
-            # Green gradient for profit
-            intensity = min(val / df['profit_loss'].max() if df['profit_loss'].max() > 0 else 0, 1)
-            colors_profit.append(f'rgba(34, 197, 94, {0.5 + intensity * 0.5})')
-        else:
-            # Red gradient for loss
-            intensity = min(abs(val) / abs(df['profit_loss'].min()) if df['profit_loss'].min() < 0 else 0, 1)
-            colors_profit.append(f'rgba(239, 68, 68, {0.5 + intensity * 0.5})')
-    
-    fig_profit = go.Figure()
-    
-    fig_profit.add_trace(go.Bar(
-        x=df['month'],
-        y=df['profit_loss'],
-        marker=dict(
-            color=colors_profit,
-            line=dict(color=['#15803d' if x >= 0 else '#b91c1c' for x in df['profit_loss']], width=1.5)
-        ),
-        text=[f'₹{v:.2f}' for v in df['profit_loss']],
-        textposition='outside',
-        name='Profit/Loss',
-        hovertemplate='<b>Month %{x}</b><br>Profit/Loss: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    # Add zero reference line
-    fig_profit.add_hline(
-        y=0, 
-        line_dash="dash", 
-        line_color="#64748b", 
-        line_width=2,
-        annotation_text="Break-even",
-        annotation_position="right"
-    )
-    
-    fig_profit.update_layout(
-        title=dict(
-            text="<b>Monthly Profit/Loss Analysis</b>",
-            font=dict(size=18, color='#1e293b')
-        ),
-        xaxis_title="Month",
-        yaxis_title="Profit/Loss (₹ Crores)",
-        height=420,
-        showlegend=False,
-        template="plotly_white",
-        font=dict(family='Inter', size=12),
-        plot_bgcolor='rgba(248, 250, 252, 0.5)',
-        hovermode='x unified'
-    )
-    fig_profit.update_xaxes(dtick=1, gridcolor='#e2e8f0')
-    fig_profit.update_yaxes(gridcolor='#e2e8f0', zeroline=True, zerolinecolor='#cbd5e1', zerolinewidth=2)
-    st.plotly_chart(fig_profit, use_container_width=True)
-
-with col2:
-    # Investment vs Available vs Disbursed - Stacked Bars
-    fig_investment_flow = go.Figure()
-    
-    fig_investment_flow.add_trace(go.Bar(
-        x=df['month'],
-        y=df['amount_invested'],
-        name='Invested',
-        marker=dict(color='#3b82f6', line=dict(color='#2563eb', width=1)),
-        hovertemplate='<b>Month %{x}</b><br>Invested: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    fig_investment_flow.add_trace(go.Bar(
-        x=df['month'],
-        y=df['amount_available'],
-        name='Available',
-        marker=dict(color='#8b5cf6', line=dict(color='#7c3aed', width=1)),
-        hovertemplate='<b>Month %{x}</b><br>Available: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    fig_investment_flow.add_trace(go.Bar(
-        x=df['month'],
-        y=df['amount_disbursed'],
-        name='Disbursed',
-        marker=dict(color='#10b981', line=dict(color='#059669', width=1)),
-        hovertemplate='<b>Month %{x}</b><br>Disbursed: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    fig_investment_flow.update_layout(
-        title=dict(
-            text="<b>Capital Flow: Invested → Available → Disbursed</b>",
-            font=dict(size=18, color='#1e293b')
-        ),
-        xaxis_title="Month",
-        yaxis_title="Amount (₹ Crores)",
-        height=420,
-        template="plotly_white",
-        barmode='group',
-        bargap=0.15,
-        bargroupgap=0.1,
-        font=dict(family='Inter', size=12),
-        plot_bgcolor='rgba(248, 250, 252, 0.5)',
-        legend=dict(
-            orientation='h',
-            yanchor='bottom',
-            y=1.02,
-            xanchor='right',
-            x=1,
-            bgcolor='rgba(255,255,255,0.8)',
-            bordercolor='#e2e8f0',
-            borderwidth=1
-        ),
-        hovermode='x unified'
-    )
-    fig_investment_flow.update_xaxes(dtick=1, gridcolor='#e2e8f0')
-    fig_investment_flow.update_yaxes(gridcolor='#e2e8f0')
-    st.plotly_chart(fig_investment_flow, use_container_width=True)
-
-# Row 3: Revenue Breakdown and Customer Acquisition
-col1, col2 = st.columns(2)
-
-with col1:
-    # Revenue Breakdown - Stacked Area Chart
-    fig_revenue_breakdown = go.Figure()
-    
-    fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'],
-        y=df['interest_revenue'],
-        name='Interest',
-        marker=dict(color='#22c55e', line=dict(color='#16a34a', width=1)),
-        hovertemplate='Interest: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'],
-        y=df['processing_fees_revenue'],
-        name='Processing Fees',
-        marker=dict(color='#3b82f6', line=dict(color='#2563eb', width=1)),
-        hovertemplate='Processing Fees: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'],
-        y=df['bad_debt_recovery'],
-        name='Recovery',
-        marker=dict(color='#f59e0b', line=dict(color='#d97706', width=1)),
-        hovertemplate='Bad Debt Recovery: ₹%{y:.2f} Cr<extra></extra>'
-    ))
-    
-    fig_revenue_breakdown.update_layout(
-        title=dict(
-            text="<b>Monthly Revenue Breakdown by Source</b>",
-            font=dict(size=18, color='#1e293b')
-        ),
-        xaxis_title="Month",
-        yaxis_title="Revenue (₹ Crores)",
-        barmode='stack',
-        height=420,
-        template="plotly_white",
-        font=dict(family='Inter', size=12),
-        plot_bgcolor='rgba(248, 250, 252, 0.5)',
-        legend=dict(
-            orientation='h',
-            yanchor='bottom',
-            y=1.02,
-            xanchor='right',
-            x=1,
-            bgcolor='rgba(255,255,255,0.8)',
-            bordercolor='#e2e8f0',
-            borderwidth=1
-        ),
-        hovermode='x unified'
-    )
-    fig_revenue_breakdown.update_xaxes(dtick=1, gridcolor='#e2e8f0')
-    fig_revenue_breakdown.update_yaxes(gridcolor='#e2e8f0')
-    st.plotly_chart(fig_revenue_breakdown, use_container_width=True)
-
-with col2:
-    # Customer Acquisition - Gradient Bars
-    customer_colors = df['customers'].values
-    max_customers = df['customers'].max()
-    
-    fig_customers = go.Figure()
-    
-    fig_customers.add_trace(go.Bar(
-        x=df['month'],
-        y=df['customers'],
-        marker=dict(
-            color=df['customers'],
-            colorscale=[
-                [0, '#dbeafe'],
-                [0.5, '#60a5fa'],
-                [1, '#1e40af']
-            ],
-            line=dict(color='#1e40af', width=1.5),
-            colorbar=dict(
-                title="Customers",
-                thickness=15,
-                len=0.7
-            )
-        ),
-        text=[f'{int(v):,}' for v in df['customers']],
-        textposition='outside',
-        textfont=dict(size=10, color='#1e40af'),
-        hovertemplate='<b>Month %{x}</b><br>Customers: %{y:,}<extra></extra>'
-    ))
-    
-    fig_customers.update_layout(
-        title=dict(
-            text="<b>Monthly Customer Acquisition</b>",
-            font=dict(size=18, color='#1e293b')
-        ),
-        xaxis_title="Month",
-        yaxis_title="Number of Customers",
-        height=420,
-        template="plotly_white",
-        font=dict(family='Inter', size=12),
-        plot_bgcolor='rgba(248, 250, 252, 0.5)',
-        hovermode='x unified'
-    )
-    fig_customers.update_xaxes(dtick=1, gridcolor='#e2e8f0')
-    fig_customers.update_yaxes(gridcolor='#e2e8f0')
-    st.plotly_chart(fig_customers, use_container_width=True)
-
-# Row 4: Heatmap (Full Width)
-st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
-
-# Financial Performance Heatmap - Full width, more appealing
-heatmap_data = pd.DataFrame({
-    'Month': df['month'],
-    'Disbursed': df['amount_disbursed'],
-    'Revenue': total_revenue,
-    'Costs': total_costs,
-    'Profit': df['profit_loss'],
-    'AUM': df['aum']
-})
-
-# Normalize data for better visualization
-heatmap_normalized = heatmap_data.set_index('Month')
-for col in heatmap_normalized.columns:
-    max_val = heatmap_normalized[col].max()
-    if max_val != 0:
-        heatmap_normalized[col] = (heatmap_normalized[col] / max_val) * 100
-
-fig_heatmap = go.Figure(data=go.Heatmap(
-    z=heatmap_normalized.T.values,
-    x=heatmap_normalized.index,
-    y=heatmap_normalized.columns,
-    colorscale=[
-        [0, '#fee2e2'],
-        [0.2, '#fcd34d'],
-        [0.4, '#bef264'],
-        [0.6, '#86efac'],
-        [0.8, '#6ee7b7'],
-        [1, '#34d399']
-    ],
-    text=heatmap_data.set_index('Month').T.values.round(2),
-    texttemplate='₹%{text:.2f}',
-    textfont=dict(size=11, family='Inter', color='#1e293b'),
-    colorbar=dict(
-        title="Performance<br>Intensity (%)",
-        thickness=20,
-        len=0.7,
-        tickfont=dict(size=10)
-    ),
-    hovertemplate='<b>Month %{x}</b><br>%{y}: ₹%{text:.2f} Cr<br>Intensity: %{z:.1f}%<extra></extra>'
-))
-
-fig_heatmap.update_layout(
-    title=dict(
-        text="<b>📊 Financial Performance Heatmap - Month-wise Metrics Overview</b>",
-        font=dict(size=20, color='#1e293b'),
-        x=0.5,
-        xanchor='center'
-    ),
-    xaxis_title="<b>Month</b>",
-    yaxis_title="<b>Financial Metric</b>",
-    height=350,
-    template="plotly_white",
-    font=dict(family='Inter', size=12),
-    plot_bgcolor='white',
-    xaxis=dict(side='bottom', tickfont=dict(size=11)),
-    yaxis=dict(tickfont=dict(size=12))
+# Profit/Loss Analysis
+fig_profit = px.bar(
+    df, x='month', y='profit_loss',
+    title="Monthly Profit/Loss Analysis",
+    color='profit_loss',
+    color_continuous_scale=['#f56565', '#fbd38d', '#38a169']
 )
-
-st.plotly_chart(fig_heatmap, use_container_width=True)
+fig_profit.update_layout(
+    xaxis_title="Month", yaxis_title="Profit/Loss (₹ Crores)",
+    height=400, showlegend=False, template="plotly_white",
+    title_font=dict(size=16, color='#2d3748', family='Inter'),
+    font=dict(family='Inter', size=12)
+)
+fig_profit.update_xaxes(dtick=1)
+st.plotly_chart(fig_profit, use_container_width=True)
 
 # More Charts
 col1, col2 = st.columns(2)
