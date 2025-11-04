@@ -25,7 +25,7 @@ st.set_page_config(
     page_title="NBFC Lending Business Calculator",
     page_icon="💰",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 # Modern Dashboard CSS
@@ -48,16 +48,6 @@ st.markdown("""
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
-
-/* Hide sidebar toggle button */
-[data-testid="collapsedControl"] {
-    display: none !important;
-}
-
-/* Hide sidebar completely */
-[data-testid="stSidebar"] {
-    display: none !important;
-}
 
 /* Main content area */
 .main .block-container {
@@ -314,45 +304,71 @@ header {visibility: hidden;}
     margin-bottom: 1rem;
 }
 
-/* Expander Styling for Main Area */
-details summary {
-    background: rgba(43, 108, 176, 0.08) !important;
+/* Sidebar Styling */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #2c5282 0%, #2a4365 100%);
+    padding: 0;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding: 1.5rem 1.25rem;
+}
+
+/* Sidebar Title */
+[data-testid="stSidebar"] h1 {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 1.125rem !important;
+    margin-bottom: 1.5rem !important;
+    padding: 1rem !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    text-align: center !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Sidebar Text */
+[data-testid="stSidebar"] * {
+    color: #ffffff !important;
+}
+
+/* Sidebar Expanders */
+[data-testid="stSidebar"] details summary {
+    background: rgba(255, 255, 255, 0.12) !important;
     border-radius: 10px !important;
     padding: 0.875rem 1rem !important;
     margin: 0.5rem 0 !important;
-    border: 1px solid rgba(43, 108, 176, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     font-weight: 600 !important;
     font-size: 0.9375rem !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
-    color: #2c5282 !important;
 }
 
-details summary:hover {
-    background: rgba(43, 108, 176, 0.12) !important;
-    border-color: rgba(43, 108, 176, 0.25) !important;
+[data-testid="stSidebar"] details summary:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
 }
 
-details[open] {
-    background: rgba(43, 108, 176, 0.03) !important;
+[data-testid="stSidebar"] details[open] {
+    background: rgba(255, 255, 255, 0.05) !important;
     border-radius: 10px !important;
     padding: 0.5rem !important;
     margin: 0.5rem 0 !important;
-    border: 1px solid rgba(43, 108, 176, 0.1) !important;
 }
 
-/* Input Labels */
-label {
-    color: #2d3748 !important;
+/* Sidebar Labels */
+[data-testid="stSidebar"] label {
+    color: #e2e8f0 !important;
     font-weight: 600 !important;
     font-size: 0.875rem !important;
     margin-bottom: 0.5rem !important;
 }
 
-/* Number Inputs */
-input[type="number"] {
-    background: white !important;
-    border: 1px solid #e2e8f0 !important;
+/* Sidebar Inputs */
+[data-testid="stSidebar"] input[type="number"] {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
     color: #2d3748 !important;
     border-radius: 8px !important;
     padding: 0.625rem !important;
@@ -360,10 +376,39 @@ input[type="number"] {
     font-size: 0.9375rem !important;
 }
 
-input[type="number"]:focus {
+[data-testid="stSidebar"] input[type="number"]:focus {
     border-color: #4299e1 !important;
     box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2) !important;
-    background: white !important;
+    background: rgba(255, 255, 255, 1) !important;
+}
+
+/* Sidebar Buttons */
+[data-testid="stSidebar"] button {
+    background: rgba(66, 153, 225, 0.2) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-testid="stSidebar"] button:hover {
+    background: rgba(66, 153, 225, 0.3) !important;
+}
+
+/* Success/Error Messages */
+[data-testid="stSidebar"] .stSuccess {
+    background: rgba(72, 187, 120, 0.15) !important;
+    border-left: 4px solid #48bb78 !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    color: #c6f6d5 !important;
+}
+
+[data-testid="stSidebar"] .stError {
+    background: rgba(245, 101, 101, 0.15) !important;
+    border-left: 4px solid #f56565 !important;
+    border-radius: 8px !important;
+    padding: 0.75rem !important;
+    color: #fed7d7 !important;
 }
 
 /* Table Styling */
@@ -618,11 +663,11 @@ input[type="number"]:focus {
     .dashboard-header {
         padding: 1.5rem 1.25rem;
     }
-    
+   
     .dashboard-title {
         font-size: 1.5rem;
     }
-    
+   
     .kpi-card {
         margin-bottom: 1rem;
     }
@@ -638,15 +683,15 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Input Parameters Section
-st.markdown('<div class="section-header">📊 Input Parameters</div>', unsafe_allow_html=True)
+# Sidebar for all inputs with collapsible sections
+st.sidebar.markdown("# 🎛️ Input Parameters")
 
 # Projection Period
-with st.expander("📅 Projection Period", expanded=True):
+with st.sidebar.expander("📅 Projection Period", expanded=True):
     num_months = st.number_input("Number of Months", min_value=1, max_value=48, value=12, step=1)
 
 # Capital Deployment Parameters
-with st.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
+with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
     capital_values = []
     if num_months <= 12:
         cap_col1, cap_col2 = st.columns(2)
@@ -656,7 +701,7 @@ with st.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
                 default_val = [5.0, 4.0, 4.0, 4.0, 3.0][i] if month_num <= 5 else 0.0
             else:
                 default_val = 0.0
-                
+               
             if i % 2 == 0:
                 with cap_col1:
                     val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
@@ -683,14 +728,14 @@ for i in range(48):
 total_capital = sum(capital_values)
 
 # Business Parameters
-with st.expander("📈 Revenue Parameters", expanded=False):
+with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
     processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=25.0, value=11.8, step=0.1) / 100
     monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
     marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=10.0, value=2.0, step=0.1) / 100
     cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates
-with st.expander("🏢 Operational Expenses (%)", expanded=False):
+with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
     opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
     opex_month1 = opex_month1_value / 1e7
 
@@ -713,11 +758,11 @@ for i in range(48):
         globals()[f"opex_month{i+1}"] = 0.04
 
 # Loan parameters
-with st.expander("🎯 Loan Parameters", expanded=False):
+with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
     avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 22000, 1000)
 
 # Collection parameters
-with st.expander("📊 Collection Parameters", expanded=False):
+with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     t0_collection = st.number_input("T+0 Collection Rate (%)", min_value=0, max_value=100, value=80, step=1) / 100
     t30_collection = st.number_input("T+30 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
     t60_collection = st.number_input("T+60 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
@@ -733,7 +778,7 @@ with st.expander("📊 Collection Parameters", expanded=False):
     api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
 
 # Principal Return
-with st.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
+with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
     principal_values = []
     if num_months <= 12:
         prin_col1, prin_col2 = st.columns(2)
@@ -742,6 +787,14 @@ with st.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
             if i % 2 == 0:
                 with prin_col1:
                     val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
+            else:
+                with prin_col2:
+                    val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
+            principal_values.append(val)
+    else:
+        for i in range(num_months):
+            month_num = i + 1
+            val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
             principal_values.append(val)
 
 for i in range(48):
@@ -756,7 +809,7 @@ def calculate_with_exact_formulas():
     capital_invested = [capital_values[i] * 1e7 if i < len(capital_values) else 0 for i in range(months)]
     opex_rates = [opex_values[i] if i < len(opex_values) else 0.04 for i in range(months)]
     principal_returns = [principal_values[i] * 1e7 if i < len(principal_values) else 0 for i in range(months)]
-    
+   
     amount_invested = []
     amount_available = []
     amount_disbursed = []
@@ -774,37 +827,37 @@ def calculate_with_exact_formulas():
     processing_fees_revenue = []
     profit_loss = []
     aum = []
-    
+   
     for month in range(months):
         amount_invested.append(capital_invested[month])
-        
+       
         if month == 0:
             available = capital_invested[month]
         else:
             prev_profit = profit_loss[month-1]
             available = amount_available[month-1] + prev_profit + capital_invested[month]
-        
+       
         amount_available.append(available)
         disbursed = available / (1 - processing_fees)
         amount_disbursed.append(disbursed)
-        
+       
         num_customers = int(disbursed / avg_ticket_size)
         customers.append(num_customers)
-        
+       
         if month == 0:
             op_expense = opex_month1_value
         else:
             prev_aum = aum[month-1]
             op_expense = prev_aum * opex_rates[month]
-        
+       
         opex.append(op_expense)
-        
+       
         api_cost = (num_customers * 2 * api_cost_20_percent) + (num_customers * 8 * api_cost_80_percent)
         api_expense.append(api_cost)
-        
+       
         marketing_exp = disbursed * marketing_rate
         marketing_expense.append(marketing_exp)
-        
+       
         cost_of_funds_expense = 0
         if month == 2 and months >= 3:
             cost_q1_m1 = capital_invested[0] * cost_of_funds_rate
@@ -832,21 +885,21 @@ def calculate_with_exact_formulas():
             cost_q_m2 = sum(capital_invested[:quarter_start+2]) * cost_of_funds_rate
             cost_q_m3 = sum(capital_invested[:quarter_start+3]) * cost_of_funds_rate
             cost_of_funds_expense = cost_q_m1 + cost_q_m2 + cost_q_m3
-        
+       
         cost_of_funds.append(cost_of_funds_expense)
-        
+       
         if month == 0:
             interest = (disbursed * monthly_interest_rate) / 2
         else:
             current_month_interest = (disbursed * monthly_interest_rate) / 2
             prev_month_interest = (amount_disbursed[month-1] * monthly_interest_rate) / 2
             interest = current_month_interest + prev_month_interest
-        
+       
         interest_revenue.append(interest)
-        
+       
         bad_debt = (disbursed + interest) * (1 - t0_collection)
         bad_debt_default.append(bad_debt)
-        
+       
         recovery = 0
         if month >= 1:
             prev_disbursed_plus_interest = amount_disbursed[month-1] + interest_revenue[month-1]
@@ -857,45 +910,45 @@ def calculate_with_exact_formulas():
         if month >= 3:
             prev3_disbursed_plus_interest = amount_disbursed[month-3] + interest_revenue[month-3]
             recovery += prev3_disbursed_plus_interest * t90_collection
-        
+       
         bad_debt_recovery.append(recovery)
-        
+       
         pf = disbursed * processing_fees
         processing_fees_revenue.append(pf)
-        
+       
         gst_amount = pf * (18/118)
         gst.append(gst_amount)
-        
+       
         monthly_salary = 0
         salary.append(monthly_salary)
         principal_return.append(principal_returns[month])
-        
+       
         profit = (interest + recovery + pf) - (op_expense + api_cost + marketing_exp + cost_of_funds_expense + bad_debt + gst_amount + monthly_salary + principal_returns[month])
         profit_loss.append(profit)
-        
+       
         current_disbursed_interest = disbursed + interest
-        
+       
         if month >= 1:
             prev_disbursed_interest = amount_disbursed[month-1] + interest_revenue[month-1]
         else:
             prev_disbursed_interest = 0
-            
+           
         if month >= 2:
             prev2_disbursed_interest = amount_disbursed[month-2] + interest_revenue[month-2]
         else:
             prev2_disbursed_interest = 0
-            
+           
         if month >= 3:
             prev3_disbursed_interest = amount_disbursed[month-3] + interest_revenue[month-3]
         else:
             prev3_disbursed_interest = 0
-            
-        aum_value = (current_disbursed_interest + 
-                    prev_disbursed_interest * 0.15 + 
-                    prev2_disbursed_interest * 0.10 + 
+           
+        aum_value = (current_disbursed_interest +
+                    prev_disbursed_interest * 0.15 +
+                    prev2_disbursed_interest * 0.10 +
                     prev3_disbursed_interest * 0.03)
         aum.append(aum_value)
-    
+   
     df = pd.DataFrame({
         'month': range(1, months + 1),
         'amount_invested': [x/1e7 for x in amount_invested],
@@ -916,7 +969,7 @@ def calculate_with_exact_formulas():
         'profit_loss': [x/1e7 for x in profit_loss],
         'aum': [x/1e7 for x in aum]
     })
-    
+   
     return df
 
 # Calculate metrics
@@ -952,7 +1005,7 @@ with col1:
         <div class="kpi-trend">Total deployment</div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
 with col2:
     st.markdown(f"""
     <div class="kpi-card green">
@@ -966,7 +1019,7 @@ with col2:
         <div class="kpi-trend">{num_months} months</div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
 with col3:
     final_month_disbursed = df['amount_disbursed'].iloc[-1]
     st.markdown(f"""
@@ -981,7 +1034,7 @@ with col3:
         <div class="kpi-trend">Latest month</div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
 with col4:
     total_profit_loss = df['profit_loss'].sum()
     st.markdown(f"""
@@ -996,7 +1049,7 @@ with col4:
         <div class="kpi-trend">{num_months} months cumulative</div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
 with col5:
     final_month_aum = df['aum'].iloc[-1]
     st.markdown(f"""
@@ -1035,8 +1088,8 @@ with col1:
 with col2:
     fig_revenue_costs = go.Figure()
     total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
-    total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
-                   df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
+    total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] +
+                   df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] +
                    df['salary'] + df['principal_return'])
 
     fig_revenue_costs.add_trace(go.Bar(
@@ -1209,7 +1262,7 @@ with summary_col1:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
     st.markdown(f"""
     <div class="summary-metric-card summary-card-green">
         <div class="summary-metric-icon">📊</div>
@@ -1219,7 +1272,7 @@ with summary_col1:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
     st.markdown(f"""
     <div class="summary-metric-card summary-card-teal">
         <div class="summary-metric-icon">📈</div>
@@ -1240,7 +1293,7 @@ with summary_col2:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
     st.markdown(f"""
     <div class="summary-metric-card summary-card-orange">
         <div class="summary-metric-icon">🎯</div>
@@ -1250,7 +1303,7 @@ with summary_col2:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
     st.markdown(f"""
     <div class="summary-metric-card summary-card-purple">
         <div class="summary-metric-icon">👥</div>
@@ -1271,7 +1324,7 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
     st.markdown(f"""
     <div class="summary-metric-card summary-card-green">
         <div class="summary-metric-icon">📊</div>
@@ -1281,7 +1334,7 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-    
+   
     st.markdown(f"""
     <div class="summary-metric-card summary-card-blue">
         <div class="summary-metric-icon">📅</div>
@@ -1290,12 +1343,4 @@ with summary_col3:
             <div class="summary-metric-value">{num_months} months</div>
         </div>
     </div>
-    """, unsafe_allow_html=True)0.1, key=f"prin_{month_num}")
-            else:
-                with prin_col2:
-                    val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
-            principal_values.append(val)
-    else:
-        for i in range(num_months):
-            month_num = i + 1
-            val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=
+    """, unsafe_allow_html=True)
