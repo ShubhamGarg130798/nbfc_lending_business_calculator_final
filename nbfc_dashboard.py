@@ -140,7 +140,7 @@ hr {
 }
 
 .main-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
+    background: linear-gradient(135deg, #3d4f6d 0%, #2d3748 50%, #1a1f35 100%);
     background-size: 200% 200%;
     animation: gradientShift 8s ease infinite;
     padding: 2rem 2.5rem;
@@ -148,7 +148,7 @@ hr {
     color: white;
     text-align: center;
     margin-bottom: 2rem;
-    box-shadow: 0 15px 50px rgba(102, 126, 234, 0.35), 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 50px rgba(45, 55, 72, 0.4), 0 5px 15px rgba(0,0,0,0.2);
     position: relative;
     overflow: hidden;
 }
