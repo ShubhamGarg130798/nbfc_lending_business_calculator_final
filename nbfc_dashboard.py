@@ -154,6 +154,17 @@ st.markdown("""
     padding-bottom: 0.5rem;
     border-bottom: 2px solid rgba(52, 152, 219, 0.3);
 }
+
+/* Section descriptions */
+.section-description {
+    color: #95a5a6;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    background: rgba(52, 73, 94, 0.3);
+    border-radius: 4px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -166,13 +177,27 @@ st.markdown("""
 
 # Sidebar for all inputs with collapsible sections
 st.sidebar.markdown("# 🎛️ Input Business Parameters")
+st.sidebar.markdown("---")
 
 # Projection Period - Expandable Section
 with st.sidebar.expander("📅 Projection Period", expanded=True):
-    num_months = st.number_input("Number of Months", min_value=1, max_value=48, value=12, step=1)
+    st.markdown("**Set your projection timeline**")
+    num_months = st.number_input(
+        "Number of Months", 
+        min_value=1, 
+        max_value=48, 
+        value=12, 
+        step=1,
+        help="Select the number of months for financial projections (1-48 months)"
+    )
+    st.caption(f"📊 Analyzing {num_months} month{'s' if num_months > 1 else ''} projection")
 
 # Capital Deployment Parameters - Expandable Section
 with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
+    st.markdown("**Monthly capital investment schedule**")
+    st.caption("Enter the amount of capital to be deployed each month")
+    st.markdown("")
+    
     # Create dynamic capital inputs based on number of months
     capital_values = []
     if num_months <= 12:
@@ -187,10 +212,26 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 
             if i % 2 == 0:
                 with cap_col1:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(
+                        f"M{month_num}", 
+                        min_value=0.0, 
+                        max_value=20.0, 
+                        value=default_val, 
+                        step=0.5, 
+                        key=f"cap_{month_num}",
+                        help=f"Capital for Month {month_num}"
+                    )
             else:
                 with cap_col2:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(
+                        f"M{month_num}", 
+                        min_value=0.0, 
+                        max_value=20.0, 
+                        value=default_val, 
+                        step=0.5, 
+                        key=f"cap_{month_num}",
+                        help=f"Capital for Month {month_num}"
+                    )
             capital_values.append(val)
     else:
         # Single column for more than 12 months
@@ -200,8 +241,20 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 default_val = [5.0, 4.0, 4.0, 4.0, 3.0][i]
             else:
                 default_val = 0.0
-            val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+            val = st.number_input(
+                f"Month {month_num}", 
+                min_value=0.0, 
+                max_value=20.0, 
+                value=default_val, 
+                step=0.5, 
+                key=f"cap_{month_num}",
+                help=f"Capital deployment for Month {month_num}"
+            )
             capital_values.append(val)
+    
+    # Show total capital at the bottom
+    st.markdown("---")
+    st.metric("Total Capital", f"₹{sum(capital_values):.2f} Cr")
 
 # Create individual variables for backward compatibility
 for i in range(48):  # Create all possible month variables
@@ -214,28 +267,126 @@ total_capital = sum(capital_values)
 
 # Business Parameters - Expandable Section
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
-    processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=25.0, value=11.8, step=0.1) / 100
-    monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
-    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=10.0, value=2.0, step=0.1) / 100
-    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
+    st.markdown("**Configure revenue generation rates**")
+    st.caption("Set fees and interest rates for loan products")
+    st.markdown("")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        processing_fees = st.number_input(
+            "Processing Fees (%)", 
+            min_value=0.0, 
+            max_value=25.0, 
+            value=11.8, 
+            step=0.1,
+            help="One-time fee charged on loan disbursement"
+        ) / 100
+        
+        monthly_interest_rate = st.number_input(
+            "Interest Rate (%)", 
+            min_value=0.0, 
+            max_value=50.0, 
+            value=30.0, 
+            step=0.5,
+            help="Monthly interest rate on loans"
+        ) / 100
+    
+    with col2:
+        marketing_rate = st.number_input(
+            "Marketing (%)", 
+            min_value=0.0, 
+            max_value=10.0, 
+            value=2.0, 
+            step=0.1,
+            help="Marketing expenses as % of disbursed amount"
+        ) / 100
+        
+        cost_of_funds_rate = st.number_input(
+            "Cost of Funds (%)", 
+            min_value=0.0, 
+            max_value=10.0, 
+            value=1.5, 
+            step=0.1,
+            help="Monthly cost of borrowing funds"
+        ) / 100
 
 # Operational expense rates - Expandable Section
-with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
-    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
+with st.sidebar.expander("🏢 Operational Expenses", expanded=False):
+    st.markdown("**Monthly operational cost structure**")
+    st.caption("Configure OPEX as percentage of AUM")
+    st.markdown("")
+    
+    opex_month1_value = st.number_input(
+        "Month 1 Fixed OPEX (₹)", 
+        min_value=0, 
+        max_value=5000000, 
+        value=1500000, 
+        step=50000,
+        help="Fixed operational cost for the first month"
+    )
     opex_month1 = opex_month1_value / 1e7  # Convert to crores for consistency
+    
+    st.markdown("**OPEX Rate (% of AUM) for Month 2 onwards:**")
 
     # Create dynamic OPEX inputs based on number of months (starting from month 2)
     opex_values = [opex_month1]  # Month 1 is already handled above
-    for i in range(1, num_months):  # Start from month 2
-        month_num = i + 1
-        if month_num <= 3:
-            default_val = 10.0
-        elif month_num <= 6:
-            default_val = 5.0
+    
+    if num_months > 1:
+        if num_months <= 12:
+            # Two columns for remaining months
+            opex_col1, opex_col2 = st.columns(2)
+            for i in range(1, num_months):  # Start from month 2
+                month_num = i + 1
+                if month_num <= 3:
+                    default_val = 10.0
+                elif month_num <= 6:
+                    default_val = 5.0
+                else:
+                    default_val = 4.0
+                
+                if i % 2 == 1:  # Odd indices go to col1
+                    with opex_col1:
+                        val = st.number_input(
+                            f"M{month_num}", 
+                            min_value=0.0, 
+                            max_value=30.0, 
+                            value=default_val, 
+                            step=0.5, 
+                            key=f"opex_{month_num}",
+                            help=f"OPEX rate for Month {month_num}"
+                        ) / 100
+                else:  # Even indices go to col2
+                    with opex_col2:
+                        val = st.number_input(
+                            f"M{month_num}", 
+                            min_value=0.0, 
+                            max_value=30.0, 
+                            value=default_val, 
+                            step=0.5, 
+                            key=f"opex_{month_num}",
+                            help=f"OPEX rate for Month {month_num}"
+                        ) / 100
+                opex_values.append(val)
         else:
-            default_val = 4.0
-        val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=30.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
-        opex_values.append(val)
+            # Single column for longer periods
+            for i in range(1, num_months):
+                month_num = i + 1
+                if month_num <= 3:
+                    default_val = 10.0
+                elif month_num <= 6:
+                    default_val = 5.0
+                else:
+                    default_val = 4.0
+                val = st.number_input(
+                    f"Month {month_num} Rate (%)", 
+                    min_value=0.0, 
+                    max_value=30.0, 
+                    value=default_val, 
+                    step=0.5, 
+                    key=f"opex_{month_num}",
+                    help=f"OPEX rate for Month {month_num}"
+                ) / 100
+                opex_values.append(val)
 
 # Create individual variables for backward compatibility
 for i in range(48):  # Create all possible month variables
@@ -246,28 +397,105 @@ for i in range(48):  # Create all possible month variables
 
 # Loan parameters - Expandable Section
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 22000, 1000)
+    st.markdown("**Loan product configuration**")
+    st.caption("Set average ticket size per customer")
+    st.markdown("")
+    
+    avg_ticket_size = st.number_input(
+        "Average Loan Ticket (₹)", 
+        min_value=10000, 
+        max_value=50000, 
+        value=22000, 
+        step=1000,
+        help="Average loan amount per customer"
+    )
+    
+    st.info(f"💡 At ₹{avg_ticket_size:,} per loan, ₹1 Cr disbursement = ~{int(1e7/avg_ticket_size):,} customers")
 
 # Collection parameters - Expandable Section
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
-    t0_collection = st.number_input("T+0 Collection Rate (%)", min_value=0, max_value=100, value=80, step=1) / 100
-    t30_collection = st.number_input("T+30 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
-    t60_collection = st.number_input("T+60 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
-    t90_collection = st.number_input("T+90 Collection Rate (%)", min_value=0, max_value=100, value=3, step=1) / 100
+    st.markdown("**Repayment collection schedule**")
+    st.caption("Define collection rates at different stages")
+    st.markdown("")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        t0_collection = st.number_input(
+            "T+0 Collection (%)", 
+            min_value=0, 
+            max_value=100, 
+            value=80, 
+            step=1,
+            help="Collection rate at time of disbursement"
+        ) / 100
+        
+        t30_collection = st.number_input(
+            "T+30 Collection (%)", 
+            min_value=0, 
+            max_value=100, 
+            value=5, 
+            step=1,
+            help="Additional collection after 30 days"
+        ) / 100
+    
+    with col2:
+        t60_collection = st.number_input(
+            "T+60 Collection (%)", 
+            min_value=0, 
+            max_value=100, 
+            value=5, 
+            step=1,
+            help="Additional collection after 60 days"
+        ) / 100
+        
+        t90_collection = st.number_input(
+            "T+90 Collection (%)", 
+            min_value=0, 
+            max_value=100, 
+            value=3, 
+            step=1,
+            help="Additional collection after 90 days"
+        ) / 100
 
     # Validation for collection rates
     total_collection_rate_percent = (t0_collection + t30_collection + t60_collection + t90_collection) * 100
+    st.markdown("---")
     if total_collection_rate_percent > 100:
-        st.error(f"⚠️ Total collection rate is {total_collection_rate_percent:.1f}% - should not exceed 100%")
+        st.error(f"⚠️ Total: {total_collection_rate_percent:.1f}% - exceeds 100%")
     else:
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
+        st.caption(f"Default rate: {100-total_collection_rate_percent:.1f}%")
+    
+    st.markdown("")
+    st.markdown("**API & Lead Costs**")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        api_cost_80_percent = st.number_input(
+            "Cost Per Non-Converted (₹)", 
+            min_value=0, 
+            max_value=100, 
+            value=35, 
+            step=5,
+            help="API cost per lead that doesn't convert (80% of leads)"
+        )
+    
+    with col2:
+        api_cost_20_percent = st.number_input(
+            "Cost Per Converted (₹)", 
+            min_value=0, 
+            max_value=150, 
+            value=95, 
+            step=5,
+            help="API cost per converted customer (20% of leads)"
+        )
 
-    # API costs
-    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 100, 35, 5)
-    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
-
-# Fixed costs - Expandable Section
+# Principal Return - Expandable Section
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
+    st.markdown("**Expected principal repayment schedule**")
+    st.caption("Enter expected principal returns from previous loans")
+    st.markdown("")
+    
     # Create dynamic principal return inputs based on number of months
     principal_values = []
     if num_months <= 12:
@@ -277,17 +505,43 @@ with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=
             month_num = i + 1
             if i % 2 == 0:
                 with prin_col1:
-                    val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
+                    val = st.number_input(
+                        f"M{month_num}", 
+                        min_value=0.0, 
+                        value=0.0, 
+                        step=0.1, 
+                        key=f"prin_{month_num}",
+                        help=f"Principal return for Month {month_num}"
+                    )
             else:
                 with prin_col2:
-                    val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
+                    val = st.number_input(
+                        f"M{month_num}", 
+                        min_value=0.0, 
+                        value=0.0, 
+                        step=0.1, 
+                        key=f"prin_{month_num}",
+                        help=f"Principal return for Month {month_num}"
+                    )
             principal_values.append(val)
     else:
         # Single column for more than 12 months
         for i in range(num_months):
             month_num = i + 1
-            val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
+            val = st.number_input(
+                f"Month {month_num}", 
+                min_value=0.0, 
+                value=0.0, 
+                step=0.1, 
+                key=f"prin_{month_num}",
+                help=f"Principal return for Month {month_num}"
+            )
             principal_values.append(val)
+    
+    # Show total principal return
+    if sum(principal_values) > 0:
+        st.markdown("---")
+        st.metric("Total Principal Return", f"₹{sum(principal_values):.2f} Cr")
 
 # Create individual variables for backward compatibility
 for i in range(48):  # Create all possible month variables
