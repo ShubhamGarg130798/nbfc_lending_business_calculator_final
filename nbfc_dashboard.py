@@ -416,14 +416,14 @@ header {visibility: hidden;}
 .summary-metric-card {
     background: white;
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 1rem 1.25rem;
     margin-bottom: 1rem;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
     border: 1px solid #f7fafc;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.875rem;
 }
 
 .summary-metric-card:hover {
@@ -432,27 +432,27 @@ header {visibility: hidden;}
 }
 
 .summary-metric-icon {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
 }
 
 .summary-metric-label {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #718096;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.125rem;
     text-transform: uppercase;
     letter-spacing: 0.3px;
 }
 
 .summary-metric-value {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 800;
     line-height: 1.2;
 }
