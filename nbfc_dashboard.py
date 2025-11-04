@@ -949,11 +949,11 @@ with col3:
     """, unsafe_allow_html=True)
     
 with col4:
-    final_month_profit = df['profit_loss'].iloc[-1]
+    total_profit_loss = df['profit_loss'].sum()
     st.markdown(f"""
     <div class="custom-metric metric-profit">
-        <div class="metric-label">🎯 Month {num_months} Profit</div>
-        <div class="metric-value">₹{final_month_profit:.2f} Cr</div>
+        <div class="metric-label">🎯 Total Profit/Loss ({num_months} months)</div>
+        <div class="metric-value">₹{total_profit_loss:.2f} Cr</div>
     </div>
     """, unsafe_allow_html=True)
     
