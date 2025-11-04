@@ -25,7 +25,7 @@ st.set_page_config(
     page_title="NBFC Lending Business Calculator",
     page_icon="💰",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Modern Dashboard CSS
@@ -48,6 +48,16 @@ st.markdown("""
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
 header {visibility: hidden;}
+
+/* Hide sidebar toggle button */
+[data-testid="collapsedControl"] {
+    display: none !important;
+}
+
+/* Hide sidebar completely */
+[data-testid="stSidebar"] {
+    display: none !important;
+}
 
 /* Main content area */
 .main .block-container {
@@ -304,71 +314,45 @@ header {visibility: hidden;}
     margin-bottom: 1rem;
 }
 
-/* Sidebar Styling */
-[data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #2c5282 0%, #2a4365 100%);
-    padding: 0;
-}
-
-[data-testid="stSidebar"] > div:first-child {
-    padding: 1.5rem 1.25rem;
-}
-
-/* Sidebar Title */
-[data-testid="stSidebar"] h1 {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-    font-size: 1.125rem !important;
-    margin-bottom: 1.5rem !important;
-    padding: 1rem !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-radius: 10px !important;
-    text-align: center !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-/* Sidebar Text */
-[data-testid="stSidebar"] * {
-    color: #ffffff !important;
-}
-
-/* Sidebar Expanders */
-[data-testid="stSidebar"] details summary {
-    background: rgba(255, 255, 255, 0.12) !important;
+/* Expander Styling for Main Area */
+details summary {
+    background: rgba(43, 108, 176, 0.08) !important;
     border-radius: 10px !important;
     padding: 0.875rem 1rem !important;
     margin: 0.5rem 0 !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border: 1px solid rgba(43, 108, 176, 0.15) !important;
     font-weight: 600 !important;
     font-size: 0.9375rem !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
+    color: #2c5282 !important;
 }
 
-[data-testid="stSidebar"] details summary:hover {
-    background: rgba(255, 255, 255, 0.18) !important;
-    border-color: rgba(255, 255, 255, 0.25) !important;
+details summary:hover {
+    background: rgba(43, 108, 176, 0.12) !important;
+    border-color: rgba(43, 108, 176, 0.25) !important;
 }
 
-[data-testid="stSidebar"] details[open] {
-    background: rgba(255, 255, 255, 0.05) !important;
+details[open] {
+    background: rgba(43, 108, 176, 0.03) !important;
     border-radius: 10px !important;
     padding: 0.5rem !important;
     margin: 0.5rem 0 !important;
+    border: 1px solid rgba(43, 108, 176, 0.1) !important;
 }
 
-/* Sidebar Labels */
-[data-testid="stSidebar"] label {
-    color: #e2e8f0 !important;
+/* Input Labels */
+label {
+    color: #2d3748 !important;
     font-weight: 600 !important;
     font-size: 0.875rem !important;
     margin-bottom: 0.5rem !important;
 }
 
-/* Sidebar Inputs */
-[data-testid="stSidebar"] input[type="number"] {
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+/* Number Inputs */
+input[type="number"] {
+    background: white !important;
+    border: 1px solid #e2e8f0 !important;
     color: #2d3748 !important;
     border-radius: 8px !important;
     padding: 0.625rem !important;
@@ -376,39 +360,10 @@ header {visibility: hidden;}
     font-size: 0.9375rem !important;
 }
 
-[data-testid="stSidebar"] input[type="number"]:focus {
+input[type="number"]:focus {
     border-color: #4299e1 !important;
     box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2) !important;
-    background: rgba(255, 255, 255, 1) !important;
-}
-
-/* Sidebar Buttons */
-[data-testid="stSidebar"] button {
-    background: rgba(66, 153, 225, 0.2) !important;
-    color: #ffffff !important;
-    border-radius: 6px !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-[data-testid="stSidebar"] button:hover {
-    background: rgba(66, 153, 225, 0.3) !important;
-}
-
-/* Success/Error Messages */
-[data-testid="stSidebar"] .stSuccess {
-    background: rgba(72, 187, 120, 0.15) !important;
-    border-left: 4px solid #48bb78 !important;
-    border-radius: 8px !important;
-    padding: 0.75rem !important;
-    color: #c6f6d5 !important;
-}
-
-[data-testid="stSidebar"] .stError {
-    background: rgba(245, 101, 101, 0.15) !important;
-    border-left: 4px solid #f56565 !important;
-    border-radius: 8px !important;
-    padding: 0.75rem !important;
-    color: #fed7d7 !important;
+    background: white !important;
 }
 
 /* Table Styling */
@@ -683,15 +638,15 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar for all inputs with collapsible sections
-st.sidebar.markdown("# 🎛️ Input Parameters")
+# Input Parameters Section
+st.markdown('<div class="section-header">📊 Input Parameters</div>', unsafe_allow_html=True)
 
 # Projection Period
-with st.sidebar.expander("📅 Projection Period", expanded=True):
+with st.expander("📅 Projection Period", expanded=True):
     num_months = st.number_input("Number of Months", min_value=1, max_value=48, value=12, step=1)
 
 # Capital Deployment Parameters
-with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
+with st.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
     capital_values = []
     if num_months <= 12:
         cap_col1, cap_col2 = st.columns(2)
@@ -728,14 +683,14 @@ for i in range(48):
 total_capital = sum(capital_values)
 
 # Business Parameters
-with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
+with st.expander("📈 Revenue Parameters", expanded=False):
     processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=25.0, value=11.8, step=0.1) / 100
     monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
     marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=10.0, value=2.0, step=0.1) / 100
     cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates
-with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
+with st.expander("🏢 Operational Expenses (%)", expanded=False):
     opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
     opex_month1 = opex_month1_value / 1e7
 
@@ -758,11 +713,11 @@ for i in range(48):
         globals()[f"opex_month{i+1}"] = 0.04
 
 # Loan parameters
-with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
+with st.expander("🎯 Loan Parameters", expanded=False):
     avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 22000, 1000)
 
 # Collection parameters
-with st.sidebar.expander("📊 Collection Parameters", expanded=False):
+with st.expander("📊 Collection Parameters", expanded=False):
     t0_collection = st.number_input("T+0 Collection Rate (%)", min_value=0, max_value=100, value=80, step=1) / 100
     t30_collection = st.number_input("T+30 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
     t60_collection = st.number_input("T+60 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
@@ -778,7 +733,7 @@ with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
 
 # Principal Return
-with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
+with st.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
     principal_values = []
     if num_months <= 12:
         prin_col1, prin_col2 = st.columns(2)
@@ -787,14 +742,6 @@ with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=
             if i % 2 == 0:
                 with prin_col1:
                     val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
-            else:
-                with prin_col2:
-                    val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
-            principal_values.append(val)
-    else:
-        for i in range(num_months):
-            month_num = i + 1
-            val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
             principal_values.append(val)
 
 for i in range(48):
@@ -1343,4 +1290,12 @@ with summary_col3:
             <div class="summary-metric-value">{num_months} months</div>
         </div>
     </div>
-    """, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)0.1, key=f"prin_{month_num}")
+            else:
+                with prin_col2:
+                    val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=0.1, key=f"prin_{month_num}")
+            principal_values.append(val)
+    else:
+        for i in range(num_months):
+            month_num = i + 1
+            val = st.number_input(f"Month {month_num} PR", min_value=0.0, value=0.0, step=
