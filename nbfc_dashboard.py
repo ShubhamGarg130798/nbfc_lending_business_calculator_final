@@ -64,77 +64,142 @@ st.markdown("""
 
 /* Custom Metrics Styling */
 .custom-metric {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%);
     backdrop-filter: blur(20px);
-    border: 2px solid rgba(102, 126, 234, 0.2);
-    padding: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    padding: 1.8rem 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     margin: 0.5rem 0;
     text-align: center;
-    height: 120px;
+    height: 140px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-metric::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--metric-color-1), var(--metric-color-2));
+    border-radius: 20px 20px 0 0;
 }
 
 .custom-metric:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 45px rgba(0,0,0,0.2);
-    border-color: rgba(102, 126, 234, 0.5);
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    border-color: var(--metric-border-color);
 }
 
 .metric-label {
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-bottom: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    opacity: 0.9;
 }
 
 .metric-value {
-    font-size: 1.4rem;
-    font-weight: 700;
+    font-size: 1.8rem;
+    font-weight: 800;
     margin: 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Individual metric colors with gradients */
+/* Individual metric colors with enhanced gradients */
 .metric-capital {
-    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
-    border-left: 4px solid #E74C3C;
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe3e3 100%);
+    --metric-color-1: #E74C3C;
+    --metric-color-2: #C0392B;
+    --metric-border-color: rgba(231, 76, 60, 0.4);
 }
-.metric-capital .metric-label { color: #E74C3C; }
-.metric-capital .metric-value { color: #C0392B; }
+.metric-capital .metric-label { 
+    color: #E74C3C; 
+    background: linear-gradient(135deg, #E74C3C, #C0392B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.metric-capital .metric-value { 
+    color: #C0392B; 
+}
 
 .metric-roi {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    border-left: 4px solid #3498DB;
+    background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+    --metric-color-1: #3498DB;
+    --metric-color-2: #2980B9;
+    --metric-border-color: rgba(52, 152, 219, 0.4);
 }
-.metric-roi .metric-label { color: #3498DB; }
-.metric-roi .metric-value { color: #2980B9; }
+.metric-roi .metric-label { 
+    color: #3498DB;
+    background: linear-gradient(135deg, #3498DB, #2980B9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.metric-roi .metric-value { 
+    color: #2980B9; 
+}
 
 .metric-disbursed {
     background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-    border-left: 4px solid #9B59B6;
+    --metric-color-1: #9B59B6;
+    --metric-color-2: #8E44AD;
+    --metric-border-color: rgba(155, 89, 182, 0.4);
 }
-.metric-disbursed .metric-label { color: #9B59B6; }
-.metric-disbursed .metric-value { color: #8E44AD; }
+.metric-disbursed .metric-label { 
+    color: #9B59B6;
+    background: linear-gradient(135deg, #9B59B6, #8E44AD);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.metric-disbursed .metric-value { 
+    color: #8E44AD; 
+}
 
 .metric-profit {
     background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
-    border-left: 4px solid #E67E22;
+    --metric-color-1: #E67E22;
+    --metric-color-2: #D35400;
+    --metric-border-color: rgba(230, 126, 34, 0.4);
 }
-.metric-profit .metric-label { color: #E67E22; }
-.metric-profit .metric-value { color: #D35400; }
+.metric-profit .metric-label { 
+    color: #E67E22;
+    background: linear-gradient(135deg, #E67E22, #D35400);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.metric-profit .metric-value { 
+    color: #D35400; 
+}
 
 .metric-aum {
     background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-    border-left: 4px solid #27AE60;
+    --metric-color-1: #27AE60;
+    --metric-color-2: #229954;
+    --metric-border-color: rgba(39, 174, 96, 0.4);
 }
-.metric-aum .metric-label { color: #27AE60; }
-.metric-aum .metric-value { color: #229954; }
+.metric-aum .metric-label { 
+    color: #27AE60;
+    background: linear-gradient(135deg, #27AE60, #229954);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.metric-aum .metric-value { 
+    color: #229954; 
+}
 
 /* Modern Sidebar Styling */
 [data-testid="stSidebar"] {
@@ -391,7 +456,7 @@ for i in range(48):  # Create all possible month variables
 
 # Loan parameters - Expandable Section
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 0, 500000, 25000, 1000)
+    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 22000, 1000)
 
 # Collection parameters - Expandable Section
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
@@ -980,5 +1045,3 @@ st.write(f"**Total Revenue:** ₹{total_revenue_sum:.2f} Cr")
 st.write(f"**Total Costs:** ₹{total_costs_sum:.2f} Cr")
 
 #st.write(f"**Profit Margin:** {(net_profit_sum/total_revenue_sum*100):.1f}%")
-
-
