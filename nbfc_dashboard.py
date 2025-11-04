@@ -27,17 +27,26 @@ st.set_page_config(
     layout="wide"
 )
 
-# Enhanced Custom CSS
+# Enhanced Custom CSS with improved colors and design
 st.markdown("""
 <style>
 .main-header {
-    background: linear-gradient(90deg, #2E8B57, #4169E1);
-    padding: 20px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    border-radius: 15px;
     color: white;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.4);
 }
+
+.main-header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
 .metric-container {
     background-color: #f0f2f6;
     padding: 15px;
@@ -45,6 +54,7 @@ st.markdown("""
     border-left: 4px solid #2E8B57;
     margin: 5px 0;
 }
+
 .calculation-header {
     background-color: #e1f5fe;
     padding: 10px;
@@ -54,12 +64,12 @@ st.markdown("""
 
 /* Custom Metrics Styling */
 .custom-metric {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(102, 126, 234, 0.2);
     padding: 1.5rem;
     border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     transition: all 0.3s ease;
     margin: 0.5rem 0;
     text-align: center;
@@ -71,8 +81,9 @@ st.markdown("""
 }
 
 .custom-metric:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 45px rgba(0,0,0,0.2);
+    border-color: rgba(102, 126, 234, 0.5);
 }
 
 .metric-label {
@@ -84,75 +95,182 @@ st.markdown("""
 }
 
 .metric-value {
-    font-size: 1.3rem;
-    font-weight: 600;
+    font-size: 1.4rem;
+    font-weight: 700;
     margin: 0;
 }
 
-/* Individual metric colors */
+/* Individual metric colors with gradients */
+.metric-capital {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+    border-left: 4px solid #E74C3C;
+}
 .metric-capital .metric-label { color: #E74C3C; }
 .metric-capital .metric-value { color: #C0392B; }
 
+.metric-roi {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-left: 4px solid #3498DB;
+}
 .metric-roi .metric-label { color: #3498DB; }
 .metric-roi .metric-value { color: #2980B9; }
 
+.metric-disbursed {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    border-left: 4px solid #9B59B6;
+}
 .metric-disbursed .metric-label { color: #9B59B6; }
 .metric-disbursed .metric-value { color: #8E44AD; }
 
+.metric-profit {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+    border-left: 4px solid #E67E22;
+}
 .metric-profit .metric-label { color: #E67E22; }
 .metric-profit .metric-value { color: #D35400; }
 
+.metric-aum {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-left: 4px solid #27AE60;
+}
 .metric-aum .metric-label { color: #27AE60; }
 .metric-aum .metric-value { color: #229954; }
 
-/* Expander styling for sidebar */
-.css-1d391kg .streamlit-expanderHeader {
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(155, 89, 182, 0.2) 100%);
-    border-radius: 8px;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border: 1px solid rgba(52, 152, 219, 0.3);
-    color: #ecf0f1 !important;
-    font-weight: 600;
+/* Modern Sidebar Styling */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #1a1f35 0%, #2d3748 50%, #1a1f35 100%);
+    padding: 1.5rem 1rem;
 }
 
-.css-1d391kg .streamlit-expanderHeader:hover {
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.3) 0%, rgba(155, 89, 182, 0.3) 100%);
-}
-
-/* Sidebar styling */
-.css-1d391kg {
-    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+/* Sidebar main title */
+[data-testid="stSidebar"] h1 {
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
     padding: 1rem;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+    text-align: center;
+}
+
+/* Expander styling for sidebar */
+[data-testid="stSidebar"] .streamlit-expanderHeader {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    border-radius: 12px;
+    padding: 0.8rem 1rem;
+    margin: 0.7rem 0;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+[data-testid="stSidebar"] .streamlit-expanderHeader:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
+    border-color: rgba(102, 126, 234, 0.5);
+    transform: translateX(5px);
+}
+
+/* Expander content area */
+[data-testid="stSidebar"] .streamlit-expanderContent {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0.5rem;
 }
 
 /* Sidebar input labels */
-.css-1d391kg label {
-    color: #bdc3c7 !important;
-    font-weight: 500;
+[data-testid="stSidebar"] label {
+    color: #e2e8f0 !important;
+    font-weight: 600;
     font-size: 0.9rem;
+    margin-bottom: 0.5rem;
 }
 
 /* Sidebar number input styling */
-.css-1d391kg .stNumberInput input {
-    background: rgba(52, 73, 94, 0.8) !important;
-    border: 1px solid rgba(149, 165, 166, 0.3) !important;
-    color: #ecf0f1 !important;
+[data-testid="stSidebar"] input[type="number"] {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 2px solid rgba(102, 126, 234, 0.3) !important;
+    color: #ffffff !important;
+    border-radius: 8px;
+    padding: 0.6rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+[data-testid="stSidebar"] input[type="number"]:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-testid="stSidebar"] input[type="number"]:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Number input buttons */
+[data-testid="stSidebar"] button[kind="icon"] {
+    color: #667eea !important;
+    background: rgba(102, 126, 234, 0.1);
     border-radius: 6px;
 }
 
-.css-1d391kg .stNumberInput input:focus {
-    border-color: #3498db !important;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
+[data-testid="stSidebar"] button[kind="icon"]:hover {
+    background: rgba(102, 126, 234, 0.2);
 }
 
-/* Enhanced sidebar headers */
-.css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3 {
-    color: #ecf0f1 !important;
+/* Enhanced sidebar section headers */
+[data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+    color: #ffffff !important;
     font-weight: 600;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid rgba(52, 152, 219, 0.3);
+    border-bottom: 2px solid rgba(102, 126, 234, 0.4);
+}
+
+/* Success/Error messages in sidebar */
+[data-testid="stSidebar"] .stSuccess {
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.15) 0%, rgba(46, 213, 115, 0.15) 100%);
+    border-left: 4px solid #27ae60;
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: #a8e6a1;
+}
+
+[data-testid="stSidebar"] .stError {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.15) 0%, rgba(192, 57, 43, 0.15) 100%);
+    border-left: 4px solid #e74c3c;
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: #ffb3b3;
+}
+
+/* Column dividers in expanders */
+[data-testid="stSidebar"] [data-testid="column"] {
+    padding: 0.3rem;
+}
+
+/* Scrollbar styling for sidebar */
+[data-testid="stSidebar"]::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-testid="stSidebar"]::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+[data-testid="stSidebar"]::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+[data-testid="stSidebar"]::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #7c8ff0 0%, #8a5fb8 100%);
 }
 </style>
 """, unsafe_allow_html=True)
