@@ -45,16 +45,39 @@ st.markdown("""
 /* Section headers styling */
 h2 {
     color: #2d3748 !important;
-    font-weight: 700 !important;
-    font-size: 1.8rem !important;
-    margin-top: 2rem !important;
+    font-weight: 800 !important;
+    font-size: 2rem !important;
+    margin-top: 2.5rem !important;
     margin-bottom: 1.5rem !important;
-    padding-bottom: 0.5rem !important;
-    border-bottom: 3px solid #667eea !important;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
+    padding: 1rem 1.5rem !important;
+    padding-bottom: 1rem !important;
+    border-bottom: none !important;
+    background: linear-gradient(135deg, #3d4f6d 0%, #2d3748 100%) !important;
+    color: white !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 15px rgba(45, 55, 72, 0.3) !important;
+    position: relative !important;
+    padding-left: 4rem !important;
+}
+
+h2::before {
+    position: absolute;
+    left: 1.2rem;
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+/* Specific icons for each section */
+h2:nth-of-type(1)::before {
+    content: '📊';
+}
+
+h2:nth-of-type(2)::before {
+    content: '📋';
+}
+
+h2:nth-of-type(3)::before {
+    content: '💼';
 }
 
 /* Section dividers */
@@ -968,7 +991,7 @@ with col5:
 
 # Charts
 st.markdown("---")
-st.markdown("## 📈 Business Analysis Charts")
+st.markdown("## Business Analysis Charts")
 
 # Row 1: AUM Chart and Monthly Revenue vs Cost Analysis (side by side)
 col1, col2 = st.columns(2)
@@ -1176,7 +1199,7 @@ with col2:
 
 # Complete calculations table
 st.markdown("---")
-st.markdown("## 📋 Complete Monthly Calculations")
+st.markdown("## Complete Monthly Calculations")
 
 # Round for display
 display_df = df.round(3)
@@ -1209,7 +1232,7 @@ st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
 
 # Summary and export
 st.markdown("---")
-st.markdown("## 📊 Financial Summary")
+st.markdown("## Financial Summary")
 
 st.markdown(f"### 💰 {num_months}-Month Summary")
 total_revenue_sum = total_revenue.sum()
