@@ -41,7 +41,7 @@ st.markdown("""
 
 /* Main app background */
 .stApp {
-    background: #f7fafc;
+    background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
 }
 
 /* Hide Streamlit elements */
@@ -57,53 +57,96 @@ header {visibility: hidden;}
 
 /* Dashboard Header */
 .dashboard-header {
-    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
-    padding: 2rem 2.5rem;
+    background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%);
+    padding: 2.5rem 3rem;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.15);
-    margin-bottom: 2rem;
+    box-shadow: 0 8px 24px rgba(43, 108, 176, 0.2);
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.dashboard-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.dashboard-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    border-radius: 50%;
 }
 
 .dashboard-title {
-    font-size: 1.875rem;
+    font-size: 2.25rem;
     font-weight: 800;
     color: white;
     margin: 0;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: relative;
+    z-index: 1;
+    letter-spacing: -0.5px;
 }
 
 .dashboard-subtitle {
-    font-size: 1rem;
-    color: rgba(255,255,255,0.9);
-    margin: 0.5rem 0 0 0;
+    font-size: 1.125rem;
+    color: rgba(255,255,255,0.95);
+    margin: 0.75rem 0 0 0;
     font-weight: 500;
+    position: relative;
+    z-index: 1;
 }
 
 /* Section Headers */
 .section-header {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #2d3748;
-    margin: 2.5rem 0 1.25rem 0;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e2e8f0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1a365d;
+    margin: 3rem 0 1.5rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid #e2e8f0;
+    position: relative;
+    letter-spacing: -0.5px;
+}
+
+.section-header::before {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #2b6cb0, #4299e1);
 }
 
 /* KPI Card Styles - Modern Dashboard Look */
 .kpi-card {
     background: white;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
-    border-left: 4px solid var(--card-color);
+    border-left: 5px solid var(--card-color);
     position: relative;
+    border: 1px solid #f7fafc;
 }
 
 .kpi-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08);
+    border-color: var(--card-color);
 }
 
 .kpi-header {
@@ -177,16 +220,17 @@ header {visibility: hidden;}
 /* Chart Container */
 .chart-container {
     background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    margin: 1rem 0;
+    border-radius: 14px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+    margin: 1.5rem 0;
+    border: 1px solid #f7fafc;
 }
 
 .chart-title {
     font-size: 1.125rem;
     font-weight: 700;
-    color: #2d3748;
+    color: #1a365d;
     margin-bottom: 1rem;
 }
 
@@ -300,18 +344,21 @@ header {visibility: hidden;}
 /* Table Styling */
 [data-testid="stDataFrame"] {
     background: white !important;
-    border-radius: 12px !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03) !important;
     overflow: hidden !important;
+    border: 1px solid #f7fafc !important;
 }
 
 [data-testid="stDataFrame"] thead tr th {
-    background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%) !important;
+    background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%) !important;
     color: white !important;
     font-weight: 700 !important;
-    padding: 1rem !important;
+    padding: 1.125rem !important;
     font-size: 0.875rem !important;
     border: none !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
 }
 
 [data-testid="stDataFrame"] tbody tr:hover {
@@ -328,27 +375,41 @@ header {visibility: hidden;}
 /* Plotly Charts */
 [data-testid="stPlotlyChart"] {
     background: white !important;
-    border-radius: 12px !important;
-    padding: 1rem !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+    border-radius: 14px !important;
+    padding: 1.5rem !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03) !important;
+    border: 1px solid #f7fafc !important;
 }
 
 /* Summary Section */
 .summary-box {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    margin: 1rem 0;
+    background: linear-gradient(135deg, #ffffff 0%, #fafbfc 100%);
+    border-radius: 14px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03);
+    margin: 1.5rem 0;
+    border: 1px solid #e2e8f0;
 }
 
 .summary-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #2d3748;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #e2e8f0;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1a365d;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid #e2e8f0;
+    letter-spacing: -0.5px;
+    position: relative;
+}
+
+.summary-title::before {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #2b6cb0, #4299e1);
 }
 
 .stMarkdown p {
@@ -383,7 +444,7 @@ header {visibility: hidden;}
 st.markdown("""
 <div class="dashboard-header">
     <div class="dashboard-title">💰 NBFC Lending Business Calculator</div>
-    <div class="dashboard-subtitle">Real-time financial projections and business insights</div>
+    <div class="dashboard-subtitle">Real-time financial projections and business insights • Investor Presentation</div>
 </div>
 """, unsafe_allow_html=True)
 
