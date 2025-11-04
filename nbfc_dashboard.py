@@ -15,7 +15,7 @@ if not st.session_state.authenticated:
     if password == PASSWORD:
         st.session_state.authenticated = True
         st.success("Access granted. Welcome!")
-        st.rerun()  # <--- forces rerun to load dashboard
+        st.rerun()
     elif password:
         st.error("Incorrect password")
     st.stop()
@@ -27,7 +27,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Enhanced Custom CSS with improved colors and design
+# Enhanced Custom CSS with complete visibility fixes
 st.markdown("""
 <style>
 .main-header {
@@ -139,151 +139,134 @@ st.markdown("""
 /* Modern Sidebar Styling */
 [data-testid="stSidebar"] {
     background: linear-gradient(180deg, #1a1f35 0%, #2d3748 50%, #1a1f35 100%);
+}
+
+[data-testid="stSidebar"] > div:first-child {
     padding: 1.5rem 1rem;
 }
 
 /* Sidebar main title */
 [data-testid="stSidebar"] h1 {
     color: #ffffff !important;
-    font-weight: 700;
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
-    border-radius: 12px;
-    border-left: 4px solid #667eea;
-    text-align: center;
+    font-weight: 700 !important;
+    font-size: 1.3rem !important;
+    margin-bottom: 1.5rem !important;
+    padding: 1rem !important;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%) !important;
+    border-radius: 12px !important;
+    border-left: 4px solid #667eea !important;
+    text-align: center !important;
 }
 
-/* Expander styling for sidebar */
-[data-testid="stSidebar"] .streamlit-expanderHeader {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
-    border-radius: 12px;
-    padding: 0.8rem 1rem;
-    margin: 0.7rem 0;
-    border: 2px solid rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
-}
-
-[data-testid="stSidebar"] .streamlit-expanderHeader p {
+/* Force all sidebar text to be white */
+[data-testid="stSidebar"] * {
     color: #ffffff !important;
-    font-weight: 600;
-    font-size: 1rem;
 }
 
-[data-testid="stSidebar"] .streamlit-expanderHeader svg {
-    fill: #ffffff !important;
+/* Expander header - make it bright and visible */
+[data-testid="stSidebar"] details summary {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%) !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    margin: 0.7rem 0 !important;
+    border: 2px solid rgba(102, 126, 234, 0.5) !important;
+    font-weight: 600 !important;
+    font-size: 1.05rem !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
 }
 
-[data-testid="stSidebar"] .streamlit-expanderHeader:hover {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.25) 100%);
-    border-color: rgba(102, 126, 234, 0.5);
-    transform: translateX(5px);
+[data-testid="stSidebar"] details summary:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%) !important;
+    border-color: rgba(102, 126, 234, 0.7) !important;
+    transform: translateX(5px) !important;
 }
 
-/* Expander content area */
-[data-testid="stSidebar"] .streamlit-expanderContent {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    padding: 1rem;
-    margin-top: 0.5rem;
-    border: 1px solid rgba(102, 126, 234, 0.2);
+/* Expander content styling */
+[data-testid="stSidebar"] details[open] {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+    padding: 0.5rem !important;
+    margin: 0.5rem 0 !important;
 }
 
-/* Sidebar input labels */
+/* Input labels - make them bright white */
 [data-testid="stSidebar"] label {
     color: #ffffff !important;
-    font-weight: 600;
-    font-size: 0.95rem;
-    margin-bottom: 0.5rem;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 0.5rem !important;
+    display: block !important;
 }
 
-/* Specific styling for labels inside expanders */
-[data-testid="stSidebar"] .streamlit-expanderContent label {
-    color: #f0f4f8 !important;
-}
-
-/* Sidebar number input styling */
+/* Number inputs - bright and visible */
 [data-testid="stSidebar"] input[type="number"] {
-    background: rgba(255, 255, 255, 0.15) !important;
-    border: 2px solid rgba(102, 126, 234, 0.4) !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 2px solid rgba(102, 126, 234, 0.5) !important;
     color: #ffffff !important;
-    border-radius: 8px;
-    padding: 0.6rem;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-}
-
-/* Placeholder text */
-[data-testid="stSidebar"] input[type="number"]::placeholder {
-    color: rgba(255, 255, 255, 0.5) !important;
+    border-radius: 8px !important;
+    padding: 0.7rem !important;
+    font-weight: 600 !important;
+    font-size: 1.05rem !important;
 }
 
 [data-testid="stSidebar"] input[type="number"]:focus {
     border-color: #667eea !important;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3) !important;
-    background: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.4) !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    outline: none !important;
 }
 
 [data-testid="stSidebar"] input[type="number"]:hover {
-    background: rgba(255, 255, 255, 0.12) !important;
-    border-color: rgba(102, 126, 234, 0.4) !important;
+    background: rgba(255, 255, 255, 0.22) !important;
+    border-color: rgba(102, 126, 234, 0.6) !important;
 }
 
-/* Number input buttons */
-[data-testid="stSidebar"] button[kind="icon"] {
-    color: #667eea !important;
-    background: rgba(102, 126, 234, 0.1);
-    border-radius: 6px;
-}
-
-[data-testid="stSidebar"] button[kind="icon"]:hover {
-    background: rgba(102, 126, 234, 0.2);
-}
-
-/* Enhanced sidebar section headers */
-[data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {
+/* Number input buttons (increment/decrement) */
+[data-testid="stSidebar"] button {
+    background: rgba(102, 126, 234, 0.3) !important;
     color: #ffffff !important;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid rgba(102, 126, 234, 0.4);
+    border-radius: 6px !important;
+    font-weight: 700 !important;
 }
 
-/* Success/Error messages in sidebar */
+[data-testid="stSidebar"] button:hover {
+    background: rgba(102, 126, 234, 0.5) !important;
+}
+
+/* Headers inside sidebar */
+[data-testid="stSidebar"] h2, 
+[data-testid="stSidebar"] h3 {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Success/Error messages */
 [data-testid="stSidebar"] .stSuccess {
-    background: linear-gradient(135deg, rgba(39, 174, 96, 0.2) 0%, rgba(46, 213, 115, 0.2) 100%);
-    border-left: 4px solid #27ae60;
-    border-radius: 8px;
-    padding: 0.8rem;
-}
-
-[data-testid="stSidebar"] .stSuccess p {
-    color: #a8e6a1 !important;
-    font-weight: 600;
+    background: linear-gradient(135deg, rgba(39, 174, 96, 0.25) 0%, rgba(46, 213, 115, 0.25) 100%) !important;
+    border-left: 4px solid #27ae60 !important;
+    border-radius: 8px !important;
+    padding: 0.8rem !important;
 }
 
 [data-testid="stSidebar"] .stError {
-    background: linear-gradient(135deg, rgba(231, 76, 60, 0.2) 0%, rgba(192, 57, 43, 0.2) 100%);
-    border-left: 4px solid #e74c3c;
-    border-radius: 8px;
-    padding: 0.8rem;
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.25) 0%, rgba(192, 57, 43, 0.25) 100%) !important;
+    border-left: 4px solid #e74c3c !important;
+    border-radius: 8px !important;
+    padding: 0.8rem !important;
 }
 
-[data-testid="stSidebar"] .stError p {
-    color: #ffb3b3 !important;
-    font-weight: 600;
-}
-
-/* Column dividers in expanders */
+/* Column dividers */
 [data-testid="stSidebar"] [data-testid="column"] {
-    padding: 0.3rem;
+    padding: 0.3rem !important;
 }
 
-/* Scrollbar styling for sidebar */
+/* Scrollbar */
 [data-testid="stSidebar"]::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 [data-testid="stSidebar"]::-webkit-scrollbar-track {
@@ -300,16 +283,21 @@ st.markdown("""
     background: linear-gradient(180deg, #7c8ff0 0%, #8a5fb8 100%);
 }
 
-/* Ensure all text in sidebar is visible */
-[data-testid="stSidebar"] p,
-[data-testid="stSidebar"] span,
-[data-testid="stSidebar"] div {
-    color: #ffffff;
+/* Ensure the number input widget container is visible */
+[data-testid="stSidebar"] [data-testid="stNumberInput"] {
+    margin: 0.5rem 0 !important;
 }
 
-/* Fix for number input increment/decrement buttons text */
-[data-testid="stSidebar"] button[data-testid="baseButton-secondary"] {
-    color: #667eea !important;
+/* Make the number input widget inner elements visible */
+[data-testid="stSidebar"] [data-testid="stNumberInput"] > div {
+    background: transparent !important;
+}
+
+/* Style the steppers/buttons more clearly */
+[data-testid="stSidebar"] [data-testid="stNumberInput"] button {
+    border: 1px solid rgba(102, 126, 234, 0.4) !important;
+    min-width: 40px !important;
+    height: 40px !important;
 }
 </style>
 """, unsafe_allow_html=True)
