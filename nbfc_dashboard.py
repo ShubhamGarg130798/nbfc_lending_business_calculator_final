@@ -30,9 +30,18 @@ st.set_page_config(
 
 # Clear old cached values on version change
 if 'version' not in st.session_state:
-    st.session_state.version = '2.0'
+    st.session_state.version = '3.0'
     st.cache_data.clear()
     st.cache_resource.clear()
+elif st.session_state.version != '3.0':
+    st.session_state.version = '3.0'
+    # Clear all widget states except authentication
+    for key in list(st.session_state.keys()):
+        if key != 'authenticated' and key != 'version':
+            del st.session_state[key]
+    st.cache_data.clear()
+    st.cache_resource.clear()
+    st.rerun()
 
 # Modern Dashboard CSS
 st.markdown("""
@@ -746,14 +755,14 @@ total_capital = sum(capital_values)
 
 # Business Parameters
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
-    processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=100.0, value=11.8, step=0.1) / 100
-    monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
-    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=100.0, value=2.0, step=0.1) / 100
-    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=100.0, value=1.5, step=0.1) / 100
+    processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=100.0, value=11.8, step=0.1, key="pf_v2") / 100
+    monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5, key="mir_v2") / 100
+    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=100.0, value=2.0, step=0.1, key="mr_v2") / 100
+    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=100.0, value=1.5, step=0.1, key="cof_v2") / 100
 
 # Operational expense rates
 with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
-    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 50000000, 1500000, 50000)
+    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 50000000, 1500000, 50000, key="opex_m1_v2")
     opex_month1 = opex_month1_value / 1e7
 
     opex_values = [opex_month1]
@@ -776,7 +785,7 @@ for i in range(48):
 
 # Loan parameters
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 30000, 1000)
+    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 30000, 1000, key="avg_ticket_v2")
 
 # Collection parameters
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
@@ -791,8 +800,8 @@ with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     else:
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
 
-    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 1000, 35, 5)
-    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 15000, 80, 5)
+    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 1000, 35, 5, key="api_80_v2")
+    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 15000, 80, 5, key="api_20_v2")
 
 # Principal Return
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
