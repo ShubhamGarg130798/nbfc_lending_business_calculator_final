@@ -83,11 +83,11 @@ st.markdown("""
 .main-header {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
     backdrop-filter: blur(20px);
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    padding: 20px 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.12);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    margin-bottom: 30px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
@@ -96,16 +96,16 @@ st.markdown("""
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     margin: 0;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
 }
 
 .main-header p {
     color: #7f8c8d;
-    font-size: 1rem;
-    margin-top: 8px;
+    font-size: 0.9rem;
+    margin-top: 5px;
     font-weight: 500;
 }
 
@@ -114,13 +114,13 @@ st.markdown("""
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 1.8rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    padding: 1.2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    margin: 0.5rem 0;
+    margin: 0.4rem 0;
     text-align: center;
-    height: 140px;
+    height: 110px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -215,11 +215,11 @@ st.markdown("""
 .section-header {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
     backdrop-filter: blur(20px);
-    padding: 1.5rem;
-    border-radius: 15px;
-    margin: 2rem 0 1rem 0;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    margin: 1.5rem 0 1rem 0;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.08);
 }
 
 .section-header h2 {
@@ -227,7 +227,7 @@ st.markdown("""
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
     margin: 0;
     letter-spacing: -0.3px;
@@ -247,12 +247,12 @@ st.markdown("""
 [data-testid="stSidebar"] h1,
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
-    color: #ecf0f1 !important;
+    color: #ffffff !important;
     font-weight: 600;
-    font-size: 0.95rem;
-    margin: 1.2rem 0 0.8rem 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid rgba(149, 165, 166, 0.3);
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0.5rem 0;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(149, 165, 166, 0.2);
     letter-spacing: 0.3px;
 }
 
@@ -260,12 +260,12 @@ st.markdown("""
 .streamlit-expanderHeader {
     background: rgba(52, 73, 94, 0.6) !important;
     border-radius: 8px !important;
-    padding: 0.7rem !important;
-    margin: 0.5rem 0 !important;
+    padding: 0.5rem 0.7rem !important;
+    margin: 0.3rem 0 !important;
     border: 1px solid rgba(149, 165, 166, 0.2) !important;
-    color: #ecf0f1 !important;
+    color: #ffffff !important;
     font-weight: 600 !important;
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important;
     transition: all 0.3s ease !important;
 }
 
@@ -276,10 +276,10 @@ st.markdown("""
 
 /* Sidebar labels */
 [data-testid="stSidebar"] label {
-    color: #bdc3c7 !important;
-    font-weight: 600 !important;
-    font-size: 0.9rem !important;
-    margin-bottom: 0.5rem !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    font-size: 0.85rem !important;
+    margin-bottom: 0.3rem !important;
 }
 
 /* Sidebar number inputs */
@@ -752,7 +752,7 @@ else:
     period_roi = 0
 
 # Key Performance Indicators with enhanced styling
-st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
 
 col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -805,7 +805,7 @@ with col5:
     """, unsafe_allow_html=True)
 
 # Charts section with enhanced styling
-st.markdown("<div style='margin: 3rem 0;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
 st.markdown("""
 <div class="section-header">
     <h2>📊 Business Analytics & Insights</h2>
@@ -1070,7 +1070,7 @@ with col2:
     st.markdown('</div>', unsafe_allow_html=True)
 
 # Complete calculations table
-st.markdown("<div style='margin: 3rem 0;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
 st.markdown("""
 <div class="section-header">
     <h2>📋 Detailed Monthly Calculations</h2>
@@ -1107,7 +1107,7 @@ display_df = display_df.rename(columns=column_names)
 st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
 
 # Summary and export
-st.markdown("<div style='margin: 3rem 0;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
 st.markdown("""
 <div class="section-header">
     <h2>📊 Executive Summary</h2>
