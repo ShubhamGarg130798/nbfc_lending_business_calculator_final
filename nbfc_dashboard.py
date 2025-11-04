@@ -354,22 +354,61 @@ header {visibility: hidden;}
     background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%) !important;
     color: white !important;
     font-weight: 700 !important;
-    padding: 1.125rem !important;
-    font-size: 0.875rem !important;
+    padding: 1.125rem 1rem !important;
+    font-size: 0.8125rem !important;
     border: none !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
+    text-align: center !important;
+    border-right: 1px solid rgba(255,255,255,0.1) !important;
+}
+
+[data-testid="stDataFrame"] thead tr th:last-child {
+    border-right: none !important;
+}
+
+[data-testid="stDataFrame"] tbody tr {
+    transition: all 0.2s ease !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:nth-child(even) {
+    background: #f8fafc !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
+    background: white !important;
 }
 
 [data-testid="stDataFrame"] tbody tr:hover {
-    background: #f7fafc !important;
+    background: linear-gradient(90deg, #ebf8ff 0%, #f0f9ff 100%) !important;
+    transform: scale(1.002) !important;
+    box-shadow: 0 2px 8px rgba(43, 108, 176, 0.08) !important;
 }
 
 [data-testid="stDataFrame"] tbody td {
-    color: #4a5568 !important;
-    padding: 0.875rem !important;
+    color: #2d3748 !important;
+    padding: 0.875rem 1rem !important;
     border-bottom: 1px solid #e2e8f0 !important;
     font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    border-right: 1px solid #f1f5f9 !important;
+}
+
+[data-testid="stDataFrame"] tbody td:last-child {
+    border-right: none !important;
+}
+
+/* First column (Month) styling */
+[data-testid="stDataFrame"] tbody td:first-child {
+    font-weight: 700 !important;
+    color: #1a365d !important;
+    background: linear-gradient(90deg, #f1f5f9 0%, transparent 100%) !important;
+}
+
+/* Highlight on hover for first column */
+[data-testid="stDataFrame"] tbody tr:hover td:first-child {
+    background: linear-gradient(90deg, #dbeafe 0%, transparent 100%) !important;
 }
 
 /* Plotly Charts */
