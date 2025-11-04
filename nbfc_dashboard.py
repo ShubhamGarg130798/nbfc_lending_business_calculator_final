@@ -93,7 +93,7 @@ header {visibility: hidden;}
 .kpi-card {
     background: white;
     border-radius: 12px;
-    padding: 1.75rem;
+    padding: 1.25rem 1.5rem;
     box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
@@ -110,31 +110,31 @@ header {visibility: hidden;}
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .kpi-icon {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     background: var(--card-bg);
 }
 
 .kpi-label {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #718096;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .kpi-value {
-    font-size: 2.25rem;
+    font-size: 1.75rem;
     font-weight: 800;
     color: var(--card-color);
     margin: 0;
@@ -142,10 +142,10 @@ header {visibility: hidden;}
 }
 
 .kpi-trend {
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: #48bb78;
-    margin-top: 0.5rem;
+    margin-top: 0.4rem;
 }
 
 /* Color Variables for KPI Cards */
