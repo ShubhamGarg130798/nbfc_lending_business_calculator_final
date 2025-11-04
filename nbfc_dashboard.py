@@ -96,16 +96,16 @@ st.markdown("""
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: 3rem;
-    font-weight: 800;
+    font-size: 2.2rem;
+    font-weight: 700;
     margin: 0;
-    letter-spacing: -1px;
+    letter-spacing: -0.5px;
 }
 
 .main-header p {
     color: #7f8c8d;
-    font-size: 1.1rem;
-    margin-top: 10px;
+    font-size: 1rem;
+    margin-top: 8px;
     font-weight: 500;
 }
 
@@ -152,62 +152,53 @@ st.markdown("""
 }
 
 .metric-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.5rem;
-    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    font-size: 2rem;
+    margin-bottom: 0.3rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
 .metric-label {
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.75rem;
+    font-weight: 600;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.8;
+    letter-spacing: 0.5px;
+    color: #5a6c7d;
 }
 
 .metric-value {
-    font-size: 1.8rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
     margin: 0;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
+    color: #2c3e50;
 }
 
-/* Individual metric colors with CSS variables */
+/* Individual metric colors with CSS variables - more professional palette */
 .metric-capital {
-    --gradient-start: #e74c3c;
-    --gradient-end: #c0392b;
+    --gradient-start: #5a6c7d;
+    --gradient-end: #475666;
 }
-.metric-capital .metric-label { color: #e74c3c; }
-.metric-capital .metric-value { color: #c0392b; }
 
 .metric-roi {
-    --gradient-start: #3498db;
-    --gradient-end: #2980b9;
+    --gradient-start: #5a6c7d;
+    --gradient-end: #475666;
 }
-.metric-roi .metric-label { color: #3498db; }
-.metric-roi .metric-value { color: #2980b9; }
 
 .metric-disbursed {
-    --gradient-start: #9b59b6;
-    --gradient-end: #8e44ad;
+    --gradient-start: #5a6c7d;
+    --gradient-end: #475666;
 }
-.metric-disbursed .metric-label { color: #9b59b6; }
-.metric-disbursed .metric-value { color: #8e44ad; }
 
 .metric-profit {
-    --gradient-start: #e67e22;
-    --gradient-end: #d35400;
+    --gradient-start: #5a6c7d;
+    --gradient-end: #475666;
 }
-.metric-profit .metric-label { color: #e67e22; }
-.metric-profit .metric-value { color: #d35400; }
 
 .metric-aum {
-    --gradient-start: #27ae60;
-    --gradient-end: #229954;
+    --gradient-start: #5a6c7d;
+    --gradient-end: #475666;
 }
-.metric-aum .metric-label { color: #27ae60; }
-.metric-aum .metric-value { color: #229954; }
 
 /* Chart containers */
 .chart-container {
@@ -236,10 +227,10 @@ st.markdown("""
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-size: 1.4rem;
+    font-weight: 600;
     margin: 0;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
 }
 
 /* Sidebar styling */
@@ -257,28 +248,30 @@ st.markdown("""
 [data-testid="stSidebar"] h2,
 [data-testid="stSidebar"] h3 {
     color: #ecf0f1 !important;
-    font-weight: 700;
-    margin: 1.5rem 0 1rem 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 1.2rem 0 0.8rem 0;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid rgba(52, 152, 219, 0.4);
-    letter-spacing: 0.5px;
+    border-bottom: 2px solid rgba(149, 165, 166, 0.3);
+    letter-spacing: 0.3px;
 }
 
 /* Expander styling */
 .streamlit-expanderHeader {
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(155, 89, 182, 0.2) 100%) !important;
-    border-radius: 12px !important;
-    padding: 0.8rem !important;
+    background: rgba(52, 73, 94, 0.6) !important;
+    border-radius: 8px !important;
+    padding: 0.7rem !important;
     margin: 0.5rem 0 !important;
-    border: 1px solid rgba(52, 152, 219, 0.3) !important;
+    border: 1px solid rgba(149, 165, 166, 0.2) !important;
     color: #ecf0f1 !important;
     font-weight: 600 !important;
+    font-size: 0.85rem !important;
     transition: all 0.3s ease !important;
 }
 
 .streamlit-expanderHeader:hover {
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.3) 0%, rgba(155, 89, 182, 0.3) 100%) !important;
-    transform: translateX(5px);
+    background: rgba(52, 73, 94, 0.8) !important;
+    transform: translateX(3px);
 }
 
 /* Sidebar labels */
