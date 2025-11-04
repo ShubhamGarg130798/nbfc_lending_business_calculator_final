@@ -391,7 +391,7 @@ for i in range(48):  # Create all possible month variables
 
 # Loan parameters - Expandable Section
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 0, 500000, 26000, 1000)
+    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 0, 500000, 25000, 1000)
 
 # Collection parameters - Expandable Section
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
@@ -980,4 +980,5 @@ st.write(f"**Total Revenue:** ₹{total_revenue_sum:.2f} Cr")
 st.write(f"**Total Costs:** ₹{total_costs_sum:.2f} Cr")
 
 #st.write(f"**Profit Margin:** {(net_profit_sum/total_revenue_sum*100):.1f}%")
+
 
