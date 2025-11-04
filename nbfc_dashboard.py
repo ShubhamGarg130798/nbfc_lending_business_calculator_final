@@ -28,6 +28,12 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Clear old cached values on version change
+if 'version' not in st.session_state:
+    st.session_state.version = '2.0'
+    st.cache_data.clear()
+    st.cache_resource.clear()
+
 # Modern Dashboard CSS
 st.markdown("""
 <style>
@@ -685,6 +691,17 @@ st.markdown("""
 
 # Sidebar for all inputs with collapsible sections
 st.sidebar.markdown("# 🎛️ Input Parameters")
+
+# Add reset button
+if st.sidebar.button("🔄 Reset to Default Values", use_container_width=True):
+    # Clear all session state
+    for key in list(st.session_state.keys()):
+        if key != 'authenticated' and key != 'version':
+            del st.session_state[key]
+    st.cache_data.clear()
+    st.rerun()
+
+st.sidebar.markdown("---")
 
 # Projection Period
 with st.sidebar.expander("📅 Projection Period", expanded=True):
