@@ -11,393 +11,168 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 if not st.session_state.authenticated:
-    # Enhanced login page
-    st.markdown("""
-    <style>
-    .login-container {
-        max-width: 400px;
-        margin: 100px auto;
-        padding: 40px;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-        backdrop-filter: blur(20px);
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-    .login-header {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-    .login-icon {
-        font-size: 60px;
-        margin-bottom: 20px;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="login-container">
-        <div class="login-header">
-            <div class="login-icon">🏦</div>
-            <h1 style="color: #2c3e50; margin: 0;">NBFC Analytics</h1>
-            <p style="color: #7f8c8d; margin-top: 10px;">Secure Access Portal</p>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
     password = st.text_input("Enter password to access dashboard:", type="password")
     if password == PASSWORD:
         st.session_state.authenticated = True
-        st.success("✅ Access granted. Welcome!")
-        st.rerun()
+        st.success("Access granted. Welcome!")
+        st.rerun()  # <--- forces rerun to load dashboard
     elif password:
-        st.error("❌ Incorrect password")
+        st.error("Incorrect password")
     st.stop()
 
 # Set page config
 st.set_page_config(
     page_title="NBFC Lending Business Calculator",
     page_icon="💰",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
-# Enhanced Custom CSS with modern design
+# Enhanced Custom CSS
 st.markdown("""
 <style>
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-/* Global Styles */
-* {
-    font-family: 'Inter', sans-serif;
-}
-
-/* Main container background */
-.main {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    background-attachment: fixed;
-}
-
-/* Main header with glassmorphism */
 .main-header {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-    backdrop-filter: blur(20px);
-    padding: 20px 30px;
-    border-radius: 15px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.12);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    margin-bottom: 25px;
+    background: linear-gradient(90deg, #2E8B57, #4169E1);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
     text-align: center;
+    margin-bottom: 20px;
+}
+.metric-container {
+    background-color: #f0f2f6;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #2E8B57;
+    margin: 5px 0;
+}
+.calculation-header {
+    background-color: #e1f5fe;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
 }
 
-.main-header h1 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: -0.3px;
-}
-
-.main-header p {
-    color: #7f8c8d;
-    font-size: 0.9rem;
-    margin-top: 5px;
-    font-weight: 500;
-}
-
-/* Custom Metrics with gradient backgrounds */
+/* Custom Metrics Styling */
 .custom-metric {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 1.2rem;
-    border-radius: 15px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    margin: 0.4rem 0;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    margin: 0.5rem 0;
     text-align: center;
-    height: 110px;
+    height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.custom-metric::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
-    transform: scaleX(0);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: left;
 }
 
 .custom-metric:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-}
-
-.custom-metric:hover::before {
-    transform: scaleX(1);
-}
-
-.metric-icon {
-    font-size: 2rem;
-    margin-bottom: 0.3rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
 }
 
 .metric-label {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.9rem;
+    font-weight: 700;
     margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #5a6c7d;
 }
 
 .metric-value {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: -0.3px;
-    color: #2c3e50;
-}
-
-/* Individual metric colors with CSS variables - more professional palette */
-.metric-capital {
-    --gradient-start: #5a6c7d;
-    --gradient-end: #475666;
-}
-
-.metric-roi {
-    --gradient-start: #5a6c7d;
-    --gradient-end: #475666;
-}
-
-.metric-disbursed {
-    --gradient-start: #5a6c7d;
-    --gradient-end: #475666;
-}
-
-.metric-profit {
-    --gradient-start: #5a6c7d;
-    --gradient-end: #475666;
-}
-
-.metric-aum {
-    --gradient-start: #5a6c7d;
-    --gradient-end: #475666;
-}
-
-/* Chart containers */
-.chart-container {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 1.5rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    margin: 1rem 0;
-}
-
-/* Section headers */
-.section-header {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-    backdrop-filter: blur(20px);
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    margin: 1.5rem 0 1rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 6px 25px rgba(0,0,0,0.08);
-}
-
-.section-header h2 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     font-size: 1.3rem;
     font-weight: 600;
     margin: 0;
-    letter-spacing: -0.3px;
+}
+
+/* Individual metric colors */
+.metric-capital .metric-label { color: #E74C3C; }
+.metric-capital .metric-value { color: #C0392B; }
+
+.metric-roi .metric-label { color: #3498DB; }
+.metric-roi .metric-value { color: #2980B9; }
+
+.metric-disbursed .metric-label { color: #9B59B6; }
+.metric-disbursed .metric-value { color: #8E44AD; }
+
+.metric-profit .metric-label { color: #E67E22; }
+.metric-profit .metric-value { color: #D35400; }
+
+.metric-aum .metric-label { color: #27AE60; }
+.metric-aum .metric-value { color: #229954; }
+
+/* Expander styling for sidebar */
+.css-1d391kg .streamlit-expanderHeader {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2) 0%, rgba(155, 89, 182, 0.2) 100%);
+    border-radius: 8px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid rgba(52, 152, 219, 0.3);
+    color: #ecf0f1 !important;
+    font-weight: 600;
+}
+
+.css-1d391kg .streamlit-expanderHeader:hover {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.3) 0%, rgba(155, 89, 182, 0.3) 100%);
 }
 
 /* Sidebar styling */
-.css-1d391kg, [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, rgba(44, 62, 80, 0.98) 0%, rgba(52, 73, 94, 0.98) 100%);
-    backdrop-filter: blur(20px);
+.css-1d391kg {
+    background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+    padding: 1rem;
 }
 
-.css-1d391kg .stMarkdown, [data-testid="stSidebar"] .stMarkdown {
-    background: transparent;
-}
-
-/* Sidebar headers */
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 {
-    color: #ffffff !important;
-    font-weight: 600;
+/* Sidebar input labels */
+.css-1d391kg label {
+    color: #bdc3c7 !important;
+    font-weight: 500;
     font-size: 0.9rem;
-    margin: 0.5rem 0 0.5rem 0;
-    padding-bottom: 0.3rem;
-    border-bottom: 1px solid rgba(149, 165, 166, 0.2);
-    letter-spacing: 0.3px;
 }
 
-/* Expander styling */
-.streamlit-expanderHeader {
-    background: rgba(52, 73, 94, 0.6) !important;
-    border-radius: 8px !important;
-    padding: 0.5rem 0.7rem !important;
-    margin: 0.3rem 0 !important;
-    border: 1px solid rgba(149, 165, 166, 0.2) !important;
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    font-size: 0.8rem !important;
-    transition: all 0.3s ease !important;
-}
-
-.streamlit-expanderHeader:hover {
+/* Sidebar number input styling */
+.css-1d391kg .stNumberInput input {
     background: rgba(52, 73, 94, 0.8) !important;
-    transform: translateX(3px);
-}
-
-/* Sidebar labels */
-[data-testid="stSidebar"] label {
-    color: #ffffff !important;
-    font-weight: 500 !important;
-    font-size: 0.85rem !important;
-    margin-bottom: 0.3rem !important;
-}
-
-/* Sidebar number inputs */
-[data-testid="stSidebar"] input[type="number"] {
-    background: rgba(52, 73, 94, 0.9) !important;
     border: 1px solid rgba(149, 165, 166, 0.3) !important;
     color: #ecf0f1 !important;
-    border-radius: 8px !important;
-    padding: 0.5rem !important;
-    font-weight: 500 !important;
+    border-radius: 6px;
 }
 
-[data-testid="stSidebar"] input[type="number"]:focus {
+.css-1d391kg .stNumberInput input:focus {
     border-color: #3498db !important;
-    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.3) !important;
-    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2) !important;
 }
 
-/* Dataframe styling */
-.stDataFrame {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-    backdrop-filter: blur(20px);
-    border-radius: 15px;
-    padding: 1rem;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-/* Summary box */
-.summary-box {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 2rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-    margin: 1rem 0;
-}
-
-.summary-box h3 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-}
-
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-    font-size: 1.05rem;
-}
-
-.summary-item:last-child {
-    border-bottom: none;
-}
-
-.summary-label {
+/* Enhanced sidebar headers */
+.css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3 {
+    color: #ecf0f1 !important;
     font-weight: 600;
-    color: #2c3e50;
-}
-
-.summary-value {
-    font-weight: 700;
-    color: #667eea;
-}
-
-/* Hide Streamlit branding */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
-
-/* Scrollbar styling */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.1);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-/* Plotly chart backgrounds */
-.js-plotly-plot .plotly .main-svg {
-    border-radius: 15px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(52, 152, 219, 0.3);
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Title with enhanced styling
+# Title
 st.markdown("""
 <div class="main-header">
-    <h1>💰 NBFC Lending Analytics</h1>
-    <p>Comprehensive Business Intelligence Dashboard</p>
+    <h1>💰 NBFC Lending Business Calculator</h1>
 </div>
 """, unsafe_allow_html=True)
 
 # Sidebar for all inputs with collapsible sections
-st.sidebar.markdown("# 🎛️ Configuration Panel")
+st.sidebar.markdown("# 🎛️ Input Business Parameters")
 
 # Projection Period - Expandable Section
-with st.sidebar.expander("📅 PROJECTION PERIOD", expanded=True):
+with st.sidebar.expander("📅 Projection Period", expanded=True):
     num_months = st.number_input("Number of Months", min_value=1, max_value=48, value=12, step=1)
 
 # Capital Deployment Parameters - Expandable Section
-with st.sidebar.expander("💰 CAPITAL DEPLOYMENT (₹ Crores)", expanded=False):
+with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False):
     # Create dynamic capital inputs based on number of months
     capital_values = []
     if num_months <= 12:
@@ -438,14 +213,14 @@ for i in range(48):  # Create all possible month variables
 total_capital = sum(capital_values)
 
 # Business Parameters - Expandable Section
-with st.sidebar.expander("📈 REVENUE PARAMETERS", expanded=False):
+with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
     processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=25.0, value=11.8, step=0.1) / 100
     monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
     marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=10.0, value=2.0, step=0.1) / 100
     cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates - Expandable Section
-with st.sidebar.expander("🏢 OPERATIONAL EXPENSES (%)", expanded=False):
+with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
     opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
     opex_month1 = opex_month1_value / 1e7  # Convert to crores for consistency
 
@@ -470,11 +245,11 @@ for i in range(48):  # Create all possible month variables
         globals()[f"opex_month{i+1}"] = 0.04  # Default 4%
 
 # Loan parameters - Expandable Section
-with st.sidebar.expander("🎯 LOAN PARAMETERS", expanded=False):
+with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
     avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 22000, 1000)
 
 # Collection parameters - Expandable Section
-with st.sidebar.expander("📊 COLLECTION PARAMETERS", expanded=False):
+with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     t0_collection = st.number_input("T+0 Collection Rate (%)", min_value=0, max_value=100, value=80, step=1) / 100
     t30_collection = st.number_input("T+30 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
     t60_collection = st.number_input("T+60 Collection Rate (%)", min_value=0, max_value=100, value=5, step=1) / 100
@@ -492,7 +267,7 @@ with st.sidebar.expander("📊 COLLECTION PARAMETERS", expanded=False):
     api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
 
 # Fixed costs - Expandable Section
-with st.sidebar.expander("💳 MONTHLY PRINCIPAL RETURN (₹ Crores)", expanded=False):
+with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
     # Create dynamic principal return inputs based on number of months
     principal_values = []
     if num_months <= 12:
@@ -751,16 +526,13 @@ if sum_annual_investment > 0:
 else:
     period_roi = 0
 
-# Key Performance Indicators with enhanced styling
-st.markdown("<div style='margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
-
+# Custom styled metrics instead of st.metric()
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.markdown(f"""
     <div class="custom-metric metric-capital">
-        <div class="metric-icon">💰</div>
-        <div class="metric-label">Capital Invested</div>
+        <div class="metric-label">💰 Capital Invested</div>
         <div class="metric-value">₹{total_capital:.1f} Cr</div>
     </div>
     """, unsafe_allow_html=True)
@@ -768,8 +540,7 @@ with col1:
 with col2:
     st.markdown(f"""
     <div class="custom-metric metric-roi">
-        <div class="metric-icon">📈</div>
-        <div class="metric-label">Period ROI</div>
+        <div class="metric-label">📈 Period ROI</div>
         <div class="metric-value">{period_roi:.1f}%</div>
     </div>
     """, unsafe_allow_html=True)
@@ -778,8 +549,7 @@ with col3:
     final_month_disbursed = df['amount_disbursed'].iloc[-1]
     st.markdown(f"""
     <div class="custom-metric metric-disbursed">
-        <div class="metric-icon">📊</div>
-        <div class="metric-label">M{num_months} Disbursed</div>
+        <div class="metric-label">📊 Month {num_months} Disbursed</div>
         <div class="metric-value">₹{final_month_disbursed:.2f} Cr</div>
     </div>
     """, unsafe_allow_html=True)
@@ -788,8 +558,7 @@ with col4:
     final_month_profit = df['profit_loss'].iloc[-1]
     st.markdown(f"""
     <div class="custom-metric metric-profit">
-        <div class="metric-icon">🎯</div>
-        <div class="metric-label">M{num_months} Profit</div>
+        <div class="metric-label">🎯 Month {num_months} Profit</div>
         <div class="metric-value">₹{final_month_profit:.2f} Cr</div>
     </div>
     """, unsafe_allow_html=True)
@@ -798,50 +567,37 @@ with col5:
     final_month_aum = df['aum'].iloc[-1]
     st.markdown(f"""
     <div class="custom-metric metric-aum">
-        <div class="metric-icon">🏆</div>
-        <div class="metric-label">M{num_months} AUM</div>
+        <div class="metric-label">🏆 Month {num_months} AUM</div>
         <div class="metric-value">₹{final_month_aum:.2f} Cr</div>
     </div>
     """, unsafe_allow_html=True)
 
-# Charts section with enhanced styling
-st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
-st.markdown("""
-<div class="section-header">
-    <h2>📊 Business Analytics & Insights</h2>
-</div>
-""", unsafe_allow_html=True)
+# Charts
+st.markdown("---")
+st.markdown("## 📈 Business Analysis Charts")
 
 # Row 1: AUM Chart and Monthly Revenue vs Cost Analysis (side by side)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     # 1. AUM Growth Analysis
     fig_aum_growth = px.area(
         df,
         x='month',
         y='aum',
         title="Assets Under Management (AUM) Growth",
-        color_discrete_sequence=['#667eea']
+        color_discrete_sequence=['#4169E1']
     )
     fig_aum_growth.update_layout(
         xaxis_title="Month",
         yaxis_title="AUM (₹ Crores)",
-        height=400,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(family="Inter, sans-serif", color="#2c3e50"),
-        title_font=dict(size=18, color="#2c3e50", family="Inter, sans-serif")
+        height=400
     )
-    fig_aum_growth.update_xaxes(dtick=1, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-    fig_aum_growth.update_yaxes(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    fig_aum_growth.update_xaxes(dtick=1)  # Show every month
     fig_aum_growth.update_traces(hovertemplate='Month %{x}<br>AUM: ₹%{y:.2f} Cr<extra></extra>')
     st.plotly_chart(fig_aum_growth, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     # 2. Revenue vs Costs
     fig_revenue_costs = go.Figure()
 
@@ -855,7 +611,7 @@ with col2:
         x=df['month'],
         y=total_revenue,
         name='Total Revenue',
-        marker_color='#27ae60',
+        marker_color='#2E8B57',
         hovertemplate='Month %{x}<br>Revenue: ₹%{y:.2f} Cr<extra></extra>'
     ))
 
@@ -863,7 +619,7 @@ with col2:
         x=df['month'],
         y=total_costs,
         name='Total Costs',
-        marker_color='#e74c3c',
+        marker_color='#FF6B6B',
         hovertemplate='Month %{x}<br>Costs: ₹%{y:.2f} Cr<extra></extra>'
     ))
 
@@ -872,7 +628,7 @@ with col2:
         y=df['profit_loss'],
         mode='lines+markers',
         name='Net Profit',
-        line=dict(color='#f39c12', width=4),
+        line=dict(color='#FFD700', width=4),
         marker=dict(size=10),
         hovertemplate='Month %{x}<br>Profit: ₹%{y:.2f} Cr<extra></extra>'
     ))
@@ -882,20 +638,13 @@ with col2:
         xaxis_title="Month",
         yaxis_title="Amount (₹ Crores)",
         hovermode='x unified',
-        height=400,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(family="Inter, sans-serif", color="#2c3e50"),
-        title_font=dict(size=18, color="#2c3e50", family="Inter, sans-serif")
+        height=400
     )
-    fig_revenue_costs.update_xaxes(dtick=1, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-    fig_revenue_costs.update_yaxes(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    fig_revenue_costs.update_xaxes(dtick=1)  # Show every month
 
     st.plotly_chart(fig_revenue_costs, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Row 2: Monthly Profit/Loss Analysis (full width)
-st.markdown('<div class="chart-container">', unsafe_allow_html=True)
 # 3. Profit/Loss Analysis
 fig_profit = px.bar(
     df,
@@ -903,29 +652,22 @@ fig_profit = px.bar(
     y='profit_loss',
     title="Monthly Profit/Loss Analysis",
     color='profit_loss',
-    color_continuous_scale=['#e74c3c', '#f39c12', '#27ae60']
+    color_continuous_scale=['red', 'yellow', 'green']
 )
 fig_profit.update_layout(
     xaxis_title="Month",
     yaxis_title="Profit/Loss (₹ Crores)",
     height=400,
-    showlegend=False,
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
-    font=dict(family="Inter, sans-serif", color="#2c3e50"),
-    title_font=dict(size=18, color="#2c3e50", family="Inter, sans-serif")
+    showlegend=False
 )
-fig_profit.update_xaxes(dtick=1, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-fig_profit.update_yaxes(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+fig_profit.update_xaxes(dtick=1)  # Show every month
 fig_profit.update_traces(hovertemplate='Month %{x}<br>Profit/Loss: ₹%{y:.2f} Cr<extra></extra>')
 st.plotly_chart(fig_profit, use_container_width=True)
-st.markdown('</div>', unsafe_allow_html=True)
 
 # Row 3: Amount Invested vs Available and Amount Disbursed (side by side)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     # 4. Amount Invested vs Available for Disbursal - Both as bars
     fig_invested_vs_available = go.Figure()
 
@@ -933,7 +675,7 @@ with col1:
         x=df['month'],
         y=df['amount_invested'],
         name='Amount Invested',
-        marker_color='#3498db',
+        marker_color='#4169E1',
         hovertemplate='Month %{x}<br>Invested: ₹%{y:.2f} Cr<extra></extra>'
     ))
 
@@ -941,7 +683,7 @@ with col1:
         x=df['month'],
         y=df['amount_available'],
         name='Available for Disbursal',
-        marker_color='#9b59b6',
+        marker_color='#2E8B57',
         hovertemplate='Month %{x}<br>Available: ₹%{y:.2f} Cr<extra></extra>'
     ))
 
@@ -951,20 +693,13 @@ with col1:
         yaxis_title="Amount (₹ Crores)",
         hovermode='x unified',
         height=400,
-        barmode='group',
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(family="Inter, sans-serif", color="#2c3e50"),
-        title_font=dict(size=18, color="#2c3e50", family="Inter, sans-serif")
+        barmode='group'
     )
-    fig_invested_vs_available.update_xaxes(dtick=1, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-    fig_invested_vs_available.update_yaxes(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    fig_invested_vs_available.update_xaxes(dtick=1)  # Show every month
 
     st.plotly_chart(fig_invested_vs_available, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     # 5. Amount Actually Disbursed vs Month
     fig_disbursed = px.line(
         df,
@@ -972,32 +707,21 @@ with col2:
         y='amount_disbursed',
         title="Amount Actually Disbursed",
         markers=True,
-        color_discrete_sequence=['#27ae60']
+        color_discrete_sequence=['#2E8B57']
     )
     fig_disbursed.update_layout(
         xaxis_title="Month",
         yaxis_title="Amount Disbursed (₹ Crores)",
-        height=400,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(family="Inter, sans-serif", color="#2c3e50"),
-        title_font=dict(size=18, color="#2c3e50", family="Inter, sans-serif")
+        height=400
     )
-    fig_disbursed.update_xaxes(dtick=1, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-    fig_disbursed.update_yaxes(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-    fig_disbursed.update_traces(
-        hovertemplate='Month %{x}<br>Disbursed: ₹%{y:.2f} Cr<extra></extra>',
-        line=dict(width=3),
-        marker=dict(size=10)
-    )
+    fig_disbursed.update_xaxes(dtick=1)  # Show every month
+    fig_disbursed.update_traces(hovertemplate='Month %{x}<br>Disbursed: ₹%{y:.2f} Cr<extra></extra>')
     st.plotly_chart(fig_disbursed, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Row 4: Revenue Breakdown and Customer Acquisition (side by side)
 col1, col2 = st.columns(2)
 
 with col1:
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     # 6. Revenue Breakdown
     fig_revenue_breakdown = go.Figure()
 
@@ -1005,7 +729,7 @@ with col1:
         x=df['month'],
         y=df['interest_revenue'],
         name='Interest Revenue',
-        marker_color='#27ae60',
+        marker_color='#2E8B57',
         hovertemplate='Month %{x}<br>Interest: ₹%{y:.2f} Cr<extra></extra>'
     ))
 
@@ -1013,7 +737,7 @@ with col1:
         x=df['month'],
         y=df['processing_fees_revenue'],
         name='Processing Fees',
-        marker_color='#3498db',
+        marker_color='#4169E1',
         hovertemplate='Month %{x}<br>Processing Fees: ₹%{y:.2f} Cr<extra></extra>'
     ))
 
@@ -1021,7 +745,7 @@ with col1:
         x=df['month'],
         y=df['bad_debt_recovery'],
         name='Bad Debt Recovery',
-        marker_color='#e67e22',
+        marker_color='#FF8C00',
         hovertemplate='Month %{x}<br>Recovery: ₹%{y:.2f} Cr<extra></extra>'
     ))
 
@@ -1030,20 +754,13 @@ with col1:
         xaxis_title="Month",
         yaxis_title="Amount (₹ Crores)",
         barmode='stack',
-        height=400,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(family="Inter, sans-serif", color="#2c3e50"),
-        title_font=dict(size=18, color="#2c3e50", family="Inter, sans-serif")
+        height=400
     )
-    fig_revenue_breakdown.update_xaxes(dtick=1, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-    fig_revenue_breakdown.update_yaxes(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    fig_revenue_breakdown.update_xaxes(dtick=1)  # Show every month
 
     st.plotly_chart(fig_revenue_breakdown, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 with col2:
-    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
     # 7. Customer Acquisition
     fig_customers = px.bar(
         df,
@@ -1051,31 +768,21 @@ with col2:
         y='customers',
         title="Monthly Customer Acquisition",
         color='customers',
-        color_continuous_scale=['#667eea', '#764ba2', '#f093fb']
+        color_continuous_scale='viridis'
     )
     fig_customers.update_layout(
         xaxis_title="Month",
         yaxis_title="Number of Customers",
         height=400,
-        showlegend=False,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-        font=dict(family="Inter, sans-serif", color="#2c3e50"),
-        title_font=dict(size=18, color="#2c3e50", family="Inter, sans-serif")
+        showlegend=False
     )
-    fig_customers.update_xaxes(dtick=1, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-    fig_customers.update_yaxes(showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+    fig_customers.update_xaxes(dtick=1)  # Show every month
     fig_customers.update_traces(hovertemplate='Month %{x}<br>Customers: %{y:,.0f}<extra></extra>')
     st.plotly_chart(fig_customers, use_container_width=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
 # Complete calculations table
-st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
-st.markdown("""
-<div class="section-header">
-    <h2>📋 Detailed Monthly Calculations</h2>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("---")
+st.markdown("## 📋 Complete Monthly Calculations")
 
 # Round for display
 display_df = df.round(3)
@@ -1107,13 +814,10 @@ display_df = display_df.rename(columns=column_names)
 st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
 
 # Summary and export
-st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
-st.markdown("""
-<div class="section-header">
-    <h2>📊 Executive Summary</h2>
-</div>
-""", unsafe_allow_html=True)
+st.markdown("---")
+st.markdown("## 📊 Financial Summary")
 
+st.markdown(f"### 💰 {num_months}-Month Summary")
 total_revenue_sum = total_revenue.sum()
 total_costs_sum = total_costs.sum()
 net_profit_sum = df['profit_loss'].sum()
@@ -1122,44 +826,12 @@ final_month_available = df['amount_available'].iloc[-1]
 total_customers_sum = df['customers'].sum()
 final_month_aum_summary = df['aum'].iloc[-1]
 
-st.markdown(f"""
-<div class="summary-box">
-    <h3>💼 {num_months}-Month Financial Overview</h3>
-    <div class="summary-item">
-        <span class="summary-label">💰 Capital Invested</span>
-        <span class="summary-value">₹{total_capital:.2f} Cr</span>
-    </div>
-    <div class="summary-item">
-        <span class="summary-label">📊 Month {num_months} Available for Disbursal</span>
-        <span class="summary-value">₹{final_month_available:.2f} Cr</span>
-    </div>
-    <div class="summary-item">
-        <span class="summary-label">🏆 Month {num_months} AUM</span>
-        <span class="summary-value">₹{final_month_aum_summary:.2f} Cr</span>
-    </div>
-    <div class="summary-item">
-        <span class="summary-label">🎯 Total Profit/Loss ({num_months} months)</span>
-        <span class="summary-value">₹{net_profit_sum:.2f} Cr</span>
-    </div>
-    <div class="summary-item">
-        <span class="summary-label">👥 Total Customers</span>
-        <span class="summary-value">{total_customers_sum:,}</span>
-    </div>
-    <div class="summary-item">
-        <span class="summary-label">💵 Total Revenue</span>
-        <span class="summary-value">₹{total_revenue_sum:.2f} Cr</span>
-    </div>
-    <div class="summary-item">
-        <span class="summary-label">💸 Total Costs</span>
-        <span class="summary-value">₹{total_costs_sum:.2f} Cr</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+st.write(f"**Capital Invested:** ₹{total_capital:.2f} Cr")
+st.write(f"**Month {num_months} Available for Disbursal:** ₹{final_month_available:.2f} Cr")
+st.write(f"**Month {num_months} AUM:** ₹{final_month_aum_summary:.2f} Cr")
+st.write(f"**Total Profit/Loss ({num_months} months):** ₹{net_profit_sum:.2f} Cr")
+st.write(f"**Total Customers:** {total_customers_sum:,}")
+st.write(f"**Total Revenue:** ₹{total_revenue_sum:.2f} Cr")
+st.write(f"**Total Costs:** ₹{total_costs_sum:.2f} Cr")
 
-# Footer
-st.markdown("<div style='margin: 2rem 0;'></div>", unsafe_allow_html=True)
-st.markdown("""
-<div style="text-align: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; padding: 2rem;">
-    <p>NBFC Lending Analytics Dashboard | Powered by Advanced Financial Modeling</p>
-</div>
-""", unsafe_allow_html=True)
+#st.write(f"**Profit Margin:** {(net_profit_sum/total_revenue_sum*100):.1f}%")
