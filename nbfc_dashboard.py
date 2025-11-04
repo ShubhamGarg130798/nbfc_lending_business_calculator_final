@@ -774,8 +774,8 @@ with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     else:
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
 
-    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 100, 35, 5)
-    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 95, 5)
+    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 1000, 35, 5)
+    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 15000, 80, 5)
 
 # Principal Return
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
@@ -1694,4 +1694,3 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
