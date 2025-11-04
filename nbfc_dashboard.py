@@ -345,34 +345,63 @@ header {visibility: hidden;}
 [data-testid="stDataFrame"] {
     background: white !important;
     border-radius: 14px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.03) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06) !important;
     overflow: hidden !important;
-    border: 1px solid #f7fafc !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
 [data-testid="stDataFrame"] thead tr th {
     background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%) !important;
     color: white !important;
     font-weight: 700 !important;
-    padding: 1.125rem 1rem !important;
+    padding: 1.25rem 1rem !important;
     font-size: 0.8125rem !important;
     border: none !important;
     text-transform: uppercase !important;
     letter-spacing: 0.5px !important;
     text-align: center !important;
-    border-right: 1px solid rgba(255,255,255,0.1) !important;
+    border-right: 2px solid rgba(255,255,255,0.2) !important;
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.1) !important;
 }
 
 [data-testid="stDataFrame"] thead tr th:last-child {
     border-right: none !important;
 }
 
+/* Color coding for specific columns */
+[data-testid="stDataFrame"] thead tr th:nth-child(1) {
+    background: linear-gradient(135deg, #2b6cb0 0%, #3182ce 100%) !important;
+}
+
+[data-testid="stDataFrame"] thead tr th:nth-child(2),
+[data-testid="stDataFrame"] thead tr th:nth-child(3),
+[data-testid="stDataFrame"] thead tr th:nth-child(4) {
+    background: linear-gradient(135deg, #38a169 0%, #2f855a 100%) !important;
+}
+
+[data-testid="stDataFrame"] thead tr th:nth-child(5) {
+    background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%) !important;
+}
+
+[data-testid="stDataFrame"] thead tr th:nth-child(6),
+[data-testid="stDataFrame"] thead tr th:nth-child(7),
+[data-testid="stDataFrame"] thead tr th:nth-child(8),
+[data-testid="stDataFrame"] thead tr th:nth-child(9) {
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+}
+
+[data-testid="stDataFrame"] thead tr th:nth-child(10),
+[data-testid="stDataFrame"] thead tr th:nth-child(11) {
+    background: linear-gradient(135deg, #dd6b20 0%, #c05621 100%) !important;
+}
+
 [data-testid="stDataFrame"] tbody tr {
     transition: all 0.2s ease !important;
 }
 
+/* Strong alternating row colors */
 [data-testid="stDataFrame"] tbody tr:nth-child(even) {
-    background: #f8fafc !important;
+    background: linear-gradient(90deg, #edf2f7 0%, #e2e8f0 100%) !important;
 }
 
 [data-testid="stDataFrame"] tbody tr:nth-child(odd) {
@@ -380,35 +409,66 @@ header {visibility: hidden;}
 }
 
 [data-testid="stDataFrame"] tbody tr:hover {
-    background: linear-gradient(90deg, #ebf8ff 0%, #f0f9ff 100%) !important;
-    transform: scale(1.002) !important;
-    box-shadow: 0 2px 8px rgba(43, 108, 176, 0.08) !important;
+    background: linear-gradient(90deg, #bee3f8 0%, #90cdf4 100%) !important;
+    transform: scale(1.003) !important;
+    box-shadow: 0 4px 12px rgba(43, 108, 176, 0.15) !important;
 }
 
 [data-testid="stDataFrame"] tbody td {
     color: #2d3748 !important;
-    padding: 0.875rem 1rem !important;
-    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 1rem !important;
+    border-bottom: 1px solid #cbd5e0 !important;
     font-size: 0.875rem !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     text-align: center !important;
-    border-right: 1px solid #f1f5f9 !important;
+    border-right: 1px solid #e2e8f0 !important;
 }
 
 [data-testid="stDataFrame"] tbody td:last-child {
     border-right: none !important;
 }
 
-/* First column (Month) styling */
+/* First column (Month) - highlighted */
 [data-testid="stDataFrame"] tbody td:first-child {
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     color: #1a365d !important;
-    background: linear-gradient(90deg, #f1f5f9 0%, transparent 100%) !important;
+    background: linear-gradient(90deg, #dbeafe 0%, transparent 100%) !important;
+    font-size: 0.9375rem !important;
+}
+
+/* Color coding for data columns */
+[data-testid="stDataFrame"] tbody td:nth-child(2),
+[data-testid="stDataFrame"] tbody td:nth-child(3),
+[data-testid="stDataFrame"] tbody td:nth-child(4) {
+    color: #2f855a !important;
+}
+
+[data-testid="stDataFrame"] tbody td:nth-child(5) {
+    color: #6b46c1 !important;
+}
+
+[data-testid="stDataFrame"] tbody td:nth-child(6),
+[data-testid="stDataFrame"] tbody td:nth-child(7),
+[data-testid="stDataFrame"] tbody td:nth-child(8),
+[data-testid="stDataFrame"] tbody td:nth-child(9) {
+    color: #c53030 !important;
+}
+
+[data-testid="stDataFrame"] tbody td:nth-child(10),
+[data-testid="stDataFrame"] tbody td:nth-child(11) {
+    color: #c05621 !important;
+}
+
+/* Last rows - special styling */
+[data-testid="stDataFrame"] tbody tr:last-child td {
+    border-bottom: 3px solid #2b6cb0 !important;
+    font-weight: 700 !important;
 }
 
 /* Highlight on hover for first column */
 [data-testid="stDataFrame"] tbody tr:hover td:first-child {
-    background: linear-gradient(90deg, #dbeafe 0%, transparent 100%) !important;
+    background: linear-gradient(90deg, #3182ce 0%, transparent 100%) !important;
+    color: white !important;
 }
 
 /* Plotly Charts */
