@@ -412,6 +412,51 @@ header {visibility: hidden;}
     background: linear-gradient(90deg, #2b6cb0, #4299e1);
 }
 
+/* Summary Metric Cards */
+.summary-metric-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #f7fafc;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.summary-metric-card:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.summary-metric-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.summary-metric-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: #718096;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.summary-metric-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
 .stMarkdown p {
     color: #4a5568 !important;
     font-size: 0.9375rem !important;
@@ -1007,11 +1052,6 @@ st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
 # Financial Summary
 st.markdown('<div class="section-header">Financial Summary</div>', unsafe_allow_html=True)
 
-st.markdown(f"""
-<div class="summary-box">
-    <div class="summary-title">💰 {num_months}-Month Financial Overview</div>
-""", unsafe_allow_html=True)
-
 total_revenue_sum = total_revenue.sum()
 total_costs_sum = total_costs.sum()
 net_profit_sum = df['profit_loss'].sum()
@@ -1019,27 +1059,80 @@ final_month_available = df['amount_available'].iloc[-1]
 total_customers_sum = df['customers'].sum()
 final_month_aum_summary = df['aum'].iloc[-1]
 
-col1, col2, col3 = st.columns(3)
+# Create a professional summary grid
+summary_col1, summary_col2, summary_col3 = st.columns(3)
 
-with col1:
+with summary_col1:
     st.markdown(f"""
-    **Capital Invested:** ₹{total_capital:.2f} Cr  
-    **Month {num_months} Available:** ₹{final_month_available:.2f} Cr  
-    **Total Revenue:** ₹{total_revenue_sum:.2f} Cr
-    """)
-
-with col2:
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(49, 130, 206, 0.1); color: #3182ce;">💰</div>
+        <div class="summary-metric-label">Capital Invested</div>
+        <div class="summary-metric-value" style="color: #3182ce;">₹{total_capital:.2f} Cr</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown(f"""
-    **Total Costs:** ₹{total_costs_sum:.2f} Cr  
-    **Net Profit/Loss:** ₹{net_profit_sum:.2f} Cr  
-    **Total Customers:** {total_customers_sum:,}
-    """)
-
-with col3:
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(56, 161, 105, 0.1); color: #38a169;">📊</div>
+        <div class="summary-metric-label">Month {num_months} Available</div>
+        <div class="summary-metric-value" style="color: #38a169;">₹{final_month_available:.2f} Cr</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
     st.markdown(f"""
-    **Month {num_months} AUM:** ₹{final_month_aum_summary:.2f} Cr  
-    **Period ROI:** {period_roi:.1f}%  
-    **Projection Period:** {num_months} months
-    """)
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(49, 151, 149, 0.1); color: #319795;">📈</div>
+        <div class="summary-metric-label">Total Revenue</div>
+        <div class="summary-metric-value" style="color: #319795;">₹{total_revenue_sum:.2f} Cr</div>
+    </div>
+    """, unsafe_allow_html=True)
 
-st.markdown('</div>', unsafe_allow_html=True)
+with summary_col2:
+    st.markdown(f"""
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(245, 101, 101, 0.1); color: #e53e3e;">💳</div>
+        <div class="summary-metric-label">Total Costs</div>
+        <div class="summary-metric-value" style="color: #e53e3e;">₹{total_costs_sum:.2f} Cr</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(221, 107, 32, 0.1); color: #dd6b20;">🎯</div>
+        <div class="summary-metric-label">Net Profit/Loss</div>
+        <div class="summary-metric-value" style="color: #dd6b20;">₹{net_profit_sum:.2f} Cr</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(128, 90, 213, 0.1); color: #805ad5;">👥</div>
+        <div class="summary-metric-label">Total Customers</div>
+        <div class="summary-metric-value" style="color: #805ad5;">{total_customers_sum:,}</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with summary_col3:
+    st.markdown(f"""
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(49, 151, 149, 0.1); color: #319795;">🏆</div>
+        <div class="summary-metric-label">Month {num_months} AUM</div>
+        <div class="summary-metric-value" style="color: #319795;">₹{final_month_aum_summary:.2f} Cr</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(56, 161, 105, 0.1); color: #38a169;">📊</div>
+        <div class="summary-metric-label">Period ROI</div>
+        <div class="summary-metric-value" style="color: #38a169;">{period_roi:.1f}%</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card">
+        <div class="summary-metric-icon" style="background: rgba(49, 130, 206, 0.1); color: #3182ce;">📅</div>
+        <div class="summary-metric-label">Projection Period</div>
+        <div class="summary-metric-value" style="color: #3182ce;">{num_months} months</div>
+    </div>
+    """, unsafe_allow_html=True)
