@@ -1160,6 +1160,8 @@ with col6:
 
 with col7:
     total_npa_kpi = df['cumulative_npa_total'].iloc[-1]
+    cum_npa_principal = df['cumulative_npa_principal'].iloc[-1]
+    cum_npa_interest = df['cumulative_npa_interest'].iloc[-1]
     st.markdown(f"""
     <div class="kpi-card red">
         <div class="kpi-header">
@@ -1169,7 +1171,7 @@ with col7:
             <div class="kpi-icon">⚠️</div>
         </div>
         <div class="kpi-value">₹{total_npa_kpi:.2f} Cr</div>
-        <div class="kpi-trend">{num_months} months cumulative</div>
+        <div class="kpi-trend">Principal: ₹{cum_npa_principal:.2f} Cr | Interest: ₹{cum_npa_interest:.2f} Cr</div>
     </div>
     """, unsafe_allow_html=True)
 
