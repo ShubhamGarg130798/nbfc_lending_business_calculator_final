@@ -287,6 +287,25 @@ header {visibility: hidden;}
     color: rgba(255, 255, 255, 0.95) !important;
 }
 
+.kpi-card.red {
+    --card-color: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+    color: white !important;
+}
+
+.kpi-card.red .kpi-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.kpi-card.red .kpi-value {
+    color: #ffffff !important;
+}
+
+.kpi-card.red .kpi-trend {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
 /* Chart Container */
 .chart-container {
     background: white;
@@ -1049,7 +1068,7 @@ else:
 # Key Performance Indicators
 st.markdown('<div class="section-header">Key Performance Indicators</div>', unsafe_allow_html=True)
 
-col1, col2, col3, col4, col5, col6 = st.columns(6)
+col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
 with col1:
     st.markdown(f"""
@@ -1135,6 +1154,21 @@ with col6:
             <div class="kpi-icon">💳</div>
         </div>
         <div class="kpi-value">₹{total_principal_return:.2f} Cr</div>
+        <div class="kpi-trend">{num_months} months cumulative</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col7:
+    total_npa_kpi = df['cumulative_npa_total'].iloc[-1]
+    st.markdown(f"""
+    <div class="kpi-card red">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Total NPA</div>
+            </div>
+            <div class="kpi-icon">⚠️</div>
+        </div>
+        <div class="kpi-value">₹{total_npa_kpi:.2f} Cr</div>
         <div class="kpi-trend">{num_months} months cumulative</div>
     </div>
     """, unsafe_allow_html=True)
