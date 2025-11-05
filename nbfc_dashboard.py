@@ -990,7 +990,7 @@ else:
 # Key Performance Indicators
 st.markdown('<div class="section-header">Key Performance Indicators</div>', unsafe_allow_html=True)
 
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4, col5, col6 = st.columns(6)
 
 with col1:
     st.markdown(f"""
@@ -1062,6 +1062,21 @@ with col5:
         </div>
         <div class="kpi-value">₹{final_month_aum:.2f} Cr</div>
         <div class="kpi-trend">Assets under management</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col6:
+    total_principal_return = df['principal_return'].sum()
+    st.markdown(f"""
+    <div class="kpi-card blue">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Total Principal Return</div>
+            </div>
+            <div class="kpi-icon">💳</div>
+        </div>
+        <div class="kpi-value">₹{total_principal_return:.2f} Cr</div>
+        <div class="kpi-trend">{num_months} months cumulative</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1344,4 +1359,3 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
