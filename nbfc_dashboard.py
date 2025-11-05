@@ -180,7 +180,7 @@ header {visibility: hidden;}
 }
 
 .kpi-value {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: var(--card-color);
     margin: 0;
@@ -1522,4 +1522,5 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
+
 
