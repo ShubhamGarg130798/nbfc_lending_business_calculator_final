@@ -138,9 +138,13 @@ header {visibility: hidden;}
     box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     height: 100%;
+    min-height: 160px;
     border-left: none;
     position: relative;
     border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .kpi-card:hover {
@@ -177,11 +181,12 @@ header {visibility: hidden;}
 }
 
 .kpi-value {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: var(--card-color);
     margin: 0;
     line-height: 1.2;
+    word-wrap: break-word;
 }
 
 .kpi-trend {
@@ -1515,3 +1520,4 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
+
