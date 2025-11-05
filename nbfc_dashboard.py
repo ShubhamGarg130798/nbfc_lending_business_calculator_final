@@ -1520,4 +1520,3 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
