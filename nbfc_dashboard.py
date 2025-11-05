@@ -972,6 +972,61 @@ def calculate_with_exact_formulas():
     
     return df
 
+def calculate_npa(df, num_months):
+    """Calculate NPA (Non-Performing Assets) - booked after 3 months
+    Returns separate columns for principal and interest NPA"""
+    
+    monthly_npa_principal = []
+    monthly_npa_interest = []
+    monthly_npa_total = []
+    
+    cumulative_npa_principal = []
+    cumulative_npa_interest = []
+    cumulative_npa_total = []
+    
+    cumulative_principal_sum = 0
+    cumulative_interest_sum = 0
+    
+    for month in range(num_months):
+        if month < 3:
+            # No NPA in first 3 months
+            monthly_npa_principal.append(0)
+            monthly_npa_interest.append(0)
+            monthly_npa_total.append(0)
+            cumulative_npa_principal.append(0)
+            cumulative_npa_interest.append(0)
+            cumulative_npa_total.append(0)
+        else:
+            # NPA is the unrecovered amount from 3 months ago
+            month_3_ago = month - 3
+            
+            # Separate principal and interest from 3 months ago
+            principal_3_months_ago = df['amount_disbursed'].iloc[month_3_ago]
+            interest_3_months_ago = df['interest_revenue'].iloc[month_3_ago]
+            
+            # Total collection rate (T+0 + T+30 + T+60 + T+90)
+            total_collection_rate = t0_collection + t30_collection + t60_collection + t90_collection
+            
+            # Calculate NPA for principal and interest separately
+            npa_principal = principal_3_months_ago * (1 - total_collection_rate)
+            npa_interest = interest_3_months_ago * (1 - total_collection_rate)
+            npa_total = npa_principal + npa_interest
+            
+            # Monthly NPA
+            monthly_npa_principal.append(npa_principal)
+            monthly_npa_interest.append(npa_interest)
+            monthly_npa_total.append(npa_total)
+            
+            # Cumulative NPA
+            cumulative_principal_sum += npa_principal
+            cumulative_interest_sum += npa_interest
+            cumulative_npa_principal.append(cumulative_principal_sum)
+            cumulative_npa_interest.append(cumulative_interest_sum)
+            cumulative_npa_total.append(cumulative_principal_sum + cumulative_interest_sum)
+    
+    return (monthly_npa_principal, monthly_npa_interest, monthly_npa_total,
+            cumulative_npa_principal, cumulative_npa_interest, cumulative_npa_total)
+
 # Calculate metrics
 sum_annual_investment = 0
 for i, capital in enumerate(capital_values):
@@ -980,6 +1035,10 @@ for i, capital in enumerate(capital_values):
     sum_annual_investment += capital * weight
 
 df = calculate_with_exact_formulas()
+
+# Add NPA calculation with bifurcation
+(df['monthly_npa_principal'], df['monthly_npa_interest'], df['monthly_npa_total'],
+ df['cumulative_npa_principal'], df['cumulative_npa_interest'], df['cumulative_npa_total']) = calculate_npa(df, num_months)
 
 final_month_aum = df['aum'].iloc[-1]
 if sum_annual_investment > 0:
@@ -1226,6 +1285,60 @@ with col2:
     fig_customers.update_xaxes(dtick=1)
     st.plotly_chart(fig_customers, use_container_width=True)
 
+# NPA Analysis Charts
+st.markdown('<div class="section-header">NPA Analysis</div>', unsafe_allow_html=True)
+
+col1, col2 = st.columns(2)
+
+with col1:
+    # Monthly NPA Breakdown
+    fig_monthly_npa = go.Figure()
+    fig_monthly_npa.add_trace(go.Bar(
+        x=df['month'], y=df['monthly_npa_principal'],
+        name='Principal NPA', marker_color='#f56565'
+    ))
+    fig_monthly_npa.add_trace(go.Bar(
+        x=df['month'], y=df['monthly_npa_interest'],
+        name='Interest NPA', marker_color='#dd6b20'
+    ))
+    fig_monthly_npa.update_layout(
+        title="Monthly NPA Breakdown (Principal vs Interest)",
+        xaxis_title="Month", yaxis_title="NPA (₹ Crores)",
+        barmode='stack', height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
+    )
+    fig_monthly_npa.update_xaxes(dtick=1)
+    st.plotly_chart(fig_monthly_npa, use_container_width=True)
+
+with col2:
+    # Cumulative NPA Growth
+    fig_cumulative_npa = go.Figure()
+    fig_cumulative_npa.add_trace(go.Scatter(
+        x=df['month'], y=df['cumulative_npa_principal'],
+        mode='lines+markers', name='Cumulative Principal NPA',
+        line=dict(color='#f56565', width=3), marker=dict(size=8)
+    ))
+    fig_cumulative_npa.add_trace(go.Scatter(
+        x=df['month'], y=df['cumulative_npa_interest'],
+        mode='lines+markers', name='Cumulative Interest NPA',
+        line=dict(color='#dd6b20', width=3), marker=dict(size=8)
+    ))
+    fig_cumulative_npa.add_trace(go.Scatter(
+        x=df['month'], y=df['cumulative_npa_total'],
+        mode='lines+markers', name='Total Cumulative NPA',
+        line=dict(color='#805ad5', width=3, dash='dash'), marker=dict(size=8)
+    ))
+    fig_cumulative_npa.update_layout(
+        title="Cumulative NPA Growth Over Time",
+        xaxis_title="Month", yaxis_title="Cumulative NPA (₹ Crores)",
+        height=400, template="plotly_white",
+        title_font=dict(size=16, color='#2d3748', family='Inter'),
+        font=dict(family='Inter', size=12)
+    )
+    fig_cumulative_npa.update_xaxes(dtick=1)
+    st.plotly_chart(fig_cumulative_npa, use_container_width=True)
+
 # Complete calculations table
 st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
 
@@ -1246,6 +1359,12 @@ column_names = {
     'bad_debt_recovery': 'Recovery (₹Cr)',
     'processing_fees_revenue': 'PF (₹Cr)',
     'principal_return': 'Principal Return (₹Cr)',
+    'monthly_npa_principal': 'M-NPA Principal (₹Cr)',
+    'monthly_npa_interest': 'M-NPA Interest (₹Cr)',
+    'monthly_npa_total': 'M-NPA Total (₹Cr)',
+    'cumulative_npa_principal': 'Cum-NPA Principal (₹Cr)',
+    'cumulative_npa_interest': 'Cum-NPA Interest (₹Cr)',
+    'cumulative_npa_total': 'Cum-NPA Total (₹Cr)',
     'profit_loss': 'Profit (₹Cr)',
     'aum': 'AUM (₹Cr)'
 }
@@ -1263,6 +1382,7 @@ net_profit_sum = df['profit_loss'].sum()
 final_month_available = df['amount_available'].iloc[-1]
 total_customers_sum = df['customers'].sum()
 final_month_aum_summary = df['aum'].iloc[-1]
+total_npa_sum = df['cumulative_npa_total'].iloc[-1]
 
 # Create a professional summary grid
 summary_col1, summary_col2, summary_col3 = st.columns(3)
@@ -1351,11 +1471,11 @@ with summary_col3:
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card summary-card-blue">
-        <div class="summary-metric-icon">📅</div>
+    <div class="summary-metric-card summary-card-red">
+        <div class="summary-metric-icon">⚠️</div>
         <div>
-            <div class="summary-metric-label">Projection Period</div>
-            <div class="summary-metric-value">{num_months} months</div>
+            <div class="summary-metric-label">Total NPA</div>
+            <div class="summary-metric-value">₹{total_npa_sum:.2f} Cr</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
