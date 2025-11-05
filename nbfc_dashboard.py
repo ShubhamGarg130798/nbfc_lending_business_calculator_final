@@ -137,8 +137,7 @@ header {visibility: hidden;}
     padding: 1.125rem 1.5rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 100%;
-    min-height: 160px;
+    height: 180px;
     border-left: none;
     position: relative;
     border: none;
@@ -190,10 +189,13 @@ header {visibility: hidden;}
 }
 
 .kpi-trend {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: #48bb78;
     margin-top: 0.3rem;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Color Variables for KPI Cards */
@@ -1520,3 +1522,4 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
+
