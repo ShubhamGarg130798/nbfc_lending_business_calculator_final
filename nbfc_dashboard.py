@@ -1075,7 +1075,8 @@ else:
 # Key Performance Indicators
 st.markdown('<div class="section-header">Key Performance Indicators</div>', unsafe_allow_html=True)
 
-col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+# First row - 4 cards
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown(f"""
@@ -1092,35 +1093,6 @@ with col1:
     """, unsafe_allow_html=True)
     
 with col2:
-    st.markdown(f"""
-    <div class="kpi-card green">
-        <div class="kpi-header">
-            <div>
-                <div class="kpi-label">Period ROI</div>
-            </div>
-            <div class="kpi-icon">📈</div>
-        </div>
-        <div class="kpi-value">{period_roi:.1f}%</div>
-        <div class="kpi-trend">{num_months} months</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col3:
-    final_month_disbursed = df['amount_disbursed'].iloc[-1]
-    st.markdown(f"""
-    <div class="kpi-card purple">
-        <div class="kpi-header">
-            <div>
-                <div class="kpi-label">Month {num_months} Disbursed</div>
-            </div>
-            <div class="kpi-icon">📊</div>
-        </div>
-        <div class="kpi-value">₹{final_month_disbursed:.2f} Cr</div>
-        <div class="kpi-trend">Latest month</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col4:
     total_profit_loss = df['profit_loss'].sum()
     st.markdown(f"""
     <div class="kpi-card orange">
@@ -1135,7 +1107,7 @@ with col4:
     </div>
     """, unsafe_allow_html=True)
     
-with col5:
+with col3:
     final_month_aum = df['aum'].iloc[-1]
     st.markdown(f"""
     <div class="kpi-card teal">
@@ -1150,22 +1122,7 @@ with col5:
     </div>
     """, unsafe_allow_html=True)
 
-with col6:
-    total_principal_return = df['principal_return'].sum()
-    st.markdown(f"""
-    <div class="kpi-card blue">
-        <div class="kpi-header">
-            <div>
-                <div class="kpi-label">Total Principal Return</div>
-            </div>
-            <div class="kpi-icon">💳</div>
-        </div>
-        <div class="kpi-value">₹{total_principal_return:.2f} Cr</div>
-        <div class="kpi-trend">{num_months} months cumulative</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col7:
+with col4:
     total_npa_kpi = df['cumulative_npa_total'].iloc[-1]
     cum_npa_principal = df['cumulative_npa_principal'].iloc[-1]
     cum_npa_interest = df['cumulative_npa_interest'].iloc[-1]
@@ -1179,6 +1136,53 @@ with col7:
         </div>
         <div class="kpi-value">₹{total_npa_kpi:.2f} Cr</div>
         <div class="kpi-trend">Principal: ₹{cum_npa_principal:.2f} Cr | Interest: ₹{cum_npa_interest:.2f} Cr</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Second row - 3 cards
+col5, col6, col7 = st.columns(3)
+
+with col5:
+    st.markdown(f"""
+    <div class="kpi-card green">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Period ROI</div>
+            </div>
+            <div class="kpi-icon">📈</div>
+        </div>
+        <div class="kpi-value">{period_roi:.1f}%</div>
+        <div class="kpi-trend">{num_months} months</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col6:
+    final_month_disbursed = df['amount_disbursed'].iloc[-1]
+    st.markdown(f"""
+    <div class="kpi-card purple">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Month {num_months} Disbursed</div>
+            </div>
+            <div class="kpi-icon">📊</div>
+        </div>
+        <div class="kpi-value">₹{final_month_disbursed:.2f} Cr</div>
+        <div class="kpi-trend">Latest month</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with col7:
+    total_principal_return = df['principal_return'].sum()
+    st.markdown(f"""
+    <div class="kpi-card blue">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Total Principal Return</div>
+            </div>
+            <div class="kpi-icon">💳</div>
+        </div>
+        <div class="kpi-value">₹{total_principal_return:.2f} Cr</div>
+        <div class="kpi-trend">{num_months} months cumulative</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1363,162 +1367,4 @@ with col2:
         line=dict(color='#f56565', width=3), marker=dict(size=8)
     ))
     fig_cumulative_npa.add_trace(go.Scatter(
-        x=df['month'], y=df['cumulative_npa_interest'],
-        mode='lines+markers', name='Cumulative Interest NPA',
-        line=dict(color='#dd6b20', width=3), marker=dict(size=8)
-    ))
-    fig_cumulative_npa.add_trace(go.Scatter(
-        x=df['month'], y=df['cumulative_npa_total'],
-        mode='lines+markers', name='Total Cumulative NPA',
-        line=dict(color='#805ad5', width=3, dash='dash'), marker=dict(size=8)
-    ))
-    fig_cumulative_npa.update_layout(
-        title="Cumulative NPA Growth Over Time",
-        xaxis_title="Month", yaxis_title="Cumulative NPA (₹ Crores)",
-        height=400, template="plotly_white",
-        title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
-    )
-    fig_cumulative_npa.update_xaxes(dtick=1)
-    st.plotly_chart(fig_cumulative_npa, use_container_width=True)
-
-# Complete calculations table
-st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
-
-display_df = df.round(3)
-column_names = {
-    'month': 'Month',
-    'amount_invested': 'Invested (₹Cr)',
-    'amount_available': 'Available (₹Cr)',
-    'amount_disbursed': 'Disbursed (₹Cr)',
-    'customers': 'Customers',
-    'opex': 'OpEx (₹Cr)',
-    'api_expense': 'API (₹Cr)',
-    'marketing_expense': 'Marketing (₹Cr)',
-    'cost_of_funds': 'Cost of Funds (₹Cr)',
-    'bad_debt_default': 'Bad Debt (₹Cr)',
-    'gst': 'GST (₹Cr)',
-    'interest_revenue': 'Interest (₹Cr)',
-    'bad_debt_recovery': 'Recovery (₹Cr)',
-    'processing_fees_revenue': 'PF (₹Cr)',
-    'principal_return': 'Principal Return (₹Cr)',
-    'monthly_npa_principal': 'M-NPA Principal (₹Cr)',
-    'monthly_npa_interest': 'M-NPA Interest (₹Cr)',
-    'monthly_npa_total': 'M-NPA Total (₹Cr)',
-    'cumulative_npa_principal': 'Cum-NPA Principal (₹Cr)',
-    'cumulative_npa_interest': 'Cum-NPA Interest (₹Cr)',
-    'cumulative_npa_total': 'Cum-NPA Total (₹Cr)',
-    'profit_loss': 'Profit (₹Cr)',
-    'aum': 'AUM (₹Cr)'
-}
-
-display_df = display_df.drop('salary', axis=1)
-display_df = display_df.rename(columns=column_names)
-st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
-
-# Financial Summary
-st.markdown('<div class="section-header">Financial Summary</div>', unsafe_allow_html=True)
-
-total_revenue_sum = total_revenue.sum()
-total_costs_sum = total_costs.sum()
-net_profit_sum = df['profit_loss'].sum()
-final_month_available = df['amount_available'].iloc[-1]
-total_customers_sum = df['customers'].sum()
-final_month_aum_summary = df['aum'].iloc[-1]
-total_npa_sum = df['cumulative_npa_total'].iloc[-1]
-
-# Create a professional summary grid
-summary_col1, summary_col2, summary_col3 = st.columns(3)
-
-with summary_col1:
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-blue">
-        <div class="summary-metric-icon">💰</div>
-        <div>
-            <div class="summary-metric-label">Capital Invested</div>
-            <div class="summary-metric-value">₹{total_capital:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-green">
-        <div class="summary-metric-icon">📊</div>
-        <div>
-            <div class="summary-metric-label">Month {num_months} Available</div>
-            <div class="summary-metric-value">₹{final_month_available:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-teal">
-        <div class="summary-metric-icon">📈</div>
-        <div>
-            <div class="summary-metric-label">Total Revenue</div>
-            <div class="summary-metric-value">₹{total_revenue_sum:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with summary_col2:
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-red">
-        <div class="summary-metric-icon">💳</div>
-        <div>
-            <div class="summary-metric-label">Total Costs</div>
-            <div class="summary-metric-value">₹{total_costs_sum:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-orange">
-        <div class="summary-metric-icon">🎯</div>
-        <div>
-            <div class="summary-metric-label">Net Profit/Loss</div>
-            <div class="summary-metric-value">₹{net_profit_sum:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-purple">
-        <div class="summary-metric-icon">👥</div>
-        <div>
-            <div class="summary-metric-label">Total Customers</div>
-            <div class="summary-metric-value">{total_customers_sum:,}</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-with summary_col3:
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-teal">
-        <div class="summary-metric-icon">🏆</div>
-        <div>
-            <div class="summary-metric-label">Month {num_months} AUM</div>
-            <div class="summary-metric-value">₹{final_month_aum_summary:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-green">
-        <div class="summary-metric-icon">📊</div>
-        <div>
-            <div class="summary-metric-label">Period ROI</div>
-            <div class="summary-metric-value">{period_roi:.1f}%</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-red">
-        <div class="summary-metric-icon">⚠️</div>
-        <div>
-            <div class="summary-metric-label">Total NPA</div>
-            <div class="summary-metric-value">₹{total_npa_sum:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        x=df['month'], y=df['cumulative_npa
