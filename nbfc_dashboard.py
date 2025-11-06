@@ -762,7 +762,7 @@ with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
 
 # Operational expense rates
 with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
-    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 5000000, 1500000, 50000)
+    opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 50000000, 1500000, 50000)
     opex_month1 = opex_month1_value / 1e7
 
     opex_values = [opex_month1]
@@ -1522,3 +1522,4 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
+
