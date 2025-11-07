@@ -4,6 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 from datetime import datetime
+from io import BytesIO
 
 PASSWORD = "nbfcsecure123"
 
@@ -435,6 +436,24 @@ header {visibility: hidden;}
     border-radius: 8px !important;
     padding: 0.75rem !important;
     color: #fed7d7 !important;
+}
+
+/* Download button styling */
+[data-testid="stDownloadButton"] button {
+    background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 600 !important;
+    font-size: 0.9375rem !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(43, 108, 176, 0.2) !important;
+}
+
+[data-testid="stDownloadButton"] button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(43, 108, 176, 0.3) !important;
 }
 
 /* Table Styling */
@@ -1414,6 +1433,38 @@ column_names = {
 
 display_df = display_df.drop('salary', axis=1)
 display_df = display_df.rename(columns=column_names)
+
+# Create Excel download button
+def convert_df_to_excel(df):
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False, sheet_name='Monthly Calculations')
+        
+        # Get the workbook and worksheet
+        workbook = writer.book
+        worksheet = writer.sheets['Monthly Calculations']
+        
+        # Auto-adjust column widths
+        for idx, col in enumerate(df.columns):
+            max_length = max(
+                df[col].astype(str).map(len).max(),
+                len(str(col))
+            )
+            worksheet.column_dimensions[chr(65 + idx)].width = min(max_length + 2, 50)
+    
+    output.seek(0)
+    return output
+
+excel_data = convert_df_to_excel(display_df)
+
+st.download_button(
+    label="📥 Download Excel File",
+    data=excel_data,
+    file_name=f"NBFC_Monthly_Calculations_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+    mime="application/vnd.openxmlxl.sheet",
+    use_container_width=True
+)
+
 st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
 
 # Financial Summary
@@ -1522,4 +1573,3 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
