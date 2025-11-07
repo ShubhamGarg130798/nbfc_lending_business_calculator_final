@@ -1428,6 +1428,35 @@ column_names = {
 display_df = display_df.drop('salary', axis=1)
 display_df = display_df.rename(columns=column_names)
 
+# Reorder columns as requested
+column_order = [
+    'Month',
+    'Invested (₹Cr)',
+    'Available (₹Cr)',
+    'Disbursed (₹Cr)',
+    'Customers',
+    'PF (₹Cr)',
+    'Interest (₹Cr)',
+    'GST (₹Cr)',
+    'OpEx (₹Cr)',
+    'API (₹Cr)',
+    'Marketing (₹Cr)',
+    'Bad Debt (₹Cr)',
+    'Recovery (₹Cr)',
+    'Cost of Funds (₹Cr)',
+    'Principal Return (₹Cr)',
+    'Profit (₹Cr)',
+    'AUM (₹Cr)',
+    'M-NPA Principal (₹Cr)',
+    'M-NPA Interest (₹Cr)',
+    'M-NPA Total (₹Cr)',
+    'Cum-NPA Principal (₹Cr)',
+    'Cum-NPA Interest (₹Cr)',
+    'Cum-NPA Total (₹Cr)'
+]
+
+display_df = display_df[column_order]
+
 # Add totals row
 totals_row = pd.DataFrame([{
     'Month': 'TOTAL',
@@ -1435,24 +1464,24 @@ totals_row = pd.DataFrame([{
     'Available (₹Cr)': df['amount_available'].sum(),
     'Disbursed (₹Cr)': df['amount_disbursed'].sum(),
     'Customers': '',
+    'PF (₹Cr)': df['processing_fees_revenue'].sum(),
+    'Interest (₹Cr)': df['interest_revenue'].sum(),
+    'GST (₹Cr)': df['gst'].sum(),
     'OpEx (₹Cr)': df['opex'].sum(),
     'API (₹Cr)': df['api_expense'].sum(),
     'Marketing (₹Cr)': df['marketing_expense'].sum(),
-    'Cost of Funds (₹Cr)': df['cost_of_funds'].sum(),
     'Bad Debt (₹Cr)': '',
-    'GST (₹Cr)': df['gst'].sum(),
-    'Interest (₹Cr)': df['interest_revenue'].sum(),
     'Recovery (₹Cr)': '',
-    'PF (₹Cr)': df['processing_fees_revenue'].sum(),
+    'Cost of Funds (₹Cr)': df['cost_of_funds'].sum(),
     'Principal Return (₹Cr)': df['principal_return'].sum(),
+    'Profit (₹Cr)': df['profit_loss'].sum(),
+    'AUM (₹Cr)': '',
     'M-NPA Principal (₹Cr)': df['monthly_npa_principal'].sum(),
     'M-NPA Interest (₹Cr)': df['monthly_npa_interest'].sum(),
     'M-NPA Total (₹Cr)': '',
     'Cum-NPA Principal (₹Cr)': '',
     'Cum-NPA Interest (₹Cr)': '',
-    'Cum-NPA Total (₹Cr)': '',
-    'Profit (₹Cr)': df['profit_loss'].sum(),
-    'AUM (₹Cr)': ''
+    'Cum-NPA Total (₹Cr)': ''
 }])
 
 display_df = pd.concat([display_df, totals_row], ignore_index=True)
