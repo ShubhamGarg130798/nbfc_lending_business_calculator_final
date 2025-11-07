@@ -796,27 +796,48 @@ with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
     cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates
-with st.sidebar.expander("🏢 Operational Expenses (%)", expanded=False):
+with st.sidebar.expander("🏢 Operational Expenses", expanded=False):
     opex_month1_value = st.number_input("Month 1 OpEx (₹)", 0, 50000000, 1500000, 50000)
     opex_month1 = opex_month1_value / 1e7
 
     opex_values = [opex_month1]
+    opex_types = ['fixed']  # Month 1 is always fixed
+    
     for i in range(1, num_months):
         month_num = i + 1
-        if month_num <= 3:
-            default_val = 6.0
-        elif month_num <= 6:
-            default_val = 6.0
+        st.markdown(f"**Month {month_num}**")
+        opex_type = st.radio(
+            f"OpEx Type for Month {month_num}",
+            options=['Percentage of Previous AUM', 'Fixed Amount'],
+            key=f"opex_type_{month_num}",
+            horizontal=True
+        )
+        
+        if opex_type == 'Percentage of Previous AUM':
+            if month_num <= 3:
+                default_val = 6.0
+            elif month_num <= 6:
+                default_val = 6.0
+            else:
+                default_val = 6.0
+            val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=30.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
+            opex_values.append(val)
+            opex_types.append('percentage')
         else:
-            default_val = 6.0
-        val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=30.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
-        opex_values.append(val)
+            val = st.number_input(f"Month {month_num} OpEx Amount (₹)", min_value=0, max_value=50000000, value=1500000, step=50000, key=f"opex_{month_num}")
+            opex_values.append(val / 1e7)
+            opex_types.append('fixed')
 
 for i in range(48):
     if i < len(opex_values):
         globals()[f"opex_month{i+1}"] = opex_values[i]
+        if i < len(opex_types):
+            globals()[f"opex_type_month{i+1}"] = opex_types[i]
+        else:
+            globals()[f"opex_type_month{i+1}"] = 'percentage'
     else:
         globals()[f"opex_month{i+1}"] = 0.04
+        globals()[f"opex_type_month{i+1}"] = 'percentage'
 
 # Loan parameters
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
@@ -869,6 +890,7 @@ def calculate_with_exact_formulas():
     months = num_months
     capital_invested = [capital_values[i] * 1e7 if i < len(capital_values) else 0 for i in range(months)]
     opex_rates = [opex_values[i] if i < len(opex_values) else 0.04 for i in range(months)]
+    opex_type_list = [opex_types[i] if i < len(opex_types) else 'percentage' for i in range(months)]
     principal_returns = [principal_values[i] * 1e7 if i < len(principal_values) else 0 for i in range(months)]
     
     amount_invested = []
@@ -908,8 +930,12 @@ def calculate_with_exact_formulas():
         if month == 0:
             op_expense = opex_month1_value
         else:
-            prev_aum = aum[month-1]
-            op_expense = prev_aum * opex_rates[month]
+            # Check if OpEx type is percentage or fixed
+            if opex_type_list[month] == 'percentage':
+                prev_aum = aum[month-1]
+                op_expense = prev_aum * opex_rates[month]
+            else:  # fixed amount
+                op_expense = opex_rates[month] * 1e7  # Convert back to rupees
         
         opex.append(op_expense)
         
