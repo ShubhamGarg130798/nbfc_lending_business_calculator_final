@@ -903,10 +903,12 @@ def calculate_with_exact_formulas():
         marketing_exp = disbursed * marketing_rate
         marketing_expense.append(marketing_exp)
         
-        # UPDATED: Monthly cost of funds calculation
-        # Cost of funds = Cumulative capital invested up to this month × monthly rate
+        # UPDATED: Monthly cost of funds calculation with principal return adjustment
+        # Cost of funds = (Cumulative capital invested - Cumulative principal returns up to previous month) × monthly rate
         cumulative_capital = sum(capital_invested[:month+1])
-        cost_of_funds_expense = cumulative_capital * cost_of_funds_rate
+        cumulative_principal_return = sum(principal_returns[:month]) if month > 0 else 0
+        net_capital = cumulative_capital - cumulative_principal_return
+        cost_of_funds_expense = net_capital * cost_of_funds_rate
         cost_of_funds.append(cost_of_funds_expense)
         
         if month == 0:
