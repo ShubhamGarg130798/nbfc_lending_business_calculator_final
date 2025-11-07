@@ -561,15 +561,25 @@ header {visibility: hidden;}
     color: white !important;
 }
 
-/* Last row - special emphasis */
+/* Last row - special emphasis (TOTAL row) */
 [data-testid="stDataFrame"] tbody tr:last-child {
     border-bottom: 3px solid #2563eb !important;
-    font-weight: 600 !important;
+    border-top: 3px solid #2563eb !important;
+    background: linear-gradient(90deg, #1e3a8a 0%, #1e40af 100%) !important;
 }
 
 [data-testid="stDataFrame"] tbody tr:last-child td {
-    font-weight: 700 !important;
-    background: linear-gradient(90deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+    font-weight: 800 !important;
+    background: linear-gradient(90deg, #1e3a8a 0%, #1e40af 100%) !important;
+    color: white !important;
+    font-size: 0.95rem !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:last-child td:first-child {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+    color: white !important;
+    font-weight: 900 !important;
+    font-size: 1.05rem !important;
 }
 
 /* Hover effect for first column */
@@ -577,6 +587,12 @@ header {visibility: hidden;}
     background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
     color: white !important;
     transform: scale(1.05) !important;
+}
+
+/* Override hover for TOTAL row */
+[data-testid="stDataFrame"] tbody tr:last-child:hover td {
+    background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%) !important;
+    color: white !important;
 }
 
 /* Plotly Charts */
@@ -1411,6 +1427,35 @@ column_names = {
 
 display_df = display_df.drop('salary', axis=1)
 display_df = display_df.rename(columns=column_names)
+
+# Add totals row
+totals_row = pd.DataFrame([{
+    'Month': 'TOTAL',
+    'Invested (₹Cr)': df['amount_invested'].sum(),
+    'Available (₹Cr)': df['amount_available'].sum(),
+    'Disbursed (₹Cr)': df['amount_disbursed'].sum(),
+    'Customers': '',
+    'OpEx (₹Cr)': df['opex'].sum(),
+    'API (₹Cr)': df['api_expense'].sum(),
+    'Marketing (₹Cr)': df['marketing_expense'].sum(),
+    'Cost of Funds (₹Cr)': df['cost_of_funds'].sum(),
+    'Bad Debt (₹Cr)': '',
+    'GST (₹Cr)': df['gst'].sum(),
+    'Interest (₹Cr)': df['interest_revenue'].sum(),
+    'Recovery (₹Cr)': '',
+    'PF (₹Cr)': df['processing_fees_revenue'].sum(),
+    'Principal Return (₹Cr)': df['principal_return'].sum(),
+    'M-NPA Principal (₹Cr)': df['monthly_npa_principal'].sum(),
+    'M-NPA Interest (₹Cr)': df['monthly_npa_interest'].sum(),
+    'M-NPA Total (₹Cr)': '',
+    'Cum-NPA Principal (₹Cr)': '',
+    'Cum-NPA Interest (₹Cr)': '',
+    'Cum-NPA Total (₹Cr)': '',
+    'Profit (₹Cr)': df['profit_loss'].sum(),
+    'AUM (₹Cr)': ''
+}])
+
+display_df = pd.concat([display_df, totals_row], ignore_index=True)
 
 # Create Excel download button
 def convert_df_to_excel(df):
