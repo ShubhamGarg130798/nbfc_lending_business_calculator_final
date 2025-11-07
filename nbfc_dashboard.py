@@ -903,34 +903,10 @@ def calculate_with_exact_formulas():
         marketing_exp = disbursed * marketing_rate
         marketing_expense.append(marketing_exp)
         
-        cost_of_funds_expense = 0
-        if month == 2 and months >= 3:
-            cost_q1_m1 = capital_invested[0] * cost_of_funds_rate
-            cost_q1_m2 = sum(capital_invested[:2]) * cost_of_funds_rate  
-            cost_q1_m3 = sum(capital_invested[:3]) * cost_of_funds_rate
-            cost_of_funds_expense = cost_q1_m1 + cost_q1_m2 + cost_q1_m3
-        elif month == 5 and months >= 6:
-            cost_q2_m4 = sum(capital_invested[:4]) * cost_of_funds_rate
-            cost_q2_m5 = sum(capital_invested[:5]) * cost_of_funds_rate
-            cost_q2_m6 = sum(capital_invested[:6]) * cost_of_funds_rate
-            cost_of_funds_expense = cost_q2_m4 + cost_q2_m5 + cost_q2_m6
-        elif month == 8 and months >= 9:
-            cost_q3_m7 = sum(capital_invested[:7]) * cost_of_funds_rate
-            cost_q3_m8 = sum(capital_invested[:8]) * cost_of_funds_rate
-            cost_q3_m9 = sum(capital_invested[:9]) * cost_of_funds_rate
-            cost_of_funds_expense = cost_q3_m7 + cost_q3_m8 + cost_q3_m9
-        elif month == 11 and months >= 12:
-            cost_q4_m10 = sum(capital_invested[:10]) * cost_of_funds_rate
-            cost_q4_m11 = sum(capital_invested[:11]) * cost_of_funds_rate
-            cost_q4_m12 = sum(capital_invested[:12]) * cost_of_funds_rate
-            cost_of_funds_expense = cost_q4_m10 + cost_q4_m11 + cost_q4_m12
-        elif (month + 1) % 3 == 0 and month >= 2 and months > month:
-            quarter_start = month - 2
-            cost_q_m1 = sum(capital_invested[:quarter_start+1]) * cost_of_funds_rate
-            cost_q_m2 = sum(capital_invested[:quarter_start+2]) * cost_of_funds_rate
-            cost_q_m3 = sum(capital_invested[:quarter_start+3]) * cost_of_funds_rate
-            cost_of_funds_expense = cost_q_m1 + cost_q_m2 + cost_q_m3
-        
+        # UPDATED: Monthly cost of funds calculation
+        # Cost of funds = Cumulative capital invested up to this month × monthly rate
+        cumulative_capital = sum(capital_invested[:month+1])
+        cost_of_funds_expense = cumulative_capital * cost_of_funds_rate
         cost_of_funds.append(cost_of_funds_expense)
         
         if month == 0:
