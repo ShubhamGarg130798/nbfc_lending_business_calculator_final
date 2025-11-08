@@ -1175,6 +1175,9 @@ with col4:
     </div>
     """, unsafe_allow_html=True)
 
+# Add spacing between rows
+st.markdown('<div style="margin-top: 1.5rem;"></div>', unsafe_allow_html=True)
+
 # Second Row: 3 cards (centered)
 col_spacer1, col5, col6, col7, col_spacer2 = st.columns([0.5, 1, 1, 1, 0.5], gap="small")
 
