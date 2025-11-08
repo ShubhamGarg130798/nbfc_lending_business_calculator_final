@@ -160,19 +160,19 @@ header {visibility: hidden;}
 }
 
 .kpi-icon {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 1.1rem;
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(10px);
 }
 
 .kpi-label {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #718096;
     text-transform: uppercase;
@@ -181,7 +181,7 @@ header {visibility: hidden;}
 }
 
 .kpi-value {
-    font-size: 1.05rem;
+    font-size: 1.35rem;
     font-weight: 800;
     color: var(--card-color);
     margin: 0;
@@ -190,7 +190,7 @@ header {visibility: hidden;}
 }
 
 .kpi-trend {
-    font-size: 0.68rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: #48bb78;
     margin-top: 0.25rem;
