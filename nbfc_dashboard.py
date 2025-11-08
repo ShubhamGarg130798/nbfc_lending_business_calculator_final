@@ -135,10 +135,10 @@ header {visibility: hidden;}
 .kpi-card {
     background: white;
     border-radius: 14px;
-    padding: 1.125rem 1.5rem;
+    padding: 1rem 1.25rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15), 0 2px 4px rgba(0,0,0,0.1);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    height: 180px;
+    height: 150px;
     border-left: none;
     position: relative;
     border: none;
@@ -156,32 +156,32 @@ header {visibility: hidden;}
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.625rem;
+    margin-bottom: 0.5rem;
 }
 
 .kpi-icon {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.125rem;
+    font-size: 1rem;
     background: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(10px);
 }
 
 .kpi-label {
-    font-size: 0.6875rem;
+    font-size: 0.65rem;
     font-weight: 600;
     color: #718096;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.25rem;
 }
 
 .kpi-value {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 800;
     color: var(--card-color);
     margin: 0;
@@ -190,10 +190,10 @@ header {visibility: hidden;}
 }
 
 .kpi-trend {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 600;
     color: #48bb78;
-    margin-top: 0.3rem;
+    margin-top: 0.25rem;
     line-height: 1.3;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1115,7 +1115,7 @@ else:
 st.markdown('<div class="section-header">Key Performance Indicators</div>', unsafe_allow_html=True)
 
 # First Row: 4 cards
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4 = st.columns(4, gap="small")
 
 with col1:
     st.markdown(f"""
@@ -1175,8 +1175,8 @@ with col4:
     </div>
     """, unsafe_allow_html=True)
 
-# Second Row: 3 cards
-col5, col6, col7 = st.columns(3)
+# Second Row: 3 cards (centered)
+col_spacer1, col5, col6, col7, col_spacer2 = st.columns([0.5, 1, 1, 1, 0.5], gap="small")
 
 with col5:
     final_month_disbursed = df['amount_disbursed'].iloc[-1]
