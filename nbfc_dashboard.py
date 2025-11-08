@@ -98,6 +98,7 @@ header {visibility: hidden;}
     position: relative;
     z-index: 1;
     letter-spacing: -0.5px;
+    text-align: center;
 }
 
 .dashboard-subtitle {
@@ -107,6 +108,7 @@ header {visibility: hidden;}
     font-weight: 500;
     position: relative;
     z-index: 1;
+    text-align: center;
 }
 
 /* Section Headers */
