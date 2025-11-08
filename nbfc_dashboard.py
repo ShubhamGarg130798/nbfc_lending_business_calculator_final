@@ -1114,7 +1114,8 @@ else:
 # Key Performance Indicators
 st.markdown('<div class="section-header">Key Performance Indicators</div>', unsafe_allow_html=True)
 
-col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+# First Row: 4 cards
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown(f"""
@@ -1145,21 +1146,6 @@ with col2:
     """, unsafe_allow_html=True)
     
 with col3:
-    final_month_disbursed = df['amount_disbursed'].iloc[-1]
-    st.markdown(f"""
-    <div class="kpi-card purple">
-        <div class="kpi-header">
-            <div>
-                <div class="kpi-label">Month {num_months} Disbursed</div>
-            </div>
-            <div class="kpi-icon">📊</div>
-        </div>
-        <div class="kpi-value">₹{final_month_disbursed:.2f} Cr</div>
-        <div class="kpi-trend">Latest month</div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-with col4:
     total_profit_loss = df['profit_loss'].sum()
     st.markdown(f"""
     <div class="kpi-card orange">
@@ -1174,7 +1160,7 @@ with col4:
     </div>
     """, unsafe_allow_html=True)
     
-with col5:
+with col4:
     final_month_aum = df['aum'].iloc[-1]
     st.markdown(f"""
     <div class="kpi-card teal">
@@ -1186,6 +1172,24 @@ with col5:
         </div>
         <div class="kpi-value">₹{final_month_aum:.2f} Cr</div>
         <div class="kpi-trend">Assets under management</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+# Second Row: 3 cards
+col5, col6, col7 = st.columns(3)
+
+with col5:
+    final_month_disbursed = df['amount_disbursed'].iloc[-1]
+    st.markdown(f"""
+    <div class="kpi-card purple">
+        <div class="kpi-header">
+            <div>
+                <div class="kpi-label">Month {num_months} Disbursed</div>
+            </div>
+            <div class="kpi-icon">📊</div>
+        </div>
+        <div class="kpi-value">₹{final_month_disbursed:.2f} Cr</div>
+        <div class="kpi-trend">Latest month</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -1651,5 +1655,3 @@ with summary_col3:
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-
