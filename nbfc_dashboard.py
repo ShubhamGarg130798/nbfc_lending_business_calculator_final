@@ -1281,7 +1281,7 @@ with col2:
     st.plotly_chart(fig_invest_disburse, use_container_width=True)
 
 # Complete calculations table
-st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Monthly Financial & Operational Register</div>', unsafe_allow_html=True)
 
 display_df = df.round(3)
 column_names = {
@@ -1673,4 +1673,5 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
 
