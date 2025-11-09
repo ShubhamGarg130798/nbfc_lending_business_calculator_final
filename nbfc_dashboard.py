@@ -521,24 +521,11 @@ header {visibility: hidden;}
 
 /* First column (Month/Rank) - styled like rank column */
 [data-testid="stDataFrame"] tbody td:first-child {
-    font-weight: 800 !important;
+    font-weight: 700 !important;
     color: #1e40af !important;
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
     width: 60px !important;
     text-align: center !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(1) td:first-child,
-[data-testid="stDataFrame"] tbody tr:nth-child(2) td:first-child,
-[data-testid="stDataFrame"] tbody tr:nth-child(3) td:first-child {
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
-    color: white !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(5) td:first-child {
-    background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%) !important;
-    color: white !important;
 }
 
 /* Last row - special emphasis (TOTAL row) */
@@ -560,13 +547,6 @@ header {visibility: hidden;}
     color: white !important;
     font-weight: 900 !important;
     font-size: 1.05rem !important;
-}
-
-/* Hover effect for first column */
-[data-testid="stDataFrame"] tbody tr:hover td:first-child {
-    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
-    color: white !important;
-    transform: scale(1.05) !important;
 }
 
 /* Override hover for TOTAL row */
