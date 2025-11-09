@@ -1189,7 +1189,7 @@ with col7:
     """, unsafe_allow_html=True)
 
 # Charts Section
-st.markdown('<div class="section-header">Business Analysis Charts</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Business Health at a Glance</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
@@ -1673,3 +1673,4 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
