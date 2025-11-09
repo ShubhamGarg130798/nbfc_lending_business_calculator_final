@@ -491,11 +491,11 @@ header {visibility: hidden;}
 
 /* Alternating row colors - stronger contrast */
 [data-testid="stDataFrame"] tbody tr:nth-child(odd) {
-    background: white !important;
+    background: #f0f9ff !important;
 }
 
 [data-testid="stDataFrame"] tbody tr:nth-child(even) {
-    background: #fffbeb !important;
+    background: #ffffff !important;
 }
 
 /* Special highlighting for top 3 rows */
