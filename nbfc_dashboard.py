@@ -1401,3 +1401,273 @@ st.download_button(
     mime="application/vnd.openxmlxl.sheet",
     use_container_width=True
 )
+
+st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
+
+# Financial Summary
+st.markdown('<div class="section-header">Financial Summary</div>', unsafe_allow_html=True)
+
+total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
+total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
+               df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
+               df['salary'] + df['principal_return'])
+
+total_revenue_sum = total_revenue.sum()
+total_costs_sum = total_costs.sum()
+net_profit_sum = df['profit_loss'].sum()
+final_month_available = df['amount_available'].iloc[-1]
+total_customers_sum = df['customers'].sum()
+final_month_aum_summary = df['aum'].iloc[-1]
+total_npa_sum = df['cumulative_npa_total'].iloc[-1]
+total_marketing = df['marketing_expense'].sum()
+total_api_cost = df['api_expense'].sum()
+total_pf = df['processing_fees_revenue'].sum()
+total_interest = df['interest_revenue'].sum()
+
+# Create two main columns: Input Parameters and Output Parameters
+input_col, output_col = st.columns([1, 1], gap="large")
+
+with input_col:
+    st.markdown('<h3 style="color: #1a365d; font-weight: 700; margin-bottom: 1.5rem;">Input Parameters</h3>', unsafe_allow_html=True)
+    
+    # Create 2 sub-columns for input parameters
+    input_sub_col1, input_sub_col2 = st.columns(2)
+    
+    with input_sub_col1:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-blue">
+            <div class="summary-metric-icon">📅</div>
+            <div>
+                <div class="summary-metric-label">Projection Period</div>
+                <div class="summary-metric-value">{num_months} Months</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">💳</div>
+            <div>
+                <div class="summary-metric-label">Average Ticket Size</div>
+                <div class="summary-metric-value">₹{avg_ticket_size:,}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-purple">
+            <div class="summary-metric-icon">💵</div>
+            <div>
+                <div class="summary-metric-label">Monthly Interest Rate</div>
+                <div class="summary-metric-value">{monthly_interest_rate*100:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-blue">
+            <div class="summary-metric-icon">🏢</div>
+            <div>
+                <div class="summary-metric-label">Month 1 OpEx</div>
+                <div class="summary-metric-value">₹{opex_month1_value/100000:.2f} L</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">🔌</div>
+            <div>
+                <div class="summary-metric-label">API Cost (Converted)</div>
+                <div class="summary-metric-value">₹{api_cost_20_percent}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with input_sub_col2:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-green">
+            <div class="summary-metric-icon">💰</div>
+            <div>
+                <div class="summary-metric-label">Total Capital Deployed</div>
+                <div class="summary-metric-value">₹{total_capital:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">📄</div>
+            <div>
+                <div class="summary-metric-label">Processing Fees</div>
+                <div class="summary-metric-value">{processing_fees*100:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-red">
+            <div class="summary-metric-icon">📊</div>
+            <div>
+                <div class="summary-metric-label">Total Collection Rate</div>
+                <div class="summary-metric-value">{total_collection_rate_percent:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        total_principal_return_input = sum(principal_values)
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-green">
+            <div class="summary-metric-icon">💳</div>
+            <div>
+                <div class="summary-metric-label">Total Principal Return</div>
+                <div class="summary-metric-value">₹{total_principal_return_input:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">📢</div>
+            <div>
+                <div class="summary-metric-label">Marketing Rate</div>
+                <div class="summary-metric-value">{marketing_rate*100:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Centered Cost of Funds card
+    st.markdown('<div style="margin-top: 1rem;"></div>', unsafe_allow_html=True)
+    centered_col1, centered_col2, centered_col3 = st.columns([1, 2, 1])
+    with centered_col2:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-purple">
+            <div class="summary-metric-icon">💼</div>
+            <div>
+                <div class="summary-metric-label">Cost of Funds (Monthly)</div>
+                <div class="summary-metric-value">{cost_of_funds_rate*100:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+with output_col:
+    st.markdown('<h3 style="color: #1a365d; font-weight: 700; margin-bottom: 1.5rem;">Output Parameters</h3>', unsafe_allow_html=True)
+    
+    # Create 2 sub-columns for output parameters
+    out_col1, out_col2 = st.columns(2)
+    
+    with out_col1:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">📈</div>
+            <div>
+                <div class="summary-metric-label">Total Revenue</div>
+                <div class="summary-metric-value">₹{total_revenue_sum:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-green">
+            <div class="summary-metric-icon">💵</div>
+            <div>
+                <div class="summary-metric-label">Total Interest</div>
+                <div class="summary-metric-value">₹{total_interest:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">📢</div>
+            <div>
+                <div class="summary-metric-label">Total Marketing</div>
+                <div class="summary-metric-value">₹{total_marketing:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">🏆</div>
+            <div>
+                <div class="summary-metric-label">Month {num_months} AUM</div>
+                <div class="summary-metric-value">₹{final_month_aum_summary:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-red">
+            <div class="summary-metric-icon">💳</div>
+            <div>
+                <div class="summary-metric-label">Total Costs</div>
+                <div class="summary-metric-value">₹{total_costs_sum:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with out_col2:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-blue">
+            <div class="summary-metric-icon">📄</div>
+            <div>
+                <div class="summary-metric-label">Total Processing Fees</div>
+                <div class="summary-metric-value">₹{total_pf:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-purple">
+            <div class="summary-metric-icon">🔌</div>
+            <div>
+                <div class="summary-metric-label">Total API Cost</div>
+                <div class="summary-metric-value">₹{total_api_cost:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-purple">
+            <div class="summary-metric-icon">👥</div>
+            <div>
+                <div class="summary-metric-label">Total Customers</div>
+                <div class="summary-metric-value">{total_customers_sum:,}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">🎯</div>
+            <div>
+                <div class="summary-metric-label">Net Profit/Loss</div>
+                <div class="summary-metric-value">₹{net_profit_sum:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-green">
+            <div class="summary-metric-icon">📊</div>
+            <div>
+                <div class="summary-metric-label">Month {num_months} Available</div>
+                <div class="summary-metric-value">₹{final_month_available:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Centered Total NPA card
+    st.markdown('<div style="margin-top: 1rem;"></div>', unsafe_allow_html=True)
+    out_centered_col1, out_centered_col2, out_centered_col3 = st.columns([1, 2, 1])
+    with out_centered_col2:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-red">
+            <div class="summary-metric-icon">⚠️</div>
+            <div>
+                <div class="summary-metric-label">Total NPA</div>
+                <div class="summary-metric-value">₹{total_npa_sum:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
