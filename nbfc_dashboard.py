@@ -725,10 +725,10 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 
             if i % 2 == 0:
                 with cap_col1:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             else:
                 with cap_col2:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
     else:
         for i in range(num_months):
@@ -737,7 +737,7 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 default_val = [5.0, 4.0, 4.0, 4.0, 3.0][i]
             else:
                 default_val = 0.0
-            val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+            val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
 
 for i in range(48):
@@ -1671,4 +1671,5 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
 
