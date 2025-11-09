@@ -1425,127 +1425,132 @@ total_pf = df['processing_fees_revenue'].sum()
 total_interest = df['interest_revenue'].sum()
 
 # Create two main columns: Input Parameters and Output Parameters
-input_col, output_col = st.columns([1, 2], gap="large")
+input_col, output_col = st.columns([1, 1], gap="large")
 
 with input_col:
     st.markdown('<h3 style="color: #1a365d; font-weight: 700; margin-bottom: 1.5rem;">Input Parameters</h3>', unsafe_allow_html=True)
     
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-blue">
-        <div class="summary-metric-icon">📅</div>
-        <div>
-            <div class="summary-metric-label">Projection Period</div>
-            <div class="summary-metric-value">{num_months} Months</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    # Create 2 sub-columns for input parameters
+    input_sub_col1, input_sub_col2 = st.columns(2)
     
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-green">
-        <div class="summary-metric-icon">💰</div>
-        <div>
-            <div class="summary-metric-label">Total Capital Deployed</div>
-            <div class="summary-metric-value">₹{total_capital:.2f} Cr</div>
+    with input_sub_col1:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-blue">
+            <div class="summary-metric-icon">📅</div>
+            <div>
+                <div class="summary-metric-label">Projection Period</div>
+                <div class="summary-metric-value">{num_months} Months</div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">💳</div>
+            <div>
+                <div class="summary-metric-label">Average Ticket Size</div>
+                <div class="summary-metric-value">₹{avg_ticket_size:,}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-purple">
+            <div class="summary-metric-icon">💵</div>
+            <div>
+                <div class="summary-metric-label">Monthly Interest Rate</div>
+                <div class="summary-metric-value">{monthly_interest_rate*100:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-blue">
+            <div class="summary-metric-icon">🏢</div>
+            <div>
+                <div class="summary-metric-label">Month 1 OpEx</div>
+                <div class="summary-metric-value">₹{opex_month1_value/100000:.2f} L</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">🔌</div>
+            <div>
+                <div class="summary-metric-label">API Cost (Converted)</div>
+                <div class="summary-metric-value">₹{api_cost_20_percent}</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-purple">
+            <div class="summary-metric-icon">💼</div>
+            <div>
+                <div class="summary-metric-label">Cost of Funds (Monthly)</div>
+                <div class="summary-metric-value">{cost_of_funds_rate*100:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-teal">
-        <div class="summary-metric-icon">💳</div>
-        <div>
-            <div class="summary-metric-label">Average Ticket Size</div>
-            <div class="summary-metric-value">₹{avg_ticket_size:,}</div>
+    with input_sub_col2:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-green">
+            <div class="summary-metric-icon">💰</div>
+            <div>
+                <div class="summary-metric-label">Total Capital Deployed</div>
+                <div class="summary-metric-value">₹{total_capital:.2f} Cr</div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-orange">
-        <div class="summary-metric-icon">📄</div>
-        <div>
-            <div class="summary-metric-label">Processing Fees</div>
-            <div class="summary-metric-value">{processing_fees*100:.1f}%</div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">📄</div>
+            <div>
+                <div class="summary-metric-label">Processing Fees</div>
+                <div class="summary-metric-value">{processing_fees*100:.1f}%</div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-purple">
-        <div class="summary-metric-icon">💵</div>
-        <div>
-            <div class="summary-metric-label">Monthly Interest Rate</div>
-            <div class="summary-metric-value">{monthly_interest_rate*100:.1f}%</div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-red">
+            <div class="summary-metric-icon">📊</div>
+            <div>
+                <div class="summary-metric-label">Total Collection Rate</div>
+                <div class="summary-metric-value">{total_collection_rate_percent:.1f}%</div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-red">
-        <div class="summary-metric-icon">📊</div>
-        <div>
-            <div class="summary-metric-label">Total Collection Rate</div>
-            <div class="summary-metric-value">{total_collection_rate_percent:.1f}%</div>
+        """, unsafe_allow_html=True)
+        
+        total_principal_return_input = sum(principal_values)
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-green">
+            <div class="summary-metric-icon">💳</div>
+            <div>
+                <div class="summary-metric-label">Total Principal Return</div>
+                <div class="summary-metric-value">₹{total_principal_return_input:.2f} Cr</div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-blue">
-        <div class="summary-metric-icon">🏢</div>
-        <div>
-            <div class="summary-metric-label">Month 1 OpEx</div>
-            <div class="summary-metric-value">₹{opex_month1_value/100000:.2f} L</div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">📢</div>
+            <div>
+                <div class="summary-metric-label">Marketing Rate</div>
+                <div class="summary-metric-value">{marketing_rate*100:.1f}%</div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    total_principal_return_input = sum(principal_values)
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-green">
-        <div class="summary-metric-icon">💳</div>
-        <div>
-            <div class="summary-metric-label">Total Principal Return</div>
-            <div class="summary-metric-value">₹{total_principal_return_input:.2f} Cr</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-teal">
-        <div class="summary-metric-icon">🔌</div>
-        <div>
-            <div class="summary-metric-label">API Cost (Converted)</div>
-            <div class="summary-metric-value">₹{api_cost_20_percent}</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-orange">
-        <div class="summary-metric-icon">📢</div>
-        <div>
-            <div class="summary-metric-label">Marketing Rate</div>
-            <div class="summary-metric-value">{marketing_rate*100:.1f}%</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
-    <div class="summary-metric-card summary-card-purple">
-        <div class="summary-metric-icon">💼</div>
-        <div>
-            <div class="summary-metric-label">Cost of Funds (Monthly)</div>
-            <div class="summary-metric-value">{cost_of_funds_rate*100:.1f}%</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 with output_col:
     st.markdown('<h3 style="color: #1a365d; font-weight: 700; margin-bottom: 1.5rem;">Output Parameters</h3>', unsafe_allow_html=True)
     
-    # Create 3 columns for output parameters
-    out_col1, out_col2, out_col3 = st.columns(3)
+    # Create 2 sub-columns for output parameters
+    out_col1, out_col2 = st.columns(2)
     
     with out_col1:
         st.markdown(f"""
@@ -1587,8 +1592,7 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    with out_col2:
+        
         st.markdown(f"""
         <div class="summary-metric-card summary-card-teal">
             <div class="summary-metric-icon">🏆</div>
@@ -1608,7 +1612,8 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
+    
+    with out_col2:
         st.markdown(f"""
         <div class="summary-metric-card summary-card-blue">
             <div class="summary-metric-icon">📄</div>
@@ -1628,8 +1633,7 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    with out_col3:
+        
         st.markdown(f"""
         <div class="summary-metric-card summary-card-purple">
             <div class="summary-metric-icon">👥</div>
