@@ -700,7 +700,7 @@ header {visibility: hidden;}
 st.markdown("""
 <div class="dashboard-header">
     <div class="dashboard-title">💰 NBFC Lending Business Calculator</div>
-    <div class="dashboard-subtitle">Visualize your NBFC growth story in real time 📈</div>
+    <div class="dashboard-subtitle">Visualize your STPL growth story in real time 📈</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -1671,4 +1671,5 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
 
