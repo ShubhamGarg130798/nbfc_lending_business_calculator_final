@@ -1226,30 +1226,30 @@ with col2:
     # Histogram: Invested vs Disbursed with Profit Line
     fig_invest_disburse = go.Figure()
     
-    # Add bars for Invested
+    # Add bars for Invested (Blue)
     fig_invest_disburse.add_trace(go.Bar(
         x=df['month'],
         y=df['amount_invested'],
         name='Capital Invested',
-        marker_color='#3182ce'
+        marker_color='#4A90E2'
     ))
     
-    # Add bars for Disbursed
+    # Add bars for Disbursed (Yellow/Gold)
     fig_invest_disburse.add_trace(go.Bar(
         x=df['month'],
         y=df['amount_disbursed'],
         name='Amount Disbursed',
-        marker_color='#38a169'
+        marker_color='#F5C842'
     ))
     
-    # Add line for Profit on secondary axis
+    # Add line for Profit on secondary axis (Red/Coral)
     fig_invest_disburse.add_trace(go.Scatter(
         x=df['month'],
         y=df['profit_loss'],
         name='Profit/Loss',
         mode='lines+markers',
-        line=dict(color='#dd6b20', width=3),
-        marker=dict(size=8),
+        line=dict(color='#E57373', width=3),
+        marker=dict(size=8, color='#E57373'),
         yaxis='y2'
     ))
     
