@@ -489,16 +489,38 @@ header {visibility: hidden;}
     border-left: 4px solid transparent !important;
 }
 
-/* Alternating row colors - clean pattern */
-[data-testid="stDataFrame"] tbody tr:nth-child(odd):not(:last-child) {
-    background: #e0f2fe !important;
+/* Alternating row colors - stronger contrast */
+[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
+    background: white !important;
 }
 
-[data-testid="stDataFrame"] tbody tr:nth-child(even):not(:last-child) {
-    background: #ffffff !important;
+[data-testid="stDataFrame"] tbody tr:nth-child(even) {
+    background: #fffbeb !important;
 }
 
-[data-testid="stDataFrame"] tbody tr:hover:not(:last-child) {
+/* Special highlighting for top 3 rows */
+[data-testid="stDataFrame"] tbody tr:nth-child(1) {
+    background: #dbeafe !important;
+    border-left: 4px solid #3b82f6 !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:nth-child(2) {
+    background: #dbeafe !important;
+    border-left: 4px solid #3b82f6 !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:nth-child(3) {
+    background: #dbeafe !important;
+    border-left: 4px solid #3b82f6 !important;
+}
+
+/* Highlighted row (like selected team) */
+[data-testid="stDataFrame"] tbody tr:nth-child(5) {
+    background: #fef3c7 !important;
+    border-left: 4px solid #f59e0b !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:hover {
     background: linear-gradient(90deg, #bfdbfe 0%, #dbeafe 100%) !important;
     transform: scale(1.002) !important;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2) !important;
@@ -521,11 +543,24 @@ header {visibility: hidden;}
 
 /* First column (Month/Rank) - styled like rank column */
 [data-testid="stDataFrame"] tbody td:first-child {
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     color: #1e40af !important;
-    font-size: 0.95rem !important;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
+    font-size: 1rem !important;
     width: 60px !important;
     text-align: center !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:nth-child(1) td:first-child,
+[data-testid="stDataFrame"] tbody tr:nth-child(2) td:first-child,
+[data-testid="stDataFrame"] tbody tr:nth-child(3) td:first-child {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+    color: white !important;
+}
+
+[data-testid="stDataFrame"] tbody tr:nth-child(5) td:first-child {
+    background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%) !important;
+    color: white !important;
 }
 
 /* Last row - special emphasis (TOTAL row) */
@@ -547,6 +582,13 @@ header {visibility: hidden;}
     color: white !important;
     font-weight: 900 !important;
     font-size: 1.05rem !important;
+}
+
+/* Hover effect for first column */
+[data-testid="stDataFrame"] tbody tr:hover td:first-child {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+    color: white !important;
+    transform: scale(1.05) !important;
 }
 
 /* Override hover for TOTAL row */
