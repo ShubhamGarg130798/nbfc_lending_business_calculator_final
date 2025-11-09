@@ -752,7 +752,7 @@ total_capital = sum(capital_values)
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
     processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=30.0, value=11.8, step=0.1) / 100
     monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
-    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=12.0, value=2.0, step=0.1) / 100
+    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=20.0, value=2.0, step=0.1) / 100
     cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates
@@ -780,7 +780,7 @@ with st.sidebar.expander("🏢 Operational Expenses", expanded=False):
                 default_val = 6.0
             else:
                 default_val = 6.0
-            val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=30.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
+            val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=50.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
             opex_values.append(val)
             opex_types.append('percentage')
         else:
@@ -801,7 +801,7 @@ for i in range(48):
 
 # Loan parameters
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 30000, 1000)
+    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 0, 500000, 30000, 1000)
 
 # Collection parameters
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
@@ -816,8 +816,8 @@ with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     else:
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
 
-    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 100, 35, 5)
-    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 80, 5)
+    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 1000, 35, 5)
+    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 1500, 80, 5)
 
 # Principal Return
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
@@ -1671,5 +1671,6 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
 
 
