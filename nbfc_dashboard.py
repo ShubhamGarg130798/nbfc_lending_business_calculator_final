@@ -1666,16 +1666,6 @@ with summary_col3:
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-    <div class="summary-metric-card summary-card-green">
-        <div class="summary-metric-icon">📊</div>
-        <div>
-            <div class="summary-metric-label">Period ROI</div>
-            <div class="summary-metric-value">{period_roi:.1f}%</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown(f"""
     <div class="summary-metric-card summary-card-red">
         <div class="summary-metric-icon">⚠️</div>
         <div>
