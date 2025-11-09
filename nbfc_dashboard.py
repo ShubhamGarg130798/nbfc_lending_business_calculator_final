@@ -1231,8 +1231,7 @@ with col2:
         x=df['month'],
         y=df['amount_invested'],
         name='Capital Invested',
-        marker_color='#3182ce',
-        yaxis='y'
+        marker_color='#3182ce'
     ))
     
     # Add bars for Disbursed
@@ -1240,11 +1239,10 @@ with col2:
         x=df['month'],
         y=df['amount_disbursed'],
         name='Amount Disbursed',
-        marker_color='#38a169',
-        yaxis='y'
+        marker_color='#38a169'
     ))
     
-    # Add line for Profit
+    # Add line for Profit on secondary axis
     fig_invest_disburse.add_trace(go.Scatter(
         x=df['month'],
         y=df['profit_loss'],
@@ -1257,16 +1255,13 @@ with col2:
     
     fig_invest_disburse.update_layout(
         title="Capital Invested vs Disbursed (with Profit Overlay)",
-        xaxis_title="Month",
+        xaxis=dict(title="Month", dtick=1),
         yaxis=dict(
             title="Amount (₹ Crores)",
-            titlefont=dict(color="#2d3748"),
-            tickfont=dict(color="#2d3748")
+            side='left'
         ),
         yaxis2=dict(
             title="Profit/Loss (₹ Crores)",
-            titlefont=dict(color="#dd6b20"),
-            tickfont=dict(color="#dd6b20"),
             overlaying='y',
             side='right'
         ),
@@ -1283,7 +1278,6 @@ with col2:
             x=0.5
         )
     )
-    fig_invest_disburse.update_xaxes(dtick=1)
     st.plotly_chart(fig_invest_disburse, use_container_width=True)
 
 # Complete calculations table
