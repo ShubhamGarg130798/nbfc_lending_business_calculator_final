@@ -489,22 +489,16 @@ header {visibility: hidden;}
     border-left: 4px solid transparent !important;
 }
 
-/* Alternating row colors - stronger contrast */
-[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
-    background: #f0f9ff !important;
+/* Alternating row colors - clean pattern */
+[data-testid="stDataFrame"] tbody tr:nth-child(odd):not(:last-child) {
+    background: #e0f2fe !important;
 }
 
-[data-testid="stDataFrame"] tbody tr:nth-child(even) {
+[data-testid="stDataFrame"] tbody tr:nth-child(even):not(:last-child) {
     background: #ffffff !important;
 }
 
-/* Highlighted row (like selected team) */
-[data-testid="stDataFrame"] tbody tr:nth-child(5) {
-    background: #fef3c7 !important;
-    border-left: 4px solid #f59e0b !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:hover {
+[data-testid="stDataFrame"] tbody tr:hover:not(:last-child) {
     background: linear-gradient(90deg, #bfdbfe 0%, #dbeafe 100%) !important;
     transform: scale(1.002) !important;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2) !important;
