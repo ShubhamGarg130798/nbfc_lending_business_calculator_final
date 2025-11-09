@@ -1194,145 +1194,97 @@ st.markdown('<div class="section-header">Business Analysis Charts</div>', unsafe
 col1, col2 = st.columns(2)
 
 with col1:
-    fig_aum_growth = px.area(
-        df, x='month', y='aum',
-        title="Assets Under Management (AUM) Growth",
-        color_discrete_sequence=['#4299e1']
-    )
-    fig_aum_growth.update_layout(
-        xaxis_title="Month", yaxis_title="AUM (₹ Crores)",
-        height=400, template="plotly_white",
+    # Pie Chart: Capital Invested vs Latest Month AUM
+    fig_capital_pie = go.Figure(data=[go.Pie(
+        labels=['Capital Invested', f'Month {num_months} AUM'],
+        values=[total_capital, final_month_aum],
+        hole=0.4,
+        marker=dict(colors=['#3182ce', '#38a169']),
+        textinfo='label+percent+value',
+        texttemplate='<b>%{label}</b><br>₹%{value:.2f} Cr<br>(%{percent})',
+        hovertemplate='<b>%{label}</b><br>₹%{value:.2f} Cr<br>%{percent}<extra></extra>'
+    )])
+    
+    fig_capital_pie.update_layout(
+        title="Capital Invested vs Latest Month AUM",
+        height=400,
+        template="plotly_white",
         title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
+        font=dict(family='Inter', size=12),
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.2,
+            xanchor="center",
+            x=0.5
+        )
     )
-    fig_aum_growth.update_xaxes(dtick=1)
-    st.plotly_chart(fig_aum_growth, use_container_width=True)
+    st.plotly_chart(fig_capital_pie, use_container_width=True)
 
 with col2:
-    fig_revenue_costs = go.Figure()
-    total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
-    total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
-                   df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
-                   df['salary'] + df['principal_return'])
-
-    fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'], y=total_revenue, name='Total Revenue',
-        marker_color='#38a169'
+    # Histogram: Invested vs Disbursed with Profit Line
+    fig_invest_disburse = go.Figure()
+    
+    # Add bars for Invested
+    fig_invest_disburse.add_trace(go.Bar(
+        x=df['month'],
+        y=df['amount_invested'],
+        name='Capital Invested',
+        marker_color='#3182ce',
+        yaxis='y'
     ))
-    fig_revenue_costs.add_trace(go.Bar(
-        x=df['month'], y=total_costs, name='Total Costs',
-        marker_color='#f56565'
+    
+    # Add bars for Disbursed
+    fig_invest_disburse.add_trace(go.Bar(
+        x=df['month'],
+        y=df['amount_disbursed'],
+        name='Amount Disbursed',
+        marker_color='#38a169',
+        yaxis='y'
     ))
-    fig_revenue_costs.add_trace(go.Scatter(
-        x=df['month'], y=df['profit_loss'], mode='lines+markers',
-        name='Net Profit', line=dict(color='#dd6b20', width=3),
-        marker=dict(size=8)
+    
+    # Add line for Profit
+    fig_invest_disburse.add_trace(go.Scatter(
+        x=df['month'],
+        y=df['profit_loss'],
+        name='Profit/Loss',
+        mode='lines+markers',
+        line=dict(color='#dd6b20', width=3),
+        marker=dict(size=8),
+        yaxis='y2'
     ))
-
-    fig_revenue_costs.update_layout(
-        title="Monthly Revenue vs Costs Analysis",
-        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
-        height=400, template="plotly_white",
+    
+    fig_invest_disburse.update_layout(
+        title="Capital Invested vs Disbursed (with Profit Overlay)",
+        xaxis_title="Month",
+        yaxis=dict(
+            title="Amount (₹ Crores)",
+            titlefont=dict(color="#2d3748"),
+            tickfont=dict(color="#2d3748")
+        ),
+        yaxis2=dict(
+            title="Profit/Loss (₹ Crores)",
+            titlefont=dict(color="#dd6b20"),
+            tickfont=dict(color="#dd6b20"),
+            overlaying='y',
+            side='right'
+        ),
+        height=400,
+        template="plotly_white",
         title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
+        font=dict(family='Inter', size=12),
+        barmode='group',
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.3,
+            xanchor="center",
+            x=0.5
+        )
     )
-    fig_revenue_costs.update_xaxes(dtick=1)
-    st.plotly_chart(fig_revenue_costs, use_container_width=True)
-
-# Profit/Loss Analysis
-fig_profit = px.bar(
-    df, x='month', y='profit_loss',
-    title="Monthly Profit/Loss Analysis",
-    color='profit_loss',
-    color_continuous_scale=['#f56565', '#fbd38d', '#38a169']
-)
-fig_profit.update_layout(
-    xaxis_title="Month", yaxis_title="Profit/Loss (₹ Crores)",
-    height=400, showlegend=False, template="plotly_white",
-    title_font=dict(size=16, color='#2d3748', family='Inter'),
-    font=dict(family='Inter', size=12)
-)
-fig_profit.update_xaxes(dtick=1)
-st.plotly_chart(fig_profit, use_container_width=True)
-
-# More Charts
-col1, col2 = st.columns(2)
-
-with col1:
-    fig_invested_vs_available = go.Figure()
-    fig_invested_vs_available.add_trace(go.Bar(
-        x=df['month'], y=df['amount_invested'],
-        name='Amount Invested', marker_color='#4299e1'
-    ))
-    fig_invested_vs_available.add_trace(go.Bar(
-        x=df['month'], y=df['amount_available'],
-        name='Available for Disbursal', marker_color='#38a169'
-    ))
-    fig_invested_vs_available.update_layout(
-        title="Amount Invested vs Available for Disbursal",
-        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
-        height=400, barmode='group', template="plotly_white",
-        title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
-    )
-    fig_invested_vs_available.update_xaxes(dtick=1)
-    st.plotly_chart(fig_invested_vs_available, use_container_width=True)
-
-with col2:
-    fig_disbursed = px.line(
-        df, x='month', y='amount_disbursed',
-        title="Amount Actually Disbursed",
-        markers=True, color_discrete_sequence=['#38a169']
-    )
-    fig_disbursed.update_layout(
-        xaxis_title="Month", yaxis_title="Amount Disbursed (₹ Crores)",
-        height=400, template="plotly_white",
-        title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
-    )
-    fig_disbursed.update_xaxes(dtick=1)
-    st.plotly_chart(fig_disbursed, use_container_width=True)
-
-col1, col2 = st.columns(2)
-
-with col1:
-    fig_revenue_breakdown = go.Figure()
-    fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'], y=df['interest_revenue'],
-        name='Interest Revenue', marker_color='#38a169'
-    ))
-    fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'], y=df['processing_fees_revenue'],
-        name='Processing Fees', marker_color='#4299e1'
-    ))
-    fig_revenue_breakdown.add_trace(go.Bar(
-        x=df['month'], y=df['bad_debt_recovery'],
-        name='Bad Debt Recovery', marker_color='#dd6b20'
-    ))
-    fig_revenue_breakdown.update_layout(
-        title="Monthly Revenue Breakdown",
-        xaxis_title="Month", yaxis_title="Amount (₹ Crores)",
-        barmode='stack', height=400, template="plotly_white",
-        title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
-    )
-    fig_revenue_breakdown.update_xaxes(dtick=1)
-    st.plotly_chart(fig_revenue_breakdown, use_container_width=True)
-
-with col2:
-    fig_customers = px.bar(
-        df, x='month', y='customers',
-        title="Monthly Customer Acquisition",
-        color='customers', color_continuous_scale='Blues'
-    )
-    fig_customers.update_layout(
-        xaxis_title="Month", yaxis_title="Number of Customers",
-        height=400, showlegend=False, template="plotly_white",
-        title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
-    )
-    fig_customers.update_xaxes(dtick=1)
-    st.plotly_chart(fig_customers, use_container_width=True)
+    fig_invest_disburse.update_xaxes(dtick=1)
+    st.plotly_chart(fig_invest_disburse, use_container_width=True)
 
 # Complete calculations table
 st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
