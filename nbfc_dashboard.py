@@ -1483,16 +1483,6 @@ with input_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-purple">
-            <div class="summary-metric-icon">💼</div>
-            <div>
-                <div class="summary-metric-label">Cost of Funds (Monthly)</div>
-                <div class="summary-metric-value">{cost_of_funds_rate*100:.1f}%</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
     
     with input_sub_col2:
         st.markdown(f"""
@@ -1542,6 +1532,20 @@ with input_col:
             <div>
                 <div class="summary-metric-label">Marketing Rate</div>
                 <div class="summary-metric-value">{marketing_rate*100:.1f}%</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Centered Cost of Funds card
+    st.markdown('<div style="margin-top: 1rem;"></div>', unsafe_allow_html=True)
+    centered_col1, centered_col2, centered_col3 = st.columns([1, 2, 1])
+    with centered_col2:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-purple">
+            <div class="summary-metric-icon">💼</div>
+            <div>
+                <div class="summary-metric-label">Cost of Funds (Monthly)</div>
+                <div class="summary-metric-value">{cost_of_funds_rate*100:.1f}%</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1653,7 +1657,11 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
+    
+    # Centered Total NPA card
+    st.markdown('<div style="margin-top: 1rem;"></div>', unsafe_allow_html=True)
+    out_centered_col1, out_centered_col2, out_centered_col3 = st.columns([1, 2, 1])
+    with out_centered_col2:
         st.markdown(f"""
         <div class="summary-metric-card summary-card-red">
             <div class="summary-metric-icon">⚠️</div>
