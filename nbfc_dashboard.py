@@ -1189,7 +1189,7 @@ with col7:
     """, unsafe_allow_html=True)
 
 # Charts Section
-st.markdown('<div class="section-header">Business Analysis Charts</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Business Health at a Glance</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
@@ -1281,7 +1281,7 @@ with col2:
     st.plotly_chart(fig_invest_disburse, use_container_width=True)
 
 # Complete calculations table
-st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Monthly Financial & Operational Register</div>', unsafe_allow_html=True)
 
 display_df = df.round(3)
 column_names = {
@@ -1671,3 +1671,4 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
