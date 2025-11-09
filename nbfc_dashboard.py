@@ -725,10 +725,10 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 
             if i % 2 == 0:
                 with cap_col1:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             else:
                 with cap_col2:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
     else:
         for i in range(num_months):
@@ -737,7 +737,7 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 default_val = [5.0, 4.0, 4.0, 4.0, 3.0][i]
             else:
                 default_val = 0.0
-            val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+            val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
 
 for i in range(48):
@@ -752,8 +752,8 @@ total_capital = sum(capital_values)
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
     processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=30.0, value=11.8, step=0.1) / 100
     monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
-    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=12.0, value=2.0, step=0.1) / 100
-    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
+    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=20.0, value=2.0, step=0.1) / 100
+    cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=30.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates
 with st.sidebar.expander("🏢 Operational Expenses", expanded=False):
@@ -801,7 +801,7 @@ for i in range(48):
 
 # Loan parameters
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 30000, 1000)
+    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 0, 500000, 30000, 1000)
 
 # Collection parameters
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
@@ -1671,5 +1671,6 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
 
 
