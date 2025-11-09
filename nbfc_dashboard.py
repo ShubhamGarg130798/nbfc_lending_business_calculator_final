@@ -489,38 +489,16 @@ header {visibility: hidden;}
     border-left: 4px solid transparent !important;
 }
 
-/* Alternating row colors - stronger contrast */
-[data-testid="stDataFrame"] tbody tr:nth-child(odd) {
-    background: white !important;
+/* Alternating row colors - clean pattern */
+[data-testid="stDataFrame"] tbody tr:nth-child(odd):not(:last-child) {
+    background: #e0f2fe !important;
 }
 
-[data-testid="stDataFrame"] tbody tr:nth-child(even) {
-    background: #fffbeb !important;
+[data-testid="stDataFrame"] tbody tr:nth-child(even):not(:last-child) {
+    background: #ffffff !important;
 }
 
-/* Special highlighting for top 3 rows */
-[data-testid="stDataFrame"] tbody tr:nth-child(1) {
-    background: #dbeafe !important;
-    border-left: 4px solid #3b82f6 !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(2) {
-    background: #dbeafe !important;
-    border-left: 4px solid #3b82f6 !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(3) {
-    background: #dbeafe !important;
-    border-left: 4px solid #3b82f6 !important;
-}
-
-/* Highlighted row (like selected team) */
-[data-testid="stDataFrame"] tbody tr:nth-child(5) {
-    background: #fef3c7 !important;
-    border-left: 4px solid #f59e0b !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:hover {
+[data-testid="stDataFrame"] tbody tr:hover:not(:last-child) {
     background: linear-gradient(90deg, #bfdbfe 0%, #dbeafe 100%) !important;
     transform: scale(1.002) !important;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2) !important;
@@ -543,24 +521,11 @@ header {visibility: hidden;}
 
 /* First column (Month/Rank) - styled like rank column */
 [data-testid="stDataFrame"] tbody td:first-child {
-    font-weight: 800 !important;
+    font-weight: 700 !important;
     color: #1e40af !important;
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%) !important;
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
     width: 60px !important;
     text-align: center !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(1) td:first-child,
-[data-testid="stDataFrame"] tbody tr:nth-child(2) td:first-child,
-[data-testid="stDataFrame"] tbody tr:nth-child(3) td:first-child {
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
-    color: white !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(5) td:first-child {
-    background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%) !important;
-    color: white !important;
 }
 
 /* Last row - special emphasis (TOTAL row) */
@@ -582,13 +547,6 @@ header {visibility: hidden;}
     color: white !important;
     font-weight: 900 !important;
     font-size: 1.05rem !important;
-}
-
-/* Hover effect for first column */
-[data-testid="stDataFrame"] tbody tr:hover td:first-child {
-    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
-    color: white !important;
-    transform: scale(1.05) !important;
 }
 
 /* Override hover for TOTAL row */
@@ -1375,60 +1333,6 @@ with col2:
     )
     fig_customers.update_xaxes(dtick=1)
     st.plotly_chart(fig_customers, use_container_width=True)
-
-# NPA Analysis Charts
-st.markdown('<div class="section-header">NPA Analysis</div>', unsafe_allow_html=True)
-
-col1, col2 = st.columns(2)
-
-with col1:
-    # Monthly NPA Breakdown
-    fig_monthly_npa = go.Figure()
-    fig_monthly_npa.add_trace(go.Bar(
-        x=df['month'], y=df['monthly_npa_principal'],
-        name='Principal NPA', marker_color='#f56565'
-    ))
-    fig_monthly_npa.add_trace(go.Bar(
-        x=df['month'], y=df['monthly_npa_interest'],
-        name='Interest NPA', marker_color='#dd6b20'
-    ))
-    fig_monthly_npa.update_layout(
-        title="Monthly NPA Breakdown (Principal vs Interest)",
-        xaxis_title="Month", yaxis_title="NPA (₹ Crores)",
-        barmode='stack', height=400, template="plotly_white",
-        title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
-    )
-    fig_monthly_npa.update_xaxes(dtick=1)
-    st.plotly_chart(fig_monthly_npa, use_container_width=True)
-
-with col2:
-    # Cumulative NPA Growth
-    fig_cumulative_npa = go.Figure()
-    fig_cumulative_npa.add_trace(go.Scatter(
-        x=df['month'], y=df['cumulative_npa_principal'],
-        mode='lines+markers', name='Cumulative Principal NPA',
-        line=dict(color='#f56565', width=3), marker=dict(size=8)
-    ))
-    fig_cumulative_npa.add_trace(go.Scatter(
-        x=df['month'], y=df['cumulative_npa_interest'],
-        mode='lines+markers', name='Cumulative Interest NPA',
-        line=dict(color='#dd6b20', width=3), marker=dict(size=8)
-    ))
-    fig_cumulative_npa.add_trace(go.Scatter(
-        x=df['month'], y=df['cumulative_npa_total'],
-        mode='lines+markers', name='Total Cumulative NPA',
-        line=dict(color='#805ad5', width=3, dash='dash'), marker=dict(size=8)
-    ))
-    fig_cumulative_npa.update_layout(
-        title="Cumulative NPA Growth Over Time",
-        xaxis_title="Month", yaxis_title="Cumulative NPA (₹ Crores)",
-        height=400, template="plotly_white",
-        title_font=dict(size=16, color='#2d3748', family='Inter'),
-        font=dict(family='Inter', size=12)
-    )
-    fig_cumulative_npa.update_xaxes(dtick=1)
-    st.plotly_chart(fig_cumulative_npa, use_container_width=True)
 
 # Complete calculations table
 st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
