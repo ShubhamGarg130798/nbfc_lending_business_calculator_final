@@ -1407,6 +1407,11 @@ st.dataframe(display_df, use_container_width=True, hide_index=True, height=400)
 # Financial Summary
 st.markdown('<div class="section-header">Financial Summary</div>', unsafe_allow_html=True)
 
+total_revenue = df['interest_revenue'] + df['processing_fees_revenue'] + df['bad_debt_recovery']
+total_costs = (df['opex'] + df['api_expense'] + df['marketing_expense'] + 
+               df['cost_of_funds'] + df['bad_debt_default'] + df['gst'] + 
+               df['salary'] + df['principal_return'])
+
 total_revenue_sum = total_revenue.sum()
 total_costs_sum = total_costs.sum()
 net_profit_sum = df['profit_loss'].sum()
