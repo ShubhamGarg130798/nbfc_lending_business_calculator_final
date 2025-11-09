@@ -1559,6 +1559,16 @@ with output_col:
     with out_col1:
         st.markdown(f"""
         <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">🏆</div>
+            <div>
+                <div class="summary-metric-label">Month {num_months} AUM</div>
+                <div class="summary-metric-value">₹{final_month_aum_summary:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
             <div class="summary-metric-icon">📈</div>
             <div>
                 <div class="summary-metric-label">Total Revenue</div>
@@ -1573,47 +1583,6 @@ with output_col:
             <div>
                 <div class="summary-metric-label">Total Interest</div>
                 <div class="summary-metric-value">₹{total_interest:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-orange">
-            <div class="summary-metric-icon">📢</div>
-            <div>
-                <div class="summary-metric-label">Total Marketing</div>
-                <div class="summary-metric-value">₹{total_marketing:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-teal">
-            <div class="summary-metric-icon">🏆</div>
-            <div>
-                <div class="summary-metric-label">Month {num_months} AUM</div>
-                <div class="summary-metric-value">₹{final_month_aum_summary:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-red">
-            <div class="summary-metric-icon">💳</div>
-            <div>
-                <div class="summary-metric-label">Total Costs</div>
-                <div class="summary-metric-value">₹{total_costs_sum:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with out_col2:
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-blue">
-            <div class="summary-metric-icon">📄</div>
-            <div>
-                <div class="summary-metric-label">Total Processing Fees</div>
-                <div class="summary-metric-value">₹{total_pf:.2f} Cr</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1637,13 +1606,44 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
+    
+    with out_col2:
         st.markdown(f"""
         <div class="summary-metric-card summary-card-orange">
             <div class="summary-metric-icon">🎯</div>
             <div>
                 <div class="summary-metric-label">Net Profit/Loss</div>
                 <div class="summary-metric-value">₹{net_profit_sum:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-red">
+            <div class="summary-metric-icon">💳</div>
+            <div>
+                <div class="summary-metric-label">Total Costs</div>
+                <div class="summary-metric-value">₹{total_costs_sum:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-blue">
+            <div class="summary-metric-icon">📄</div>
+            <div>
+                <div class="summary-metric-label">Total Processing Fees</div>
+                <div class="summary-metric-value">₹{total_pf:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">📢</div>
+            <div>
+                <div class="summary-metric-label">Total Marketing</div>
+                <div class="summary-metric-value">₹{total_marketing:.2f} Cr</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1671,3 +1671,4 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
+
