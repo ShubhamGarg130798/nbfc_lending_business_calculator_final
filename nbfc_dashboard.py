@@ -1564,6 +1564,10 @@ final_month_available = df['amount_available'].iloc[-1]
 total_customers_sum = df['customers'].sum()
 final_month_aum_summary = df['aum'].iloc[-1]
 total_npa_sum = df['cumulative_npa_total'].iloc[-1]
+total_marketing = df['marketing_expense'].sum()
+total_api_cost = df['api_expense'].sum()
+total_pf = df['processing_fees_revenue'].sum()
+total_interest = df['interest_revenue'].sum()
 
 # Create a professional summary grid
 summary_col1, summary_col2, summary_col3 = st.columns(3)
@@ -1598,6 +1602,16 @@ with summary_col1:
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-green">
+        <div class="summary-metric-icon">💵</div>
+        <div>
+            <div class="summary-metric-label">Total Interest</div>
+            <div class="summary-metric-value">₹{total_interest:.2f} Cr</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with summary_col2:
     st.markdown(f"""
@@ -1629,6 +1643,16 @@ with summary_col2:
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-blue">
+        <div class="summary-metric-icon">📄</div>
+        <div>
+            <div class="summary-metric-label">Total Processing Fees</div>
+            <div class="summary-metric-value">₹{total_pf:.2f} Cr</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with summary_col3:
     st.markdown(f"""
@@ -1657,6 +1681,26 @@ with summary_col3:
         <div>
             <div class="summary-metric-label">Total NPA</div>
             <div class="summary-metric-value">₹{total_npa_sum:.2f} Cr</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-orange">
+        <div class="summary-metric-icon">📢</div>
+        <div>
+            <div class="summary-metric-label">Total Marketing</div>
+            <div class="summary-metric-value">₹{total_marketing:.2f} Cr</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-purple">
+        <div class="summary-metric-icon">🔌</div>
+        <div>
+            <div class="summary-metric-label">Total API Cost</div>
+            <div class="summary-metric-value">₹{total_api_cost:.2f} Cr</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
