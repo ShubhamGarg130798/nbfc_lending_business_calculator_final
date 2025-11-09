@@ -725,10 +725,10 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 
             if i % 2 == 0:
                 with cap_col1:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             else:
                 with cap_col2:
-                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+                    val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
     else:
         for i in range(num_months):
@@ -737,7 +737,7 @@ with st.sidebar.expander("💰 Capital Deployment (₹ Crores)", expanded=False)
                 default_val = [5.0, 4.0, 4.0, 4.0, 3.0][i]
             else:
                 default_val = 0.0
-            val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=200.0, value=default_val, step=0.5, key=f"cap_{month_num}")
+            val = st.number_input(f"Month {month_num}", min_value=0.0, max_value=20.0, value=default_val, step=0.5, key=f"cap_{month_num}")
             capital_values.append(val)
 
 for i in range(48):
@@ -752,7 +752,7 @@ total_capital = sum(capital_values)
 with st.sidebar.expander("📈 Revenue Parameters", expanded=False):
     processing_fees = st.number_input("Processing Fees (%)", min_value=0.0, max_value=30.0, value=11.8, step=0.1) / 100
     monthly_interest_rate = st.number_input("Monthly Interest Rate (%)", min_value=0.0, max_value=50.0, value=30.0, step=0.5) / 100
-    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=20.0, value=2.0, step=0.1) / 100
+    marketing_rate = st.number_input("Marketing Expenses (%)", min_value=0.0, max_value=12.0, value=2.0, step=0.1) / 100
     cost_of_funds_rate = st.number_input("Cost of Funds (% monthly)", min_value=0.0, max_value=10.0, value=1.5, step=0.1) / 100
 
 # Operational expense rates
@@ -780,7 +780,7 @@ with st.sidebar.expander("🏢 Operational Expenses", expanded=False):
                 default_val = 6.0
             else:
                 default_val = 6.0
-            val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=50.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
+            val = st.number_input(f"Month {month_num} OpEx Rate (%)", min_value=0.0, max_value=30.0, value=default_val, step=0.5, key=f"opex_{month_num}") / 100
             opex_values.append(val)
             opex_types.append('percentage')
         else:
@@ -801,7 +801,7 @@ for i in range(48):
 
 # Loan parameters
 with st.sidebar.expander("🎯 Loan Parameters", expanded=False):
-    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 0, 500000, 30000, 1000)
+    avg_ticket_size = st.number_input("Average Loan Ticket (₹)", 10000, 50000, 30000, 1000)
 
 # Collection parameters
 with st.sidebar.expander("📊 Collection Parameters", expanded=False):
@@ -816,8 +816,8 @@ with st.sidebar.expander("📊 Collection Parameters", expanded=False):
     else:
         st.success(f"✅ Total collection rate: {total_collection_rate_percent:.1f}%")
 
-    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 1000, 35, 5)
-    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 1500, 80, 5)
+    api_cost_80_percent = st.number_input("API Cost (Per Lead Not Converted) ₹", 0, 100, 35, 5)
+    api_cost_20_percent = st.number_input("API Cost (Per Converted Customers) ₹", 0, 150, 80, 5)
 
 # Principal Return
 with st.sidebar.expander("💳 Monthly Principal Return (₹ Crores)", expanded=False):
@@ -1189,7 +1189,7 @@ with col7:
     """, unsafe_allow_html=True)
 
 # Charts Section
-st.markdown('<div class="section-header">Business Health at a Glance</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Business Analysis Charts</div>', unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
@@ -1281,7 +1281,7 @@ with col2:
     st.plotly_chart(fig_invest_disburse, use_container_width=True)
 
 # Complete calculations table
-st.markdown('<div class="section-header">Monthly Financial & Operational Register</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Complete Monthly Calculations</div>', unsafe_allow_html=True)
 
 display_df = df.round(3)
 column_names = {
@@ -1559,16 +1559,6 @@ with output_col:
     with out_col1:
         st.markdown(f"""
         <div class="summary-metric-card summary-card-teal">
-            <div class="summary-metric-icon">🏆</div>
-            <div>
-                <div class="summary-metric-label">Month {num_months} AUM</div>
-                <div class="summary-metric-value">₹{final_month_aum_summary:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-teal">
             <div class="summary-metric-icon">📈</div>
             <div>
                 <div class="summary-metric-label">Total Revenue</div>
@@ -1583,6 +1573,47 @@ with output_col:
             <div>
                 <div class="summary-metric-label">Total Interest</div>
                 <div class="summary-metric-value">₹{total_interest:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-orange">
+            <div class="summary-metric-icon">📢</div>
+            <div>
+                <div class="summary-metric-label">Total Marketing</div>
+                <div class="summary-metric-value">₹{total_marketing:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-teal">
+            <div class="summary-metric-icon">🏆</div>
+            <div>
+                <div class="summary-metric-label">Month {num_months} AUM</div>
+                <div class="summary-metric-value">₹{final_month_aum_summary:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-red">
+            <div class="summary-metric-icon">💳</div>
+            <div>
+                <div class="summary-metric-label">Total Costs</div>
+                <div class="summary-metric-value">₹{total_costs_sum:.2f} Cr</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with out_col2:
+        st.markdown(f"""
+        <div class="summary-metric-card summary-card-blue">
+            <div class="summary-metric-icon">📄</div>
+            <div>
+                <div class="summary-metric-label">Total Processing Fees</div>
+                <div class="summary-metric-value">₹{total_pf:.2f} Cr</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1606,44 +1637,13 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    with out_col2:
+        
         st.markdown(f"""
         <div class="summary-metric-card summary-card-orange">
             <div class="summary-metric-icon">🎯</div>
             <div>
                 <div class="summary-metric-label">Net Profit/Loss</div>
                 <div class="summary-metric-value">₹{net_profit_sum:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-red">
-            <div class="summary-metric-icon">💳</div>
-            <div>
-                <div class="summary-metric-label">Total Costs</div>
-                <div class="summary-metric-value">₹{total_costs_sum:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-blue">
-            <div class="summary-metric-icon">📄</div>
-            <div>
-                <div class="summary-metric-label">Total Processing Fees</div>
-                <div class="summary-metric-value">₹{total_pf:.2f} Cr</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown(f"""
-        <div class="summary-metric-card summary-card-orange">
-            <div class="summary-metric-icon">📢</div>
-            <div>
-                <div class="summary-metric-label">Total Marketing</div>
-                <div class="summary-metric-value">₹{total_marketing:.2f} Cr</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1671,7 +1671,3 @@ with output_col:
             </div>
         </div>
         """, unsafe_allow_html=True)
-
-
-
-
