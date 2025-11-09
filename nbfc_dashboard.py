@@ -1489,6 +1489,57 @@ with input_col:
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-blue">
+        <div class="summary-metric-icon">🏢</div>
+        <div>
+            <div class="summary-metric-label">Month 1 OpEx</div>
+            <div class="summary-metric-value">₹{opex_month1_value/100000:.2f} L</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    total_principal_return_input = sum(principal_values)
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-green">
+        <div class="summary-metric-icon">💳</div>
+        <div>
+            <div class="summary-metric-label">Total Principal Return</div>
+            <div class="summary-metric-value">₹{total_principal_return_input:.2f} Cr</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-teal">
+        <div class="summary-metric-icon">🔌</div>
+        <div>
+            <div class="summary-metric-label">API Cost (Converted)</div>
+            <div class="summary-metric-value">₹{api_cost_20_percent}</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-orange">
+        <div class="summary-metric-icon">📢</div>
+        <div>
+            <div class="summary-metric-label">Marketing Rate</div>
+            <div class="summary-metric-value">{marketing_rate*100:.1f}%</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class="summary-metric-card summary-card-purple">
+        <div class="summary-metric-icon">💼</div>
+        <div>
+            <div class="summary-metric-label">Cost of Funds (Monthly)</div>
+            <div class="summary-metric-value">{cost_of_funds_rate*100:.1f}%</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 with output_col:
     st.markdown('<h3 style="color: #1a365d; font-weight: 700; margin-bottom: 1.5rem;">Output Parameters</h3>', unsafe_allow_html=True)
