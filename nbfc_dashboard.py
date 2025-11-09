@@ -498,22 +498,6 @@ header {visibility: hidden;}
     background: #ffffff !important;
 }
 
-/* Special highlighting for top 3 rows */
-[data-testid="stDataFrame"] tbody tr:nth-child(1) {
-    background: #dbeafe !important;
-    border-left: 4px solid #3b82f6 !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(2) {
-    background: #dbeafe !important;
-    border-left: 4px solid #3b82f6 !important;
-}
-
-[data-testid="stDataFrame"] tbody tr:nth-child(3) {
-    background: #dbeafe !important;
-    border-left: 4px solid #3b82f6 !important;
-}
-
 /* Highlighted row (like selected team) */
 [data-testid="stDataFrame"] tbody tr:nth-child(5) {
     background: #fef3c7 !important;
